@@ -11,13 +11,19 @@ class PropertyDefinition
     final VersionChain since
     final VersionChain until
 
+    PropertyDefinition(PropertyType type, PropertyNeed need)
+    {
+        this(type , need, null, null)
+    }
+
     PropertyDefinition(PropertyType type, PropertyNeed need, VersionChain since, VersionChain until)
     {
-        if (!type) throw new NullPointerException("type")
-
         this.type  = type
-        this.need  = need  ? need  : PropertyNeed.OPTIONAL
+        this.need  = need
         this.since = since ? since : VersionChain.ZERO
         this.until = until ? until : VersionChain.MAX
+
+        if (!type) throw new NullPointerException("type")
+        if (!need) throw new NullPointerException("need")
     }
 }

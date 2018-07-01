@@ -2,9 +2,16 @@ package com.mukadobo.propertyobject
 
 enum PropertyType
 {
-    STRING,
-    NUMBER,
-    DICTIONARY,
-    ARRAY,
     BOOLEAN,
+	DECIMAL,
+    INTEGER,
+    STRING,
+
+    DATE,
+	URL,
+	UUID,
+	VERSION,
+
+	DICTIONARY,
+    SEQUENCE,
 }
