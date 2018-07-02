@@ -1,6 +1,7 @@
 package com.mukadobo.propertyobject
 
 import groovy.json.JsonBuilder
+import org.everit.json.schema.ReferenceSchema
 import org.everit.json.schema.Schema
 import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
@@ -13,7 +14,7 @@ class ValidatorEveritFileSystem
 
 	static void main (String[] args)
 	{
-		String fstabCompleteSchema = '''\
+		String fstabSchemaText = '''\
 		{
 		  "$id": "http://example.com/fstab",
 		  "$schema": "http://json-schema.org/draft-07/schema#",
@@ -25,146 +26,148 @@ class ValidatorEveritFileSystem
 		  "patternProperties": {
 			"^(/[^/]+)+$":  { "$ref": "http://example.com/entry-schema-qqq" }
 		  },
-		  "additionalProperties": false,
-		  "definitions": {
-			"fstab-entry": {
-			  "$id": "http://example.com/entry-schema-qqq",
-			  "description": "JSON Schema for an fstab entry",
+		  "additionalProperties": false
+		}
+		'''.stripIndent()
+
+		String entrySchemaText = '''\
+		{
+		  "$id": "http://example.com/entry-schema-qqq",
+		  "description": "JSON Schema for an fstab entry",
+		  "type": "object",
+		  "required": [
+			"storage"
+		  ],
+		  "properties": {
+			"storage": {
 			  "type": "object",
-			  "required": [
-				"storage"
-			  ],
+			  "oneOf": [
+				{
+				  "$ref": "#/definitions/diskDevice"
+				},
+				{
+				  "$ref": "#/definitions/diskUUID"
+				},
+				{
+				  "$ref": "#/definitions/nfs"
+				},
+				{
+				  "$ref": "#/definitions/tmpfs"
+				}
+			  ]
+			},
+			"fstype": {
+			  "enum": [
+				"ext3",
+				"ext4",
+				"btrfs"
+			  ]
+			},
+			"options": {
+			  "type": "array",
+			  "minItems": 1,
+			  "items": {
+				"type": "string"
+			  },
+			  "uniqueItems": true
+			},
+			"readonly": {
+			  "type": "boolean"
+			}
+		  },
+		  "definitions": {
+			"diskDevice": {
 			  "properties": {
-				"storage": {
-				  "type": "object",
-				  "oneOf": [
-					{
-					  "$ref": "#/definitions/fstab-entry/definitions/diskDevice"
-					},
-					{
-					  "$ref": "#/definitions/fstab-entry/definitions/diskUUID"
-					},
-					{
-					  "$ref": "#/definitions/fstab-entry/definitions/nfs"
-					},
-					{
-					  "$ref": "#/definitions/fstab-entry/definitions/tmpfs"
-					}
-				  ]
-				},
-				"fstype": {
+				"type": {
 				  "enum": [
-					"ext3",
-					"ext4",
-					"btrfs"
+					"disk"
 				  ]
 				},
-				"options": {
-				  "type": "array",
-				  "minItems": 1,
-				  "items": {
-					"type": "string"
-				  },
-				  "uniqueItems": true
-				},
-				"readonly": {
-				  "type": "boolean"
+				"device": {
+				  "type": "string",
+				  "pattern": "^/dev/[^/]+(/[^/]+)*$"
 				}
 			  },
-			  "definitions": {
-				"diskDevice": {
-				  "properties": {
-					"type": {
-					  "enum": [
-						"disk"
-					  ]
-					},
-					"device": {
-					  "type": "string",
-					  "pattern": "^/dev/[^/]+(/[^/]+)*$"
-					}
-				  },
-				  "required": [
-					"type",
-					"device"
-				  ],
-				  "additionalProperties": false
+			  "required": [
+				"type",
+				"device"
+			  ],
+			  "additionalProperties": false
+			},
+			"diskUUID": {
+			  "properties": {
+				"type": {
+				  "enum": [
+					"disk"
+				  ]
 				},
-				"diskUUID": {
-				  "properties": {
-					"type": {
-					  "enum": [
-						"disk"
-					  ]
-					},
-					"label": {
-					  "type": "string",
-					  "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-					}
-				  },
-				  "required": [
-					"type",
-					"label"
-				  ],
-				  "additionalProperties": false
-				},
-				"nfs": {
-				  "properties": {
-					"type": {
-					  "enum": [
-						"nfs"
-					  ]
-					},
-					"remotePath": {
-					  "type": "string",
-					  "pattern": "^(/[^/]+)+$"
-					},
-					"server": {
-					  "type": "string",
-					  "oneOf": [
-						{
-						  "format": "hostname"
-						},
-						{
-						  "format": "ipv4"
-						},
-						{
-						  "format": "ipv6"
-						}
-					  ]
-					}
-				  },
-				  "required": [
-					"type",
-					"server",
-					"remotePath"
-				  ],
-				  "additionalProperties": false
-				},
-				"tmpfs": {
-				  "properties": {
-					"type": {
-					  "enum": [
-						"tmpfs"
-					  ]
-					},
-					"sizeInMB": {
-					  "type": "integer",
-					  "minimum": 16,
-					  "maximum": 512
-					}
-				  },
-				  "required": [
-					"type",
-					"sizeInMB"
-				  ],
-				  "additionalProperties": false
+				"label": {
+				  "type": "string",
+				  "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
 				}
-			  }
+			  },
+			  "required": [
+				"type",
+				"label"
+			  ],
+			  "additionalProperties": false
+			},
+			"nfs": {
+			  "properties": {
+				"type": {
+				  "enum": [
+					"nfs"
+				  ]
+				},
+				"remotePath": {
+				  "type": "string",
+				  "pattern": "^(/[^/]+)+$"
+				},
+				"server": {
+				  "type": "string",
+				  "oneOf": [
+					{
+					  "format": "hostname"
+					},
+					{
+					  "format": "ipv4"
+					},
+					{
+					  "format": "ipv6"
+					}
+				  ]
+				}
+			  },
+			  "required": [
+				"type",
+				"server",
+				"remotePath"
+			  ],
+			  "additionalProperties": false
+			},
+			"tmpfs": {
+			  "properties": {
+				"type": {
+				  "enum": [
+					"tmpfs"
+				  ]
+				},
+				"sizeInMB": {
+				  "type": "integer",
+				  "minimum": 16,
+				  "maximum": 512
+				}
+			  },
+			  "required": [
+				"type",
+				"sizeInMB"
+			  ],
+			  "additionalProperties": false
 			}
 		  }
 		}
 		'''.stripIndent()
+
 		String jsonText = '''\
 		{
 		  "/": {
@@ -204,24 +207,46 @@ class ValidatorEveritFileSystem
 			println ""
 
 //			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
-			JSONObject rawSchema = new JSONObject(new JSONTokener(fstabCompleteSchema))
+//			Schema schema = SchemaLoader.load(rawSchema)
 
-			println "rawSchema: ${new JsonBuilder(rawSchema.toMap()).toPrettyString()})"
+			JSONObject fstabSchemaRaw = new JSONObject(new JSONTokener(fstabSchemaText))
+			JSONObject entrySchemaRaw = new JSONObject(new JSONTokener(entrySchemaText))
+
+			println "fstabSchemaRaw: ${new JsonBuilder(fstabSchemaRaw.toMap()).toPrettyString()})"
 			println ""
 
-//			Schema schema = SchemaLoader.load(rawSchema)
-			SchemaLoader loader = SchemaLoader.builder()
+			Schema entrySchema = SchemaLoader
+				.builder()
 				.draftV7Support()
-				.schemaJson(rawSchema)
+				.schemaJson(entrySchemaRaw)
+				.build()
+				.load()
 				.build()
 
-			Schema schema = loader.load().build()
+			ReferenceSchema.Builder entryRefBuilder = ReferenceSchema
+				.builder()
+				.refValue("http://example.com/entry-schema-qqq")
 
-			println "schema: $schema"
+			entryRefBuilder.build().setReferredSchema(entrySchema)
+
+			Map<String, ReferenceSchema.Builder>  pointerSchemas = [
+			    "http://example.com/entry-schema-qqq" : entryRefBuilder
+			]
+
+			SchemaLoader fstabLoader = SchemaLoader
+				.builder()
+				.draftV7Support()
+				.pointerSchemas(pointerSchemas)
+				.schemaJson(fstabSchemaRaw)
+				.build()
+
+			Schema fstabSchema = fstabLoader.load().build()
+
+			println "fstabSchema: $fstabSchema"
 			println ""
 
 			try {
-				schema.validate(new JSONObject(jsonText)) // throws a ValidationException if this object is invalid
+				fstabSchema.validate(new JSONObject(jsonText)) // throws a ValidationException if this object is invalid
 			}
 			catch (ValidationException e)
 			{
