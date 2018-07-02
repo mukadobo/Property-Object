@@ -13,6 +13,158 @@ class ValidatorEveritFileSystem
 
 	static void main (String[] args)
 	{
+		String fstabCompleteSchema = '''\
+		{
+		  "$id": "http://example.com/fstab",
+		  "$schema": "http://json-schema.org/draft-07/schema#",
+		  "type": "object",
+		  "required": [ "/" ],
+		  "properties": {
+			"/": { "$ref": "http://example.com/entry-schema-qqq" }
+		  },
+		  "patternProperties": {
+			"^(/[^/]+)+$":  { "$ref": "http://example.com/entry-schema-qqq" }
+		  },
+		  "additionalProperties": false,
+		  "definitions": {
+			"fstab-entry": {
+			  "$id": "http://example.com/entry-schema-qqq",
+			  "description": "JSON Schema for an fstab entry",
+			  "type": "object",
+			  "required": [
+				"storage"
+			  ],
+			  "properties": {
+				"storage": {
+				  "type": "object",
+				  "oneOf": [
+					{
+					  "$ref": "#/definitions/fstab-entry/definitions/diskDevice"
+					},
+					{
+					  "$ref": "#/definitions/fstab-entry/definitions/diskUUID"
+					},
+					{
+					  "$ref": "#/definitions/fstab-entry/definitions/nfs"
+					},
+					{
+					  "$ref": "#/definitions/fstab-entry/definitions/tmpfs"
+					}
+				  ]
+				},
+				"fstype": {
+				  "enum": [
+					"ext3",
+					"ext4",
+					"btrfs"
+				  ]
+				},
+				"options": {
+				  "type": "array",
+				  "minItems": 1,
+				  "items": {
+					"type": "string"
+				  },
+				  "uniqueItems": true
+				},
+				"readonly": {
+				  "type": "boolean"
+				}
+			  },
+			  "definitions": {
+				"diskDevice": {
+				  "properties": {
+					"type": {
+					  "enum": [
+						"disk"
+					  ]
+					},
+					"device": {
+					  "type": "string",
+					  "pattern": "^/dev/[^/]+(/[^/]+)*$"
+					}
+				  },
+				  "required": [
+					"type",
+					"device"
+				  ],
+				  "additionalProperties": false
+				},
+				"diskUUID": {
+				  "properties": {
+					"type": {
+					  "enum": [
+						"disk"
+					  ]
+					},
+					"label": {
+					  "type": "string",
+					  "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+					}
+				  },
+				  "required": [
+					"type",
+					"label"
+				  ],
+				  "additionalProperties": false
+				},
+				"nfs": {
+				  "properties": {
+					"type": {
+					  "enum": [
+						"nfs"
+					  ]
+					},
+					"remotePath": {
+					  "type": "string",
+					  "pattern": "^(/[^/]+)+$"
+					},
+					"server": {
+					  "type": "string",
+					  "oneOf": [
+						{
+						  "format": "hostname"
+						},
+						{
+						  "format": "ipv4"
+						},
+						{
+						  "format": "ipv6"
+						}
+					  ]
+					}
+				  },
+				  "required": [
+					"type",
+					"server",
+					"remotePath"
+				  ],
+				  "additionalProperties": false
+				},
+				"tmpfs": {
+				  "properties": {
+					"type": {
+					  "enum": [
+						"tmpfs"
+					  ]
+					},
+					"sizeInMB": {
+					  "type": "integer",
+					  "minimum": 16,
+					  "maximum": 512
+					}
+				  },
+				  "required": [
+					"type",
+					"sizeInMB"
+				  ],
+				  "additionalProperties": false
+				}
+			  }
+			}
+		  }
+		}
+		'''.stripIndent()
 		String jsonText = '''\
 		{
 		  "/": {
@@ -51,11 +203,20 @@ class ValidatorEveritFileSystem
 			println "productJsonText: $jsonText"
 			println ""
 
-			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
+//			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
+			JSONObject rawSchema = new JSONObject(new JSONTokener(fstabCompleteSchema))
+
 			println "rawSchema: ${new JsonBuilder(rawSchema.toMap()).toPrettyString()})"
 			println ""
 
-			Schema schema = SchemaLoader.load(rawSchema)
+//			Schema schema = SchemaLoader.load(rawSchema)
+			SchemaLoader loader = SchemaLoader.builder()
+				.draftV7Support()
+				.schemaJson(rawSchema)
+				.build()
+
+			Schema schema = loader.load().build()
+
 			println "schema: $schema"
 			println ""
 
