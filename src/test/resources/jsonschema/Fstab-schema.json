@@ -1,0 +1,20 @@
+{
+	"$id": "jsonschema:jsonschema/Fstab-schema.json",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": [
+		"/"
+	],
+	"properties": {
+		"/": {
+			"$ref": "jsonschema:jsonschema/FstabEntry-schema.json"
+		}
+	},
+	"patternProperties": {
+		"^(/[^/]+)+$": {
+			"$ref": "jsonschema:jsonschema/FstabEntry-schema.json"
+		}
+	},
+	"additionalProperties": false
+	,"$HANDLER": { "url" : "sdgsdg:lkj/lkj.qwe" }
+}

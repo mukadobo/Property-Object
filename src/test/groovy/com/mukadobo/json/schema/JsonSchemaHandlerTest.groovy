@@ -24,35 +24,11 @@ class JsonSchemaHandlerTest
 
 		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
 
-		String fstabEntrySchemaId = """jsonschema:jsonschema/FstabEntry-schema.json?src=aaa&src=foo://h:p/p/p?q=q#foobar""" ; """
-			?tag=3.14!6.674.*
-			&variant=2.71
-			&src=@
-			&src=http://google.com/json/jsonschema/foo.json?token=0xbab0face%26foo=bar
-			&src=tiznut
-			""".replaceAll(/\s/, "")
-
 		String fstabRootSchemaJsonText = '''\
 		{
-			"$id": "fstab",
-			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
-			"type": "object",
-			"required": [
-				"/"
-			],
-			"properties": {
-				"/": {
-					"$ref": ''' + "\"${fstabEntrySchemaId}\"" \
-					+ '''
-				}
-			},
-			"patternProperties": {
-				"^(/[^/]+)+$": {
-					"$ref": ''' + "\"${fstabEntrySchemaId}\"" \
-					+ '''
-				}
-			},
-			"additionalProperties": false,
+			"$id": "AD-HOC",
+			"$schema": "http://json-schema.org/draft-07/schema#",
+			"$ref": "jsonschema:jsonschema/Fstab-schema.json"
 		}
 		'''.stripIndent()
 
@@ -104,18 +80,6 @@ class JsonSchemaHandlerTest
 
 		println "fstabRootSchema: $fstabRootSchema"
 		println ""
-
-
-//		SchemaLoader.SchemaLoaderBuilder fstabRootSchemaLoaderBuilder = SchemaLoader
-//				.builder()
-//				.draftV7Support()
-//
-//
-//				.pointerSchema
-//				.schemaJson(fstabRootSchemaJsonDom)
-//				.build()
-//
-//		Schema fstabRootSchema = fstabRootSchemaLoader.load().build()
 
 		try {
 			fstabRootSchema.validate(new JSONObject(sampleFstabJsonText))
