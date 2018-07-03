@@ -14,7 +14,15 @@ class ValidatorEveritFstab
 
 	static void main (String[] args)
 	{
-		String fstabEntrySchemaId = "http://example.com/fstab-entry"
+		String jphpGiven = System.getProperty('java.protocol.handler.pkgs')
+		String jphpPlus  = (jphpGiven ? "$jphpGiven|" : "") + 'com.mukadobo.json.schema'
+
+		System.setProperty('java.protocol.handler.pkgs', jphpPlus)
+
+		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
+
+
+		String fstabEntrySchemaId = "classpath:json/schema/FstabEntry.json"
 
 		String fstabRootSchemaJsonText = '''\
 		{
@@ -42,7 +50,7 @@ class ValidatorEveritFstab
 
 		String fstabEntrySchemaJsonText = '''\
 		{
-			"$id": ''' + "\"${fstabEntrySchemaId}\"" \
+			"$id": ''' + "\"${fstabEntrySchemaId}QQQ\"" \
 			+ ''',
 			"$schema": "http://json-schema.org/draft-07/schema#",
 			"description": "JSON Schema for an fstab entry",
@@ -234,7 +242,7 @@ class ValidatorEveritFstab
 		fstabRefSchemaBuilder.build().setReferredSchema(fstabEntrySchema)
 
 		Map<String, ReferenceSchema.Builder> schemaPointerMap = [
-				(fstabEntrySchemaId) : fstabRefSchemaBuilder,
+				(fstabEntrySchema.getId()) : fstabRefSchemaBuilder,
 		]
 
 		// -----
