@@ -17,12 +17,7 @@ class JsonSchemaHandlerTest
 
 	static void main (String[] args)
 	{
-		String jphpGiven = System.getProperty('java.protocol.handler.pkgs')
-		String jphpPlus  = (jphpGiven ? "$jphpGiven|" : "") + 'com.mukadobo.json.schema'
-
-		System.setProperty('java.protocol.handler.pkgs', jphpPlus)
-
-		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
+		JsonSchemaUrl.registerHandlerPackage()
 
 		String fstabRootSchemaJsonText = '''\
 		{
