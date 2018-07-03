@@ -17,7 +17,7 @@ class ValidatorEveritFileSystem
 		String fstabSchemaText = '''\
 		{
 		  "$id": "http://example.com/fstab",
-		  "$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
+		  "$jsonschema": "http://json-schema.org/draft-07/jsonschema#",
 		  "type": "object",
 		  "required": [ "/" ],
 		  "properties": {

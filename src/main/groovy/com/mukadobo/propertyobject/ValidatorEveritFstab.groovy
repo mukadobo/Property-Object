@@ -22,12 +22,12 @@ class ValidatorEveritFstab
 		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
 
 
-		String fstabEntrySchemaId = "classpath:json-jsonschema/fstab-entry+jsonschema.json"
+		String fstabEntrySchemaId = "classpath:json-schema/fstab-entry+jsonschema.json"
 
 		String fstabRootSchemaJsonText = '''\
 		{
 			"$id": "fstab",
-			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
+			"$jsonschema": "http://json-schema.org/draft-07/jsonschema#",
 			"type": "object",
 			"required": [
 				"/"
@@ -52,7 +52,7 @@ class ValidatorEveritFstab
 		{
 			"$id": ''' + "\"${fstabEntrySchemaId}QQQ\"" \
 			+ ''',
-			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
+			"$jsonschema": "http://json-schema.org/draft-07/jsonschema#",
 			"description": "JSON Schema for an fstab entry",
 			"type": "object",
 			"required": [
