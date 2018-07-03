@@ -22,7 +22,7 @@ class ValidatorEveritFstab
 		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
 
 
-		String fstabEntrySchemaId = "classpath:json/schema/FstabEntry.json"
+		String fstabEntrySchemaId = "classpath:json-schema/fstab-entry+schema.json"
 
 		String fstabRootSchemaJsonText = '''\
 		{
