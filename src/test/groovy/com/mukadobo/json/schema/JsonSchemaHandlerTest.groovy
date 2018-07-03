@@ -24,8 +24,7 @@ class JsonSchemaHandlerTest
 
 		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
 
-
-		String fstabEntrySchemaId = """jsonschema:jsonschema/FstabEntry.json
+		String fstabEntrySchemaId = """jsonschema:jsonschema/FstabEntry-schema.json?src=aaa&src=foo://h:p/p/p?q=q#foobar""" ; """
 			?tag=3.14!6.674.*
 			&variant=2.71
 			&src=@
@@ -54,146 +53,6 @@ class JsonSchemaHandlerTest
 				}
 			},
 			"additionalProperties": false,
-		}
-		'''.stripIndent()
-
-		String fstabEntrySchemaJsonText = '''\
-		{
-			"$id": ''' + "\"${fstabEntrySchemaId}QQQ\"" \
-			+ ''',
-			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
-			"description": "JSON Schema for an fstab entry",
-			"type": "object",
-			"required": [
-				"storage"
-			],
-			"properties": {
-				"storage": {
-					"type": "object",
-					"oneOf": [
-						{
-							"$ref": "#/definitions/diskDevice"
-						},
-						{
-							"$ref": "#/definitions/diskUUID"
-						},
-						{
-							"$ref": "#/definitions/nfs"
-						},
-						{
-							"$ref": "#/definitions/tmpfs"
-						}
-					]
-				},
-				"fstype": {
-					"enum": [
-						"ext3",
-						"ext4",
-						"btrfs"
-					]
-				},
-				"options": {
-					"type": "array",
-					"minItems": 1,
-					"items": {
-						"type": "string"
-					},
-					"uniqueItems": true
-				},
-				"readonly": {
-					"type": "boolean"
-				}
-			},
-			"definitions": {
-				"diskDevice": {
-					"properties": {
-						"type": {
-							"enum": [
-								"disk"
-							]
-						},
-						"device": {
-							"type": "string",
-							"pattern": "^/dev/[^/]+(/[^/]+)*$"
-						}
-					},
-					"required": [
-						"type",
-						"device"
-					],
-					"additionalProperties": false
-				},
-				"diskUUID": {
-					"properties": {
-						"type": {
-							"enum": [
-								"disk"
-							]
-						},
-						"label": {
-							"type": "string",
-							"pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-						}
-					},
-					"required": [
-						"type",
-						"label"
-					],
-					"additionalProperties": false
-				},
-				"nfs": {
-					"properties": {
-						"type": {
-							"enum": [
-								"nfs"
-							]
-						},
-						"remotePath": {
-							"type": "string",
-							"pattern": "^(/[^/]+)+$"
-						},
-						"server": {
-							"type": "string",
-							"oneOf": [
-								{
-									"format": "hostname"
-								},
-								{
-									"format": "ipv4"
-								},
-								{
-									"format": "ipv6"
-								}
-							]
-						}
-					},
-					"required": [
-						"type",
-						"server",
-						"remotePath"
-					],
-					"additionalProperties": false
-				},
-				"tmpfs": {
-					"properties": {
-						"type": {
-							"enum": [
-								"tmpfs"
-							]
-						},
-						"sizeInMB": {
-							"type": "integer",
-							"minimum": 16,
-							"maximum": 512
-						}
-					},
-					"required": [
-						"type",
-						"sizeInMB"
-					],
-					"additionalProperties": false
-				}
-			}
 		}
 		'''.stripIndent()
 
@@ -231,31 +90,6 @@ class JsonSchemaHandlerTest
 		}
 		'''.stripIndent()
 
-//		getClass().getResourceAsStream("/example-fstab+jsonschema.json").withCloseable {
-//			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
-//		}
-
-		JSONObject fstabEntrySchemaJsonDom = new JSONObject(new JSONTokener(fstabEntrySchemaJsonText))
-		println "fstabEntrySchemaJsonDom: ${new JsonBuilder(fstabEntrySchemaJsonDom.toMap()).toPrettyString()}"
-		println ""
-
-		Schema fstabEntrySchema = SchemaLoader.load(fstabEntrySchemaJsonDom)
-
-		println "fstabEntrySchema: $fstabEntrySchema"
-		println ""
-
-		ReferenceSchema.Builder fstabRefSchemaBuilder = ReferenceSchema
-				.builder()
-				.refValue(fstabEntrySchemaId)
-
-		fstabRefSchemaBuilder.build().setReferredSchema(fstabEntrySchema)
-
-		Map<String, ReferenceSchema.Builder> schemaPointerMap = [
-				(fstabEntrySchema.getId()) : fstabRefSchemaBuilder,
-		]
-
-		// -----
-
 		JSONObject fstabRootSchemaJsonDom = new JSONObject(new JSONTokener(fstabRootSchemaJsonText))
 		println "fstabRootSchemaJsonDom: ${new JsonBuilder(fstabRootSchemaJsonDom.toMap()).toPrettyString()}"
 		println ""
@@ -263,7 +97,6 @@ class JsonSchemaHandlerTest
 		SchemaLoader fstabRootSchemaLoader = SchemaLoader
 				.builder()
 				.draftV6Support()
-				.pointerSchemas(schemaPointerMap)
 				.schemaJson(fstabRootSchemaJsonDom)
 				.build()
 

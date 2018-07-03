@@ -1,4 +1,7 @@
 package com.mukadobo.json.schema.jsonschema
+
+import org.json.JSONException
+
 /**
  * Handler for URL based JSON-Schema resource retrieval.
  * <BR><BR>
@@ -95,7 +98,9 @@ class Handler extends URLStreamHandler
 		final String rigor   = "permissive"
 
 		final URL resourceUrl = classLoader.getResource(path)
-		if (resourceUrl == null) throw new IllegalArgumentException("no such resource: $u")
+		if (resourceUrl == null)
+			throw new JSONException("no such resource: $u")
+
 		return resourceUrl.openConnection()
 	}
 }
