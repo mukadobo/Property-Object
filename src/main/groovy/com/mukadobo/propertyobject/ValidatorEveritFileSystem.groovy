@@ -17,14 +17,14 @@ class ValidatorEveritFileSystem
 		String fstabSchemaText = '''\
 		{
 		  "$id": "http://example.com/fstab",
-		  "$schema": "http://json-schema.org/draft-07/schema#",
+		  "$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
 		  "type": "object",
 		  "required": [ "/" ],
 		  "properties": {
-			"/": { "$ref": "http://example.com/entry-schema-qqq" }
+			"/": { "$ref": "http://example.com/entry-jsonschema-qqq" }
 		  },
 		  "patternProperties": {
-			"^(/[^/]+)+$":  { "$ref": "http://example.com/entry-schema-qqq" }
+			"^(/[^/]+)+$":  { "$ref": "http://example.com/entry-jsonschema-qqq" }
 		  },
 		  "additionalProperties": false
 		}
@@ -32,7 +32,7 @@ class ValidatorEveritFileSystem
 
 		String entrySchemaText = '''\
 		{
-		  "$id": "http://example.com/entry-schema-qqq",
+		  "$id": "http://example.com/entry-jsonschema-qqq",
 		  "description": "JSON Schema for an fstab entry",
 		  "type": "object",
 		  "required": [
@@ -202,12 +202,12 @@ class ValidatorEveritFileSystem
 		}
 		'''.stripIndent()
 
-		getClass().getResourceAsStream("/example-fstab+schema.json").withCloseable {
+		getClass().getResourceAsStream("/example-fstab+jsonschema.json").withCloseable {
 			println "productJsonText: $jsonText"
 			println ""
 
 //			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
-//			Schema schema = SchemaLoader.load(rawSchema)
+//			Schema jsonschema = SchemaLoader.load(rawSchema)
 
 			JSONObject fstabSchemaRaw = new JSONObject(new JSONTokener(fstabSchemaText))
 			JSONObject entrySchemaRaw = new JSONObject(new JSONTokener(entrySchemaText))
@@ -225,12 +225,12 @@ class ValidatorEveritFileSystem
 
 			ReferenceSchema.Builder entryRefBuilder = ReferenceSchema
 				.builder()
-				.refValue("http://example.com/entry-schema-qqq")
+				.refValue("http://example.com/entry-jsonschema-qqq")
 
 			entryRefBuilder.build().setReferredSchema(entrySchema)
 
 			Map<String, ReferenceSchema.Builder>  pointerSchemas = [
-			    "http://example.com/entry-schema-qqq" : entryRefBuilder
+			    "http://example.com/entry-jsonschema-qqq" : entryRefBuilder
 			]
 
 			SchemaLoader fstabLoader = SchemaLoader

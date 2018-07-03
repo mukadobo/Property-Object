@@ -30,7 +30,7 @@ package com.mukadobo.json.schema.jsonschema
  * may be left unencoded. This allows for more human-readable embedded URL's.
  * <BR><BR>
  * </LI>
- * <LI><B>variant=VERSION </B>(Default = "0") : The version of the schema handler itself.
+ * <LI><B>variant=VERSION </B>(Default = "0") : The version of the jsonschema handler itself.
  * When provided, the handler must verify this value and behave as per the
  * processing specifications as of the given version. If the variant is not
  * supported, then an exception MUST BE thrown.

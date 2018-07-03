@@ -15,19 +15,19 @@ class ValidatorEveritFstab
 	static void main (String[] args)
 	{
 		String jphpGiven = System.getProperty('java.protocol.handler.pkgs')
-		String jphpPlus  = (jphpGiven ? "$jphpGiven|" : "") + 'com.mukadobo.json.schema'
+		String jphpPlus  = (jphpGiven ? "$jphpGiven|" : "") + 'com.mukadobo.json.jsonschema'
 
 		System.setProperty('java.protocol.handler.pkgs', jphpPlus)
 
 		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
 
 
-		String fstabEntrySchemaId = "classpath:json-schema/fstab-entry+schema.json"
+		String fstabEntrySchemaId = "classpath:json-jsonschema/fstab-entry+jsonschema.json"
 
 		String fstabRootSchemaJsonText = '''\
 		{
 			"$id": "fstab",
-			"$schema": "http://json-schema.org/draft-07/schema#",
+			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
 			"type": "object",
 			"required": [
 				"/"
@@ -52,7 +52,7 @@ class ValidatorEveritFstab
 		{
 			"$id": ''' + "\"${fstabEntrySchemaId}QQQ\"" \
 			+ ''',
-			"$schema": "http://json-schema.org/draft-07/schema#",
+			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
 			"description": "JSON Schema for an fstab entry",
 			"type": "object",
 			"required": [
@@ -222,7 +222,7 @@ class ValidatorEveritFstab
 		}
 		'''.stripIndent()
 
-//		getClass().getResourceAsStream("/example-fstab+schema.json").withCloseable {
+//		getClass().getResourceAsStream("/example-fstab+jsonschema.json").withCloseable {
 //			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
 //		}
 

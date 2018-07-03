@@ -25,18 +25,18 @@ class JsonSchemaHandlerTest
 		println "System.getProperty('java.protocol.handler.pkgs') = ${System.getProperty('java.protocol.handler.pkgs')}"
 
 
-		String fstabEntrySchemaId = """jsonschema:jsonschema/fstab-entry+schema.json
+		String fstabEntrySchemaId = """jsonschema:jsonschema/FstabEntry.json
 			?tag=3.14!6.674.*
 			&variant=2.71
 			&src=@
-			&src=http://google.com/json/schema/foo.json?token=0xbab0face%26foo=bar
+			&src=http://google.com/json/jsonschema/foo.json?token=0xbab0face%26foo=bar
 			&src=tiznut
 			""".replaceAll(/\s/, "")
 
 		String fstabRootSchemaJsonText = '''\
 		{
 			"$id": "fstab",
-			"$schema": "http://json-schema.org/draft-07/schema#",
+			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
 			"type": "object",
 			"required": [
 				"/"
@@ -61,7 +61,7 @@ class JsonSchemaHandlerTest
 		{
 			"$id": ''' + "\"${fstabEntrySchemaId}QQQ\"" \
 			+ ''',
-			"$schema": "http://json-schema.org/draft-07/schema#",
+			"$jsonschema": "http://json-jsonschema.org/draft-07/jsonschema#",
 			"description": "JSON Schema for an fstab entry",
 			"type": "object",
 			"required": [
@@ -231,7 +231,7 @@ class JsonSchemaHandlerTest
 		}
 		'''.stripIndent()
 
-//		getClass().getResourceAsStream("/example-fstab+schema.json").withCloseable {
+//		getClass().getResourceAsStream("/example-fstab+jsonschema.json").withCloseable {
 //			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
 //		}
 

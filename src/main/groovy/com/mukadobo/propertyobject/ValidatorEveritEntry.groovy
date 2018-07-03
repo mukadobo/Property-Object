@@ -19,7 +19,7 @@ class ValidatorEveritEntry
 			}
 		}
 		'''.stripIndent()
-		getClass().getResourceAsStream("/example-entry+schema.json").withCloseable {
+		getClass().getResourceAsStream("/example-entry+jsonschema.json").withCloseable {
 			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
 			Schema schema = SchemaLoader.load(rawSchema)
 
@@ -27,7 +27,7 @@ class ValidatorEveritEntry
 			println ""
 			println "rawSchema: ${new JsonBuilder(rawSchema.toMap()).toPrettyString()})"
 			println ""
-			println "schema: $schema"
+			println "jsonschema: $schema"
 			println ""
 
 			try {

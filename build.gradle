@@ -28,7 +28,7 @@ repositories {
 	}
 }
 
-String noWhite(String text) { text.replaceAll(/\s*/, "") }
+static String noWhite(String text) { text.replaceAll(/\s*/, "") }
 
 dependencies {
 	compile     noWhite('com.github.everit-org.json-schema  : org.everit.json.schema      : 1.9.1')

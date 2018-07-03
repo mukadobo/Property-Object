@@ -18,7 +18,7 @@ class ValidatorEveritProduct
 		  "tags": [ "home", "green" ]
 		}
 		'''.stripIndent()
-		getClass().getResourceAsStream("/example-product+schema.json").withCloseable {
+		getClass().getResourceAsStream("/example-product+jsonschema.json").withCloseable {
 			JSONObject rawSchema = new JSONObject(new JSONTokener(it))
 			Schema schema = SchemaLoader.load(rawSchema)
 
@@ -26,7 +26,7 @@ class ValidatorEveritProduct
 			println ""
 			println "rawSchema: ${new JsonBuilder(rawSchema.toMap()).toPrettyString()})"
 			println ""
-			println "schema: $schema"
+			println "jsonschema: $schema"
 			println ""
 
 			schema.validate(new JSONObject(productJsonText)) // throws a ValidationException if this object is invalid
