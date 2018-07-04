@@ -5,7 +5,6 @@ import org.apache.commons.io.IOUtils
 import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.ReferenceSchema
 import org.everit.json.schema.Schema
-import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -98,30 +97,9 @@ class JsonSchemaHandlerTest extends Specification
 	{
 		setup:
 
-			String fstabSchemaUrl = JsonSchemaUrl.toUrlText(Fstab.class)
-
-			String referringSchemaJsonText = '''\
-			{
-				"$id": "AD-HOC",
-				"$schema": "http://json-schema.org/draft-07/schema#",
-				"$ref": "''' + fstabSchemaUrl + '''"
-			}
-			'''.stripIndent()
-
-			JSONObject referringSchemaJsonDom = new JSONObject(new JSONTokener(referringSchemaJsonText))
-			println "referringSchemaJsonDom: ${new JsonBuilder(referringSchemaJsonDom.toMap()).toPrettyString()}"
-			println ""
-
-			SchemaLoader referringSchemaLoader = SchemaLoader
-				.builder()
-				.draftV6Support()
-				.schemaJson(referringSchemaJsonDom)
-				.build()
-
-			ReferenceSchema referringSchema = (ReferenceSchema) referringSchemaLoader.load().build()
-			ObjectSchema    fstabRootSchema = (ObjectSchema   ) referringSchema.getReferredSchema()
-
+			ObjectSchema        fstabRootSchema = JsonSchemaUrl.loadSchema(Fstab.class)
 			Map<String, Schema> propertySchemas = fstabRootSchema.getPropertySchemas()
+
 
 		expect:
 
