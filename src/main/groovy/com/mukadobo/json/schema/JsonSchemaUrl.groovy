@@ -35,7 +35,7 @@ class JsonSchemaUrl
 			.replaceAll(/[$]/, ".")
 
 
-		String path = "${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}" + QQQ
+		String path = "${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}" + RESOURCE_FILE_SUFFIX
 			.replaceFirst('^/+', "")
 
 		"$SCHEME:$path"
