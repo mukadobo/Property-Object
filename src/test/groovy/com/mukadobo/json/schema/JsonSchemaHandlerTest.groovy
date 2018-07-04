@@ -1,100 +1,133 @@
 package com.mukadobo.json.schema
 
 import groovy.json.JsonBuilder
+import org.apache.commons.io.IOUtils
+import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.ReferenceSchema
 import org.everit.json.schema.Schema
 import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
 import org.json.JSONObject
 import org.json.JSONTokener
+import spock.lang.Specification
 
 /**
  *
  */
-class JsonSchemaHandlerTest
+class JsonSchemaHandlerTest extends Specification
 {
-	// c.f. http://json-schema.org/learn/file-system.html
-
-	static void main (String[] args)
+	def setupSpec()
 	{
 		JsonSchemaUrl.registerHandlerPackage()
+	}
 
-		String fstabRootSchemaJsonText = '''\
-		{
-			"$id": "AD-HOC",
-			"$schema": "http://json-schema.org/draft-07/schema#",
-			"$ref": "jsonschema:jsonschema/Fstab-schema.json"
-		}
-		'''.stripIndent()
+	def "Class-based JSON-Schema URL ~ all args"()
+	{
+		expect:
+			JsonSchemaUrl.toUrlText(refClass, canonical, prefix).toString() == urlText
 
-		String sampleFstabJsonText = '''\
-		{
-			"/": {
-				"storage": {
-					"type": "disk",
-					"device": "/dev/sda1"
-				},
-				"fstype": "btrfs",
-				"readonly": true
-			},
-			"/var": {
-				"storage": {
-					"type": "disk",
-					"label": "8f3ba6f4-5c70-46ec-83af-0d5434953e5f"
-				},
-				"fstype": "ext4",
-				"options": [ "nosuid" ]
-			},
-			"/tmp": {
-				"storage": {
-					"type": "tmpfs",
-					"sizeInMB": 64
-				}
-			},
-			"/var/www": {
-				"storage": {
-					"type": "nfs",
-					"server": "my.nfs.server",
-					"remotePath": "/exports/my-path"
-				}
+		where:
+			refClass    | canonical | prefix | urlText
+			Outer.class | true      | null   | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
+			Outer.class | false     | null   | 'jsonschema:Outer-schema.json'
+			Outer.class | false     | ""     | 'jsonschema:Outer-schema.json'
+			Outer.class | false     | 'pfx'  | 'jsonschema:pfx/Outer-schema.json'
+			Outer.class | false     | '/pfx' | 'jsonschema:pfx/Outer-schema.json'
+	}
+
+	def "Class-based JSON-Schema URL ~ default: prefix"()
+	{
+		expect:
+			JsonSchemaUrl.toUrlText(refClass, canonical).toString() == urlText
+
+		where:
+			refClass    | canonical | urlText
+			Outer.class | true      | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
+			Outer.class | false     | 'jsonschema:jsonschema/Outer-schema.json'
+	}
+
+	def "Class-based JSON-Schema URL ~ default: canonical"()
+	{
+		expect:
+			JsonSchemaUrl.toUrlText(refClass, canonical).toString() == urlText
+
+		where:
+			refClass                  | canonical | urlText
+			Outer              .class | false     | 'jsonschema:jsonschema/Outer-schema.json'
+			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
+	}
+
+	def "Class-based JSON-Schema URL ~ default: nested classes"()
+	{
+		expect:
+			JsonSchemaUrl.toUrlText(refClass, canonical).toString() == urlText
+
+		where:
+			refClass                  | canonical | urlText
+			Outer              .class | false     | 'jsonschema:jsonschema/Outer-schema.json'
+			Outer.Static       .class | false     | 'jsonschema:jsonschema/Outer.Static-schema.json'
+			Outer.Inner        .class | false     | 'jsonschema:jsonschema/Outer.Inner-schema.json'
+			Outer.Inner.Static .class | false     | 'jsonschema:jsonschema/Outer.Inner.Static-schema.json'
+			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
+			Outer.Static       .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Static-schema.json'
+			Outer.Inner        .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner-schema.json'
+			Outer.Inner.Static .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner.Static-schema.json'
+	}
+
+	def "Handler ~ getContent()"()
+	{
+		when:
+			InputStream urlStream = (InputStream) JsonSchemaUrl.toUrl(refClass).getContent()
+
+		then:
+			urlStream != null
+
+		when:
+			String urlData = IOUtils.toString(urlStream, "UTF-8")
+
+		then:
+			urlData == expectedData
+
+		where:
+			refClass                  | expectedData
+			EmptyResource      .class | ''
+			SimpleResource     .class | '{"test":"SimpleResource"}'
+	}
+
+	def "Load schema from classpath - URL variant 0"()
+	{
+		setup:
+
+			String fstabSchemaUrl = JsonSchemaUrl.toUrlText(Fstab.class)
+
+			String referringSchemaJsonText = '''\
+			{
+				"$id": "AD-HOC",
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"$ref": "''' + fstabSchemaUrl + '''"
 			}
-		}
-		'''.stripIndent()
+			'''.stripIndent()
 
-		JSONObject fstabRootSchemaJsonDom = new JSONObject(new JSONTokener(fstabRootSchemaJsonText))
-		println "fstabRootSchemaJsonDom: ${new JsonBuilder(fstabRootSchemaJsonDom.toMap()).toPrettyString()}"
-		println ""
+			JSONObject referringSchemaJsonDom = new JSONObject(new JSONTokener(referringSchemaJsonText))
+			println "referringSchemaJsonDom: ${new JsonBuilder(referringSchemaJsonDom.toMap()).toPrettyString()}"
+			println ""
 
-		SchemaLoader fstabRootSchemaLoader = SchemaLoader
+			SchemaLoader referringSchemaLoader = SchemaLoader
 				.builder()
 				.draftV6Support()
-				.schemaJson(fstabRootSchemaJsonDom)
+				.schemaJson(referringSchemaJsonDom)
 				.build()
 
-		Schema fstabRootSchema = fstabRootSchemaLoader.load().build() as Schema
+			ReferenceSchema referringSchema = (ReferenceSchema) referringSchemaLoader.load().build()
+			ObjectSchema    fstabRootSchema = (ObjectSchema   ) referringSchema.getReferredSchema()
 
-		println "fstabRootSchema: $fstabRootSchema"
-		println ""
+			Map<String, Schema> propertySchemas = fstabRootSchema.getPropertySchemas()
 
-		try {
-			fstabRootSchema.validate(new JSONObject(sampleFstabJsonText))
-		}
-		catch (ValidationException e)
-		{
-			System.err.println(e.getMessage())
+		expect:
 
-			if (! e.causingExceptions.isEmpty()) {
-				int limit = 3
-
-				if (e.causingExceptions.size() > limit)
-					System.err.println "  (only showing first 3 violations)"
-
-				e.getCausingExceptions().stream().limit(limit).each {
-					System.err.println "  " + it.getMessage()
-				}
-			}
-
-			System.err.println ""
-		}
+			fstabRootSchema.getId() == 'jsonschema:jsonschema/Fstab-schema.json'
+			propertySchemas != null
+			propertySchemas.size() == 1
+			propertySchemas.entrySet().first().getValue().getReferredSchema().getId() == "http://example.com/entry-schema"
 	}
 }
