@@ -41,7 +41,7 @@ class JsonSchemaUrl
 			.replaceAll(/[$]/, ".")
 
 
-		String path = "${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}" + RESOURCE_FILE_SUFFIX
+		String path = ("${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}" + RESOURCE_FILE_SUFFIX)
 			.replaceFirst('^/+', "")
 
 		"$SCHEME:$path"
@@ -56,7 +56,7 @@ class JsonSchemaUrl
 
 	static ObjectSchema loadSchema(Class classRef, Boolean canonical = true, String prefix = JsonSchemaUrl.DEFAULT_PATH_PREFIX)
 	{
-		String url = JsonSchemaUrl.toUrlText(classRef, canonical, prefix)
+		String url = toUrlText(classRef, canonical, prefix)
 
 		String referringSchemaJsonText = '''\
 			{
