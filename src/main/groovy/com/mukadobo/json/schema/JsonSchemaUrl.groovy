@@ -2,8 +2,9 @@ package com.mukadobo.json.schema
 
 class JsonSchemaUrl
 {
-	static final String SCHEME              = "jsonschema"
-	static final String DEFAULT_PATH_PREFIX = "jsonschema"
+	static final String SCHEME               = "jsonschema"
+	static final String DEFAULT_PATH_PREFIX  = "jsonschema"
+	static final String RESOURCE_FILE_SUFFIX = "-schema.json"
 
 	/**
 	 * Modify the system property {@code java.protocol.handler.pkgs} to include
@@ -34,7 +35,7 @@ class JsonSchemaUrl
 			.replaceAll(/[$]/, ".")
 
 
-		String path = "${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}-schema.json"
+		String path = "${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}" + QQQ
 			.replaceFirst('^/+', "")
 
 		"$SCHEME:$path"
