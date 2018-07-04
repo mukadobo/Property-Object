@@ -33,6 +33,8 @@ static String noWhite(String text) { text.replaceAll(/\s*/, "") }
 dependencies {
 	compile     noWhite('com.github.everit-org.json-schema  : org.everit.json.schema      : 1.9.1')
 	compile     noWhite('com.openshift                      : openshift-restclient-java   : 6.1.0.Final')
+	compile     noWhite('commons-io                         : commons-io                  : 2.6')
+	compile     noWhite('org.apache.commons                 : commons-lang3               : 3.0')
     compile     noWhite('org.codehaus.groovy                : groovy-all                  : 2.4.15')
     compile     noWhite('org.jboss                          : jboss-dmr                   : 1.3.0.Final')
     compile     noWhite("org.jetbrains.kotlin               : kotlin-stdlib-jdk8          : $kotlin_version")
