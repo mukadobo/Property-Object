@@ -2,7 +2,8 @@ package com.mukadobo.json.schema
 
 class JsonSchemaUrl
 {
-	static final SCHEME = "jsonschema"
+	static final String SCHEME              = "jsonschema"
+	static final String DEFAULT_PATH_PREFIX = "jsonschema"
 
 	/**
 	 * Modify the system property {@code java.protocol.handler.pkgs} to include
@@ -23,7 +24,7 @@ class JsonSchemaUrl
 	/**
 	 *
 	 */
-	static String toUrlText(Class classRef, Boolean canonical = true, String prefix = "jsonschema")
+	static String toUrlText(Class classRef, Boolean canonical = true, String prefix = DEFAULT_PATH_PREFIX)
 	{
 		String classPathPart = (canonical
 				? classRef.getName()
@@ -39,7 +40,7 @@ class JsonSchemaUrl
 		"$SCHEME:$path"
 	}
 
-	static URL toUrl(Class classRef, Boolean canonical = true, String prefix = "jsonschema")
+	static URL toUrl(Class classRef, Boolean canonical = true, String prefix = DEFAULT_PATH_PREFIX)
 	{
 		String urlText = toUrlText(classRef, canonical, prefix)
 
