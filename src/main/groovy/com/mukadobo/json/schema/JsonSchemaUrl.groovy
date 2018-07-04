@@ -8,10 +8,11 @@ import org.json.JSONTokener
 
 class JsonSchemaUrl
 {
-	static final String SCHEME               = "jsonschema"
-	static final String DEFAULT_PATH_PREFIX  = "jsonschema"
-	static final String RESOURCE_FILE_SUFFIX = "-schema.json"
-
+	static final String  SCHEME                  = "jsonschema"
+	static final String  DEFAULT_PATH_PREFIX     = "jsonschema"
+	static final Boolean DEFAULT_CLASS_CANONICAL = true
+	static final String  RESOURCE_FILE_SUFFIX    = "-schema.json"
+	
 	/**
 	 * Modify the system property {@code java.protocol.handler.pkgs} to include
 	 * the package which provides {@code **.jsonschema.Handler}.
@@ -31,7 +32,11 @@ class JsonSchemaUrl
 	/**
 	 *
 	 */
-	static String toUrlText(Class classRef, Boolean canonical = true, String prefix = DEFAULT_PATH_PREFIX)
+	static String toUrlText(
+		Class   classRef,
+		Boolean canonical = DEFAULT_CLASS_CANONICAL,
+		String  prefix    = DEFAULT_PATH_PREFIX
+	)
 	{
 		String classPathPart = (canonical
 				? classRef.getName()
@@ -46,15 +51,22 @@ class JsonSchemaUrl
 
 		"$SCHEME:$path"
 	}
-
-	static URL toUrl(Class classRef, Boolean canonical = true, String prefix = DEFAULT_PATH_PREFIX)
+	
+	static URL toUrl(
+		Class classRef,
+		Boolean canonical = true,
+		String prefix = DEFAULT_PATH_PREFIX)
 	{
 		String urlText = toUrlText(classRef, canonical, prefix)
 
 		new URL(urlText)
 	}
-
-	static ObjectSchema loadSchema(Class classRef, Boolean canonical = true, String prefix = JsonSchemaUrl.DEFAULT_PATH_PREFIX)
+	
+	static ObjectSchema loadSchema(
+		Class   classRef,
+		Boolean canonical = DEFAULT_CLASS_CANONICAL,
+		String  prefix    = DEFAULT_PATH_PREFIX
+	)
 	{
 		String url = toUrlText(classRef, canonical, prefix)
 
