@@ -10,7 +10,7 @@ import spock.lang.Specification
  */
 class JsonSchemaUrlTest extends Specification
 {
-	def "Class-based JSON-Schema URL ~ all args"()
+	def "toUrlText ~ all args"()
 	{
 		expect:
 			JsonSchemaUrl.toUrlText(refClass, canonical, prefix).toString() == urlText
@@ -24,7 +24,7 @@ class JsonSchemaUrlTest extends Specification
 			Outer.class | false     | '/pfx' | 'jsonschema:pfx/Outer'
 	}
 
-	def "Class-based JSON-Schema URL ~ default: prefix"()
+	def "toUrlText ~ default: prefix"()
 	{
 		expect:
 			JsonSchemaUrl.toUrlText(refClass, canonical).toString() == urlText
@@ -35,7 +35,7 @@ class JsonSchemaUrlTest extends Specification
 			Outer.class | false     | 'jsonschema:jsonschema/Outer'
 	}
 
-	def "Class-based JSON-Schema URL ~ default: canonical"()
+	def "toUrlText ~ default: canonical"()
 	{
 		expect:
 			JsonSchemaUrl.toUrlText(refClass, canonical).toString() == urlText
@@ -46,7 +46,7 @@ class JsonSchemaUrlTest extends Specification
 			Outer              .class | true      | 'jsonschema:com.mukadobo.json.schema.Outer'
 	}
 
-	def "Class-based JSON-Schema URL ~ default: nested classes"()
+	def "toUrlText ~ default: nested classes"()
 	{
 		expect:
 			JsonSchemaUrl.toUrlText(refClass, canonical).toString() == urlText

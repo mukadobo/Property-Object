@@ -10,7 +10,7 @@ import spock.lang.Specification
  */
 class JsonSchemaHandlerTest extends Specification
 {
-	def "Handler ~ getContent()"()
+	def "getContent"()
 	{
 		when:
 			InputStream urlStream = (InputStream) JsonSchemaUrl.toUrl(refClass).getContent()
@@ -30,7 +30,7 @@ class JsonSchemaHandlerTest extends Specification
 			SimpleResource     .class | '{"test":"SimpleResource"}'
 	}
 
-	def "Load schema from classpath - URL variant 0"()
+	def "Use by JSON Schema loader"()
 	{
 		setup:
 
