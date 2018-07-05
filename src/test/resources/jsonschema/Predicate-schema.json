@@ -1,0 +1,24 @@
+{
+	"$id": "jsonschema:jsonschema/Predicate",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": [
+		"kind",
+		"version",
+
+		"verb"
+	],
+	"properties": {
+		"kind": {
+			"type": "string"
+		},
+		"version": {
+			"type": "string"
+		},
+
+		"verb": {
+			"type": "string"
+		}
+	},
+	"additionalProperties": false
+}

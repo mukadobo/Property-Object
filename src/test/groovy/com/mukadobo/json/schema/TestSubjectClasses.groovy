@@ -23,3 +23,6 @@ class SimpleResource {}
 
 class Fstab {}
 
+class Command   {}
+class Subject   {}
+class Predicate {}

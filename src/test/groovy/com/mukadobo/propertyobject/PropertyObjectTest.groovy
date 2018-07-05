@@ -1,5 +1,11 @@
 package com.mukadobo.propertyobject
 
+import com.mukadobo.json.schema.Command
+import com.mukadobo.json.schema.JsonSchemaUrl
+import org.everit.json.schema.ObjectSchema
+import org.everit.json.schema.ValidationException
+import org.json.JSONObject
+import org.json.JSONTokener
 import spock.lang.Specification
 
 class PropertyObjectTest extends Specification
@@ -84,4 +90,54 @@ class PropertyObjectTest extends Specification
 			'{a0: {a1: A1}, b0:{b1: B1}}'  | '{"a0" : {"a1" : "A1"}, "b0" : {"b1" : "B1"}}'
 	}
 
+	def "Base properties (eg. kind, version)"()
+	{
+		setup:
+			
+			String commandJsonText = '''\
+			{
+				"kind"      : "Command",
+				"version"   : "0.1.0",
+				
+				"verbosity" : "HIGH",
+				"dryrun"    : true,
+				
+				"payload"   : {
+					"subject" : {
+						"kind"    : "Subject",
+						"version" : " 0 . 02 . 00 . 0",
+						
+						"selector" : {
+							"scheme" : "https",
+							"server" : "example.com",
+							"port"   : "80"
+						}
+					},
+					"predicate" : {
+						"kind"    : "Predicate",
+						"version" : "0",
+						
+						"verb"    : "report"
+					}
+				}
+			}
+			'''.stripIndent()
+		
+		when:
+			
+			JSONObject commandJsonDom = new JSONObject(new JSONTokener(commandJsonText))
+			
+			ObjectSchema commandSchema = JsonSchemaUrl.loadSchema(Command.class, false)
+		
+		then:
+			
+			try {
+				commandSchema.validate(commandJsonDom)
+			}
+			catch (ValidationException e)
+			{
+				throw new RuntimeException("schema validation error: schema.id='${commandSchema.getId()}':\n${e.toJSON().toString(2)}", e)
+			}
+	}
+	
 }
