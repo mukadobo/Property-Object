@@ -39,7 +39,6 @@ class JsonSchemaUrl
 				? classRef.getName()
 				: classRef.getName().replaceFirst(/^.*[.]/, "")
 			)
-			.replaceAll(/[.]/, "/")
 			.replaceAll(/[$]/, ".")
 
 

@@ -90,7 +90,7 @@ class Handler extends URLStreamHandler
 	@Override
 	protected URLConnection openConnection(URL u) throws IOException
 	{
-		final String path    = u.getPath() + RESOURCE_FILE_SUFFIX
+		final String path    = u.getPath().replaceAll(/[.]/, "/") + RESOURCE_FILE_SUFFIX
 
 		// the "as-if" param values presumed by this handler variant
 

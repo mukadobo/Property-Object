@@ -17,7 +17,7 @@ class JsonSchemaHandlerTest extends Specification
 
 		where:
 			refClass    | canonical | prefix | urlText
-			Outer.class | true      | null   | 'jsonschema:com/mukadobo/json/schema/Outer'
+			Outer.class | true      | null   | 'jsonschema:com.mukadobo.json.schema.Outer'
 			Outer.class | false     | null   | 'jsonschema:Outer'
 			Outer.class | false     | ""     | 'jsonschema:Outer'
 			Outer.class | false     | 'pfx'  | 'jsonschema:pfx/Outer'
@@ -31,7 +31,7 @@ class JsonSchemaHandlerTest extends Specification
 
 		where:
 			refClass    | canonical | urlText
-			Outer.class | true      | 'jsonschema:com/mukadobo/json/schema/Outer'
+			Outer.class | true      | 'jsonschema:com.mukadobo.json.schema.Outer'
 			Outer.class | false     | 'jsonschema:jsonschema/Outer'
 	}
 
@@ -43,7 +43,7 @@ class JsonSchemaHandlerTest extends Specification
 		where:
 			refClass                  | canonical | urlText
 			Outer              .class | false     | 'jsonschema:jsonschema/Outer'
-			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer'
+			Outer              .class | true      | 'jsonschema:com.mukadobo.json.schema.Outer'
 	}
 
 	def "Class-based JSON-Schema URL ~ default: nested classes"()
@@ -57,10 +57,10 @@ class JsonSchemaHandlerTest extends Specification
 			Outer.Static       .class | false     | 'jsonschema:jsonschema/Outer.Static'
 			Outer.Inner        .class | false     | 'jsonschema:jsonschema/Outer.Inner'
 			Outer.Inner.Static .class | false     | 'jsonschema:jsonschema/Outer.Inner.Static'
-			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer'
-			Outer.Static       .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Static'
-			Outer.Inner        .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner'
-			Outer.Inner.Static .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner.Static'
+			Outer              .class | true      | 'jsonschema:com.mukadobo.json.schema.Outer'
+			Outer.Static       .class | true      | 'jsonschema:com.mukadobo.json.schema.Outer.Static'
+			Outer.Inner        .class | true      | 'jsonschema:com.mukadobo.json.schema.Outer.Inner'
+			Outer.Inner.Static .class | true      | 'jsonschema:com.mukadobo.json.schema.Outer.Inner.Static'
 	}
 
 	def "Handler ~ getContent()"()
