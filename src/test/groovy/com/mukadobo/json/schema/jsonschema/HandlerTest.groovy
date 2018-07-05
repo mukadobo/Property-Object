@@ -2,6 +2,7 @@ package com.mukadobo.json.schema.jsonschema
 
 import com.mukadobo.json.schema.EmptyResource
 import com.mukadobo.json.schema.Fstab
+import com.mukadobo.json.schema.JsonSchema
 import com.mukadobo.json.schema.JsonSchemaUrl
 import com.mukadobo.json.schema.SimpleResource
 import org.apache.commons.io.IOUtils
@@ -34,19 +35,19 @@ class HandlerTest extends Specification
 			SimpleResource.class | '{"test":"SimpleResource"}'
 	}
 
-	def "Use by JSON Schema loader"()
+	def "Indirect Use via JsonSchema loading"()
 	{
 		setup:
 
-			ObjectSchema        fstabRootSchema = JsonSchemaUrl.loadSchema(Fstab.class)
-			Map<String, Schema> propertySchemas = fstabRootSchema.getPropertySchemas()
-
+			JsonSchema          topSchema  = new JsonSchema(Fstab.class)
+			Map<String, Schema> subSchemas = topSchema.getPropertySchemas()
 
 		expect:
-
-			fstabRootSchema.getId() == 'jsonschema:jsonschema/Fstab'
-			propertySchemas != null
-			propertySchemas.size() == 1
-			propertySchemas.entrySet().first().getValue().getReferredSchema().getId() == "http://example.com/entry-schema"
+			
+			topSchema.getId() == 'jsonschema:jsonschema/Fstab'
+		
+			subSchemas != null
+			subSchemas.size() == 1
+			subSchemas.entrySet().first().getValue().getReferredSchema().getId() == "http://example.com/entry-schema"
 	}
 }
