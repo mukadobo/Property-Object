@@ -1,5 +1,9 @@
-package com.mukadobo.json.schema
+package com.mukadobo.json.schema.jsonschema
 
+import com.mukadobo.json.schema.EmptyResource
+import com.mukadobo.json.schema.Fstab
+import com.mukadobo.json.schema.JsonSchemaUrl
+import com.mukadobo.json.schema.SimpleResource
 import org.apache.commons.io.IOUtils
 import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.Schema
@@ -8,7 +12,7 @@ import spock.lang.Specification
 /**
  *
  */
-class JsonSchemaHandlerTest extends Specification
+class HandlerTest extends Specification
 {
 	def "getContent"()
 	{
@@ -25,9 +29,9 @@ class JsonSchemaHandlerTest extends Specification
 			urlData == expectedData
 
 		where:
-			refClass                  | expectedData
-			EmptyResource      .class | ''
-			SimpleResource     .class | '{"test":"SimpleResource"}'
+			refClass             | expectedData
+			EmptyResource.class  | ''
+			SimpleResource.class | '{"test":"SimpleResource"}'
 	}
 
 	def "Use by JSON Schema loader"()
