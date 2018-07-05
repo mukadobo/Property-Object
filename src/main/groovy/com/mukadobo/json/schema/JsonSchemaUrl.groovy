@@ -1,5 +1,6 @@
 package com.mukadobo.json.schema
 
+import com.mukadobo.json.schema.jsonschema.Handler
 import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.ReferenceSchema
 import org.everit.json.schema.loader.SchemaLoader
@@ -11,7 +12,7 @@ class JsonSchemaUrl
 	static final String  SCHEME                  = "jsonschema"
 	static final String  DEFAULT_PATH_PREFIX     = "jsonschema"
 	static final Boolean DEFAULT_CLASS_CANONICAL = true
-	static final String  RESOURCE_FILE_SUFFIX    = "-schema.json"
+	static final String  RESOURCE_FILE_SUFFIX    = Handler.RESOURCE_FILE_SUFFIX
 	
 	/**
 	 * Modify the system property {@code java.protocol.handler.pkgs} to include
@@ -42,7 +43,7 @@ class JsonSchemaUrl
 			.replaceAll(/[$]/, ".")
 
 
-		String path = ("${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}" + RESOURCE_FILE_SUFFIX)
+		String path = ("${(!canonical && prefix) ? (prefix + '/') : ''}${classPathPart}")
 			.replaceFirst('^/+', "")
 
 		"$SCHEME:$path"

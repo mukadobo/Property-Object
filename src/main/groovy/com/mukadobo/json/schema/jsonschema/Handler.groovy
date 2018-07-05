@@ -74,6 +74,8 @@ import org.json.JSONException
  **/
 class Handler extends URLStreamHandler
 {
+	static final String  RESOURCE_FILE_SUFFIX    = "-schema.json"
+
 	/** The classloader to find resources from. */
 	private final ClassLoader classLoader
 
@@ -88,7 +90,7 @@ class Handler extends URLStreamHandler
 	@Override
 	protected URLConnection openConnection(URL u) throws IOException
 	{
-		final String path    = u.getPath()
+		final String path    = u.getPath() + RESOURCE_FILE_SUFFIX
 
 		// the "as-if" param values presumed by this handler variant
 

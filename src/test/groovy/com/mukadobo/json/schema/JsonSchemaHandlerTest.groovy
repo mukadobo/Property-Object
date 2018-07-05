@@ -1,13 +1,8 @@
 package com.mukadobo.json.schema
 
-import groovy.json.JsonBuilder
 import org.apache.commons.io.IOUtils
 import org.everit.json.schema.ObjectSchema
-import org.everit.json.schema.ReferenceSchema
 import org.everit.json.schema.Schema
-import org.everit.json.schema.loader.SchemaLoader
-import org.json.JSONObject
-import org.json.JSONTokener
 import spock.lang.Specification
 
 /**
@@ -15,11 +10,6 @@ import spock.lang.Specification
  */
 class JsonSchemaHandlerTest extends Specification
 {
-	def setupSpec()
-	{
-		JsonSchemaUrl.registerHandlerPackage()
-	}
-
 	def "Class-based JSON-Schema URL ~ all args"()
 	{
 		expect:
@@ -27,11 +17,11 @@ class JsonSchemaHandlerTest extends Specification
 
 		where:
 			refClass    | canonical | prefix | urlText
-			Outer.class | true      | null   | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
-			Outer.class | false     | null   | 'jsonschema:Outer-schema.json'
-			Outer.class | false     | ""     | 'jsonschema:Outer-schema.json'
-			Outer.class | false     | 'pfx'  | 'jsonschema:pfx/Outer-schema.json'
-			Outer.class | false     | '/pfx' | 'jsonschema:pfx/Outer-schema.json'
+			Outer.class | true      | null   | 'jsonschema:com/mukadobo/json/schema/Outer'
+			Outer.class | false     | null   | 'jsonschema:Outer'
+			Outer.class | false     | ""     | 'jsonschema:Outer'
+			Outer.class | false     | 'pfx'  | 'jsonschema:pfx/Outer'
+			Outer.class | false     | '/pfx' | 'jsonschema:pfx/Outer'
 	}
 
 	def "Class-based JSON-Schema URL ~ default: prefix"()
@@ -41,8 +31,8 @@ class JsonSchemaHandlerTest extends Specification
 
 		where:
 			refClass    | canonical | urlText
-			Outer.class | true      | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
-			Outer.class | false     | 'jsonschema:jsonschema/Outer-schema.json'
+			Outer.class | true      | 'jsonschema:com/mukadobo/json/schema/Outer'
+			Outer.class | false     | 'jsonschema:jsonschema/Outer'
 	}
 
 	def "Class-based JSON-Schema URL ~ default: canonical"()
@@ -52,8 +42,8 @@ class JsonSchemaHandlerTest extends Specification
 
 		where:
 			refClass                  | canonical | urlText
-			Outer              .class | false     | 'jsonschema:jsonschema/Outer-schema.json'
-			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
+			Outer              .class | false     | 'jsonschema:jsonschema/Outer'
+			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer'
 	}
 
 	def "Class-based JSON-Schema URL ~ default: nested classes"()
@@ -63,14 +53,14 @@ class JsonSchemaHandlerTest extends Specification
 
 		where:
 			refClass                  | canonical | urlText
-			Outer              .class | false     | 'jsonschema:jsonschema/Outer-schema.json'
-			Outer.Static       .class | false     | 'jsonschema:jsonschema/Outer.Static-schema.json'
-			Outer.Inner        .class | false     | 'jsonschema:jsonschema/Outer.Inner-schema.json'
-			Outer.Inner.Static .class | false     | 'jsonschema:jsonschema/Outer.Inner.Static-schema.json'
-			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer-schema.json'
-			Outer.Static       .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Static-schema.json'
-			Outer.Inner        .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner-schema.json'
-			Outer.Inner.Static .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner.Static-schema.json'
+			Outer              .class | false     | 'jsonschema:jsonschema/Outer'
+			Outer.Static       .class | false     | 'jsonschema:jsonschema/Outer.Static'
+			Outer.Inner        .class | false     | 'jsonschema:jsonschema/Outer.Inner'
+			Outer.Inner.Static .class | false     | 'jsonschema:jsonschema/Outer.Inner.Static'
+			Outer              .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer'
+			Outer.Static       .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Static'
+			Outer.Inner        .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner'
+			Outer.Inner.Static .class | true      | 'jsonschema:com/mukadobo/json/schema/Outer.Inner.Static'
 	}
 
 	def "Handler ~ getContent()"()
@@ -103,7 +93,7 @@ class JsonSchemaHandlerTest extends Specification
 
 		expect:
 
-			fstabRootSchema.getId() == 'jsonschema:jsonschema/Fstab-schema.json'
+			fstabRootSchema.getId() == 'jsonschema:jsonschema/Fstab'
 			propertySchemas != null
 			propertySchemas.size() == 1
 			propertySchemas.entrySet().first().getValue().getReferredSchema().getId() == "http://example.com/entry-schema"

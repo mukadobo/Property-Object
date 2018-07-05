@@ -1,5 +1,5 @@
 {
-	"$id": "jsonschema:jsonschema/Fstab-schema.json",
+	"$id": "jsonschema:jsonschema/Fstab",
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
 	"required": [
@@ -7,12 +7,12 @@
 	],
 	"properties": {
 		"/": {
-			"$ref": "jsonschema:jsonschema/FstabEntry-schema.json"
+			"$ref": "jsonschema:jsonschema/FstabEntry"
 		}
 	},
 	"patternProperties": {
 		"^(/[^/]+)+$": {
-			"$ref": "jsonschema:jsonschema/FstabEntry-schema.json"
+			"$ref": "jsonschema:jsonschema/FstabEntry"
 		}
 	},
 	"additionalProperties": false
