@@ -7,6 +7,8 @@ import org.everit.json.schema.loader.SchemaLoader
 import org.json.JSONObject
 import org.json.JSONTokener
 
+import javax.xml.bind.ValidationException
+
 class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap instead...
 {
 	private final ObjectSchema schema
@@ -50,9 +52,34 @@ class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap i
 			.load().build()
 	}
 	
-	void validate(Object subject)
+	RuntimeException validate(Object subject, Boolean unifiedException = true, Boolean rethrow = true, Integer msgLimit = 2000)
 	{
-		schema.validate(subject)
+		ValidationException caughtException = null
+		
+		try
+		{
+			schema.validate(subject)
+		}
+		catch (ValidationException e)
+		{
+			if (!unifiedException)
+			{
+				caughtException = e
+			}
+			else {
+				String messageFull  = "schema validation error: schema.id='${schema.getId()}':\n${e.toJSON().toString(2)}"
+				
+				String messageLimited = ((msgLimit <= 0) || (messageFull.length() <= msgLimit)) \
+					? messageFull
+					: (messageFull.substring(msgLimit) + "\n# error message truncated from length ${messageFull.length()} to ${msgLimit}")
+				
+				caughtException = new ValidationException(messageLimited, e)
+			}
+			
+			if (rethrow) throw caughtException
+		}
+		
+		caughtException
 	}
 	
 	// below are  just pass-thru to the delegate org.everit.json.schema.**
