@@ -1,55 +1,52 @@
 package com.mukadobo.json.schema.poc.command
 
 import com.mukadobo.json.schema.JsonSchema
-import com.mukadobo.propertyobject.KindAndVersion
 import com.mukadobo.propertyobject.KindAndVersion.Base
 import groovy.json.JsonOutput
+import org.apache.commons.io.IOUtils
 import org.json.JSONObject
 import org.json.JSONTokener
 import spock.lang.Specification
 
 class CommandPOC extends Specification
 {
-	static String simpleSubjectJsonText =  '''\
+	static private Map<String, String>     sampleText = new LinkedHashMap<>()
+	static private Map<String, JSONObject> sampleJsonDom  = new LinkedHashMap<>()
+	
+	static private String getSampleText(String name)
 	{
-		"kind"    : "Subject",
-		"version" : " 0 . 02 . 00 . 0",
-		
-		"selector" : {
-			"scheme" : "https",
-			"server" : "example.com",
-			"port"   : "80"
+		if (sampleText.get(name) == null)
+		{
+			String path = "samples/$name"
+			
+			InputStream stream = CommandPOC.class.getResourceAsStream(path)
+			if (!stream)
+			{
+				throw new RuntimeException("can't open resource-stream for: $name")
+			}
+			
+			stream.withCloseable {
+				String text = IOUtils.toString(it, "UTF-8")
+				
+				sampleText.put(name, text)
+			}
 		}
+		
+		sampleText.get(name)
 	}
-	'''.stripIndent()
 	
-	static String simplePredicateJsonText =  '''\
+	static private JSONObject getSampleJsonDom(String name)
 	{
-		"kind"    : "Predicate",
-		"version" : "0",
-		
-		"verb"    : "report"
-	}
-	'''.stripIndent()
-	
-	static String simpleCommandJsonText =  '''\
-	{
-		"kind"      : "Command",
-		"version"   : "0.1.0",
-		
-		"verbosity" : "HIGH",
-		"dryrun"    : true,
-		
-		"payload"   : {
-			"subject"   : ''' + simpleSubjectJsonText   + ''',
-			"predicate" : ''' + simplePredicateJsonText + ''',
+		if (sampleJsonDom.get(name) == null)
+		{
+			String     text    = getSampleText(name)
+			JSONObject jsonDom = new JSONObject(new JSONTokener(text))
+			
+			sampleJsonDom.put(name, jsonDom)
 		}
+		
+		sampleJsonDom.get(name)
 	}
-	'''.stripIndent()
-	
-	static JSONObject simpleSubjectJsonDom   = new JSONObject(new JSONTokener(simpleSubjectJsonText))
-	static JSONObject simplePredicateJsonDom = new JSONObject(new JSONTokener(simplePredicateJsonText))
-	static JSONObject simpleCommandJsonDom   = new JSONObject(new JSONTokener(simpleCommandJsonText))
 	
 	def "JSON validation"()
 	{
@@ -61,16 +58,16 @@ class CommandPOC extends Specification
 		where:
 			
 			pogoClass       | jsonText
-			Subject  .class | simpleSubjectJsonDom
-			Predicate.class | simplePredicateJsonDom
-			Command  .class | simpleCommandJsonDom
+			Subject  .class | getSampleJsonDom("simple/subject.json")
+			Predicate.class | getSampleJsonDom("simple/predicate.json")
+			Command  .class | getSampleJsonDom("simple/command.json")
 	}
 	
 	def "POGO from JSON ~ Subject"()
 	{
 		when:
 			
-			Subject probject = new Subject(simpleSubjectJsonDom)
+			Subject probject = new Subject(getSampleJsonDom("simple/subject.json"))
 		
 		then:
 			
@@ -81,7 +78,7 @@ class CommandPOC extends Specification
 	{
 		when:
 			
-			Predicate probject = new Predicate(simplePredicateJsonDom)
+			Predicate probject = new Predicate(getSampleJsonDom("simple/predicate.json"))
 		
 		then:
 			
@@ -92,7 +89,7 @@ class CommandPOC extends Specification
 	{
 		when:
 			
-			Command probject = new Command(simpleCommandJsonDom)
+			Command probject = new Command(getSampleJsonDom("simple/command.json"))
 		
 		then:
 			
@@ -132,9 +129,9 @@ class CommandPOC extends Specification
 		where:
 			
 			refClass        | refText
-			Predicate.class | simplePredicateJsonText
-			Subject  .class | simpleSubjectJsonText
-			Command  .class | simpleCommandJsonText
+			Predicate.class | getSampleText('simple/predicate.json')
+			Subject  .class | getSampleText('simple/subject.json')
+			Command  .class | getSampleText('simple/command.json')
 	}
 	
 }

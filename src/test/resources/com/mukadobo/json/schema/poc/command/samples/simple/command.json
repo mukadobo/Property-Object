@@ -1,0 +1,26 @@
+{
+	"kind"      : "Command",
+	"version"   : "0.1.0",
+
+	"verbosity" : "HIGH",
+	"dryrun"    : true,
+
+	"payload"   : {
+		"subject"   : {
+			"kind"    : "Subject",
+			"version" : "0",
+
+			"selector" : {
+				"scheme" : "https",
+				"server" : "example.com",
+				"port"   : "80"
+			}
+		},
+		"predicate" : {
+			"kind"    : "Predicate",
+			"version" : "0",
+
+			"verb"    : "report"
+		}
+	}
+}

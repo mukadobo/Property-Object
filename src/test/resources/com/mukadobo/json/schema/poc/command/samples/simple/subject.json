@@ -1,0 +1,10 @@
+{
+	"kind"    : "Subject",
+	"version" : "0",
+
+	"selector" : {
+		"scheme" : "https",
+		"server" : "example.com",
+		"port"   : "80"
+	}
+}
