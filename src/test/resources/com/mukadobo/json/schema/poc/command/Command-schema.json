@@ -1,0 +1,41 @@
+{
+	"$id": "jsonschema:com.mukadobo.json.schema.poc.command.Command",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": [
+		"kind",
+		"version",
+		"payload"
+	],
+	"properties": {
+		"kind": {
+			"type": "string"
+		},
+		"version": {
+			"type": "string"
+		},
+
+		"dryrun": {
+			"type": "boolean"
+		},
+		"verbosity": {
+			"enum": [
+				"HIGH",
+				"MEDIUM",
+				"LOW"
+			]
+		},
+		"payload": {
+			"type" : "object",
+			"required" : [
+
+			],
+			"properties" : {
+				"subject"   : { "$ref": "jsonschema:com.mukadobo.json.schema.poc.command.Subject"   },
+				"predicate" : { "$ref": "jsonschema:com.mukadobo.json.schema.poc.command.Predicate" }
+			},
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}
