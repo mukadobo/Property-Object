@@ -1,6 +1,7 @@
 package com.mukadobo.propertyobject
 
 import com.mukadobo.version.VersionChain
+import groovy.json.JsonOutput
 import org.json.JSONObject
 
 interface KindAndVersion
@@ -21,8 +22,8 @@ interface KindAndVersion
 		
 		protected Base(JSONObject jsonDom)
 		{
-			this.kind    = jsonDom.kind
-			this.version = new VersionChain(jsonDom.version)
+			this.kind    = jsonDom.getString("kind")
+			this.version = new VersionChain(jsonDom.getString("version"))
 		}
 		
 		@Override String       getKind()    { kind }
@@ -31,7 +32,7 @@ interface KindAndVersion
 		@Override
 		String toString()
 		{
-			"$kind:$version"
+			JsonOutput.toJson(this)
 		}
 	}
 }
