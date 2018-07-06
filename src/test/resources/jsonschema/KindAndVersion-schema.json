@@ -7,10 +7,12 @@
 	],
 	"properties": {
 		"kind": {
-			"type": "string"
+			"type"    : "string",
+			"pattern" : "^\\s*[\\w]+(\\s*[.]\\s*[\\w]+)*\\s*$"
 		},
 		"version": {
-			"type": "string"
+			"type"    : "string",
+			"pattern" : "^\\s*[\\d]+(\\s*[.]\\s*[\\d]+)*\\s*$"
 		}
 	}
 }
