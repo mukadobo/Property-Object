@@ -1,5 +1,8 @@
 package com.mukadobo.json.schema
 
+import com.mukadobo.propertyobject.KindAndVersion
+import org.json.JSONObject
+
 // These classes have no associated "jsonschema" resource; they are only used to validate URL construction
 
 class Outer
@@ -23,6 +26,32 @@ class SimpleResource {}
 
 class Fstab {}
 
-class Command   {}
-class Subject   {}
-class Predicate {}
+// These classes are part of a rudimentary Command model loosely based on English sentence grammar.
+// Collectively, their purpose is to both POC such a model, and to validate the JsonSchema framework
+// (from a framework-client perspective).
+
+class Command extends KindAndVersion.Base
+{
+	Command(JSONObject jsonDom)
+	{
+		super(jsonDom)
+	}
+}
+
+class Subject extends KindAndVersion.Base
+{
+	Subject(JSONObject jsonDom)
+	{
+		super(jsonDom)
+	}
+}
+
+
+class Predicate extends KindAndVersion.Base
+{
+	Predicate(JSONObject jsonDom)
+	{
+		super(jsonDom)
+	}
+}
+
