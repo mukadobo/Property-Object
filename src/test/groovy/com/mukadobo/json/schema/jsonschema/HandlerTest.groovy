@@ -6,7 +6,6 @@ import com.mukadobo.json.schema.JsonSchema
 import com.mukadobo.json.schema.JsonSchemaUrl
 import com.mukadobo.json.schema.SimpleResource
 import org.apache.commons.io.IOUtils
-import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.Schema
 import spock.lang.Specification
 
