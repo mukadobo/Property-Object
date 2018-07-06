@@ -1,6 +1,7 @@
 package com.mukadobo.json.schema.poc.command
 
 import com.mukadobo.propertyobject.KindAndVersion
+import groovy.json.JsonOutput
 import groovy.transform.EqualsAndHashCode
 import org.json.JSONObject
 
@@ -10,8 +11,7 @@ class Command extends KindAndVersion.Base
 	Boolean dryrun
 	String  verbosity
 	
-	Subject   subject
-	Predicate predicate
+	Map<String, KindAndVersion.Base> payload = new LinkedHashMap<>()
 	
 	Command(JSONObject jsonDom)
 	{
@@ -20,7 +20,17 @@ class Command extends KindAndVersion.Base
 		dryrun    = jsonDom.dryrun
 		verbosity = jsonDom.verbosity
 		
-		subject   = new Subject  (jsonDom.subject  )
-		predicate = new Predicate(jsonDom.predicate)
+		JSONObject payloadDom = jsonDom.getJSONObject("payload")
+		
+		payloadDom.keySet().each {
+			switch (it)
+			{
+				case "subject"  : payload.put(it, new Subject  (payloadDom.getJSONObject(it))); break
+				case "predicate": payload.put(it, new Predicate(payloadDom.getJSONObject(it))); break
+				
+				default: throw new RuntimeException("unsupported payload key in jsonDom: '$it'")
+			}
+		}
 	}
+	
 }

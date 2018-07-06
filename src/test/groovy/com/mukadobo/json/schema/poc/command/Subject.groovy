@@ -7,12 +7,12 @@ import org.json.JSONObject
 @EqualsAndHashCode
 class Subject extends KindAndVersion.Base
 {
-	Map<String, String> selector
+	final Map<String, String> selector
 	
 	Subject(JSONObject jsonDom)
 	{
 		super(jsonDom)
 		
-		selector = jsonDom.selector
+		selector = jsonDom.getJSONObject("selector").toMap() as Map<String, String>
 	}
 }
