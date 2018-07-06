@@ -3,17 +3,17 @@ package com.mukadobo.json.schema
 import org.apache.commons.io.IOUtils
 import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.Schema
+import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
 import org.json.JSONObject
 import org.json.JSONTokener
 
-import javax.xml.bind.ValidationException
 
 class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap instead...
 {
-	private final ObjectSchema schema
+	private final Schema schema
 	
-	private JsonSchema(ObjectSchema schema)
+	private JsonSchema(Schema schema)
 	{
 		this.schema = schema
 	}
@@ -44,42 +44,64 @@ class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap i
 	
 	JsonSchema(JSONObject jsonDom)
 	{
-		schema = SchemaLoader
+		Schema loadedSchema = SchemaLoader
 			.builder()
 			.draftV6Support()
 			.schemaJson(jsonDom)
 			.build()
 			.load().build()
+		
+		schema = loadedSchema
 	}
 	
-	RuntimeException validate(Object subject, Boolean unifiedException = true, Boolean rethrow = true, Integer msgLimit = 2000)
+	NonconformanceException validate(Object subject, Boolean unifiedException = true, Integer msgLimit = 2000, Boolean rethrow = true)
 	{
-		ValidationException caughtException = null
+		NonconformanceException derived = null
 		
 		try
 		{
 			schema.validate(subject)
 		}
-		catch (ValidationException e)
+		catch (ValidationException caught)
 		{
-			if (!unifiedException)
-			{
-				caughtException = e
-			}
-			else {
-				String messageFull  = "schema validation error: schema.id='${schema.getId()}':\n${e.toJSON().toString(2)}"
-				
-				String messageLimited = ((msgLimit <= 0) || (messageFull.length() <= msgLimit)) \
-					? messageFull
-					: (messageFull.substring(msgLimit) + "\n# error message truncated from length ${messageFull.length()} to ${msgLimit}")
-				
-				caughtException = new ValidationException(messageLimited, e)
-			}
+			derived = new NonconformanceException(schema, caught, unifiedException, msgLimit)
 			
-			if (rethrow) throw caughtException
+			if (rethrow) throw derived
 		}
 		
-		caughtException
+		derived
+	}
+	
+	static class NonconformanceException extends RuntimeException
+	{
+		NonconformanceException(Schema schema, ValidationException cause, Boolean unify, Integer limit)
+		{
+			super(deriveMessage(schema, cause, unify, limit), cause)
+		}
+		
+		private static deriveMessage(Schema schema, ValidationException cause, Boolean unify, Integer limit)
+		{
+			String message = "schema validation error: schema.id='${schema.getId()}'"
+			
+			if (unify)
+			{
+				String causeMsg = cause.toJSON().toString(2)
+				
+				int causeMsgLen = causeMsg.length()
+				int totalMsgLen = message.length() + causeMsgLen + 5
+				
+				if ((limit <= 0) || (limit > totalMsgLen))
+				{
+					message += ":\n" + causeMsg
+				}
+				else
+				{
+					message += ":\n" + causeMsg.substring(limit) + "\n# validation error cause truncated from ${causeMsgLen} to ${limit} chars"
+				}
+			}
+
+			message
+		}
 	}
 	
 	// below are  just pass-thru to the delegate org.everit.json.schema.**
