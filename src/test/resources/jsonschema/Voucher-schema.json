@@ -1,0 +1,12 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"allOf" : [
+		{ "$ref" : "jsonschema:jsonschema/KVAndId" },
+		{
+			"properties" : {
+				"designee" : { "type" : "string" }
+			},
+			"required" : [ "kind", "version", "id", "designee" ],
+		}
+	]
+}
