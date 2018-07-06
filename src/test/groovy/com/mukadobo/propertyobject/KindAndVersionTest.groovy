@@ -87,9 +87,9 @@ class KindAndVersionTest extends Specification
 	{
 		String jsonText = '''\
 		{
-			"kind" : "com.mukadobo.propertyobject.KindAndVersion",
+			"kind"    : "com.mukadobo.propertyobject.KindAndVersion",
 			"version" : "3.2.1.0",
-			"id" : "abc123"
+			"id"      : "abc123"
 		}
 		'''.stripIndent()
 		
@@ -105,13 +105,55 @@ class KindAndVersionTest extends Specification
 			notThrown(JsonSchema.NonconformanceException)
 	}
 	
-	def "Derived KVAndId"()
+	def "KindAndVersion ~ [kind] with whitespace"()
 	{
 		String jsonText = '''\
 		{
-			"kind" : "com.mukadobo.propertyobject.KVAndId",
+			"kind"    : " com . mukadobo.propertyobject.\t\t KindAndVersion    ",
+			"version" : "3.2.1.0"
+		}
+		'''.stripIndent()
+		
+		when:
+			
+			JSONObject jsonDom = new JSONObject(new JSONTokener(jsonText))
+			JsonSchema schema  = new JsonSchema(KindAndVersion.class, false, JsonSchemaUrl.DEFAULT_PATH_PREFIX)
+			
+			schema.validate(jsonDom) == null
+		
+		then:
+			
+			notThrown(JsonSchema.NonconformanceException)
+	}
+	
+	def "KindAndVersion ~ [version] with whitespace"()
+	{
+		String jsonText = '''\
+		{
+			"kind"    : "com.mukadobo.propertyobject.KindAndVersion",
+			"version" : "\t 3. 2 .1 .  0\t\t"
+		}
+		'''.stripIndent()
+		
+		when:
+			
+			JSONObject jsonDom = new JSONObject(new JSONTokener(jsonText))
+			JsonSchema schema  = new JsonSchema(KindAndVersion.class, false, JsonSchemaUrl.DEFAULT_PATH_PREFIX)
+			
+			schema.validate(jsonDom) == null
+		
+		then:
+			
+			notThrown(JsonSchema.NonconformanceException)
+	}
+	
+	def "KVAndId - all properties"()
+	{
+		String jsonText = '''\
+		{
+			"kind"    : "com.mukadobo.propertyobject.KVAndId",
 			"version" : "3.2.1.0",
-			"id" : "abc123"
+			"id"      : "abc123"
 		}
 		'''.stripIndent()
 		
@@ -127,7 +169,7 @@ class KindAndVersionTest extends Specification
 			notThrown(JsonSchema.NonconformanceException)
 	}
 	
-	def "Derived KVAndId - missing [id]"()
+	def "KVAndId - missing [id]"()
 	{
 		String jsonText = '''\
 		{
