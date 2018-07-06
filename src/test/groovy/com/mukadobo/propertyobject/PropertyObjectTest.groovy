@@ -1,6 +1,6 @@
 package com.mukadobo.propertyobject
 
-import com.mukadobo.json.schema.Command
+import com.mukadobo.json.schema.ParentProbject
 import com.mukadobo.json.schema.JsonSchemaUrl
 import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.ValidationException
@@ -96,28 +96,28 @@ class PropertyObjectTest extends Specification
 			
 			String commandJsonText = '''\
 			{
-				"kind"      : "Command",
+				"kind"      : "ParentProbject",
 				"version"   : "0.1.0",
 				
-				"verbosity" : "HIGH",
-				"dryrun"    : true,
+				"choice"    : "HIGH",
+				"flag"      : true,
 				
 				"payload"   : {
-					"subject" : {
-						"kind"    : "Subject",
+					"childAaa" : {
+						"kind"    : "ChildAaaProbject",
 						"version" : " 0 . 02 . 00 . 0",
 						
-						"selector" : {
+						"stringPairs" : {
 							"scheme" : "https",
 							"server" : "example.com",
 							"port"   : "80"
 						}
 					},
-					"predicate" : {
-						"kind"    : "Predicate",
+					"childBbb" : {
+						"kind"    : "ChildBbbProbject",
 						"version" : "0",
 						
-						"verb"    : "report"
+						"text"    : "report"
 					}
 				}
 			}
@@ -127,7 +127,7 @@ class PropertyObjectTest extends Specification
 			
 			JSONObject commandJsonDom = new JSONObject(new JSONTokener(commandJsonText))
 			
-			ObjectSchema commandSchema = JsonSchemaUrl.loadSchema(Command.class, false)
+			ObjectSchema commandSchema = JsonSchemaUrl.loadSchema(ParentProbject.class, false)
 		
 		then:
 			

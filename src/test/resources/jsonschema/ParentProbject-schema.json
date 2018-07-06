@@ -1,5 +1,5 @@
 {
-	"$id": "jsonschema:jsonschema/Command",
+	"$id": "jsonschema:jsonschema/ParentProbject",
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
 	"required": [
@@ -15,10 +15,10 @@
 			"type": "string"
 		},
 
-		"dryrun": {
+		"flag": {
 			"type": "boolean"
 		},
-		"verbosity": {
+		"choice": {
 			"enum": [
 				"HIGH",
 				"MEDIUM",
@@ -27,12 +27,10 @@
 		},
 		"payload": {
 			"type" : "object",
-			"required" : [
-
-			],
+			"required" : [ "childAaa", "childBbb" ],
 			"properties" : {
-				"subject"   : { "$ref": "jsonschema:jsonschema/Subject"   },
-				"predicate" : { "$ref": "jsonschema:jsonschema/Predicate" }
+				"childAaa" : { "$ref": "jsonschema:jsonschema/ChildAaaProbject" },
+				"childBbb" : { "$ref": "jsonschema:jsonschema/ChildBbbProbject" }
 			},
 			"additionalProperties": false
 		}

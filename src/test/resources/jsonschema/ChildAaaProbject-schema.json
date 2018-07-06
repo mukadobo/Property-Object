@@ -1,5 +1,5 @@
 {
-	"$id": "jsonschema:jsonschema/Subject",
+	"$id": "jsonschema:jsonschema/ChildAaaProbject",
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
 	"required": [
@@ -14,7 +14,7 @@
 			"type": "string"
 		},
 
-		"selector": {
+		"stringPairs": {
 			"type": "object",
 			"patternProperties": {
 				".": {

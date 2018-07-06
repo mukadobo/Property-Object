@@ -1,12 +1,12 @@
 {
-	"$id": "jsonschema:jsonschema/Predicate",
+	"$id": "jsonschema:jsonschema/ChildBbbProbject",
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
 	"required": [
 		"kind",
 		"version",
 
-		"verb"
+		"text"
 	],
 	"properties": {
 		"kind": {
@@ -16,7 +16,7 @@
 			"type": "string"
 		},
 
-		"verb": {
+		"text": {
 			"type": "string"
 		}
 	},
