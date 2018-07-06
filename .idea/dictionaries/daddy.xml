@@ -3,10 +3,13 @@
     <words>
       <w>btrfs</w>
       <w>designee</w>
+      <w>dryrun</w>
       <w>everit</w>
       <w>fstab</w>
       <w>fstype</w>
+      <w>jsonschema</w>
       <w>nosuid</w>
+      <w>probject</w>
       <w>propertyobject</w>
       <w>tmpfs</w>
       <w>yaml</w>
