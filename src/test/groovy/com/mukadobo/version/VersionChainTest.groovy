@@ -1,11 +1,48 @@
 package com.mukadobo.version
 
-import com.mukadobo.version.VersionChain
-import org.junit.Test;
+import groovy.json.JsonOutput
+import org.junit.Test
+import spock.lang.Specification
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertTrue
 
-class VersionChainTest
+class VersionChainTestSpock extends Specification
+{
+	def "JsonOutput generated"()
+	{
+		when:
+			
+			Set<String> expect = new LinkedHashSet<>()
+			Set<String> result = new LinkedHashSet<>()
+			
+			expect.add("\"$canonical\"".toString())
+			
+			variants.each {
+				
+				VersionChain  chain  = new VersionChain(it)
+				String        json   = JsonOutput.toJson(chain)
+				
+				result.add(json)
+			}
+			
+		then:
+			
+			expect == result
+		
+		where:
+			
+			canonical      | variants
+			"0"            | [ " 0", "0 ", " 0 ", " 000", "0.0", "0.0.0", "0 . 0 . 00"]
+			"3"            | [ " 3", "3 ", " 3 ", " 003", "3.0", "3.0.0", "3 . 0 . 00"]
+			"0.14"         | [ "0.14", " 00.  0014", "0.14.0" ]
+			"3.14"         | [ "3.14", " 03.  0014", "3.14.0" ]
+			"9.87"         | [ "9.87", "00009.  087", "9.87.0.0" ]
+			"1.0.3.0.0.6"  | [ "1.0.3.0.0.6" ]
+	}
+}
+
+class VersionChainTestJunit
 {
     @Test(expected = NullPointerException)
     void constructor_ByString_Null_Exception()
@@ -47,23 +84,6 @@ class VersionChainTest
     void constructor_ByArray_ZeroLength_Exception()
     {
         new VersionChain(new Integer[0])
-    }
-
-    @Test
-    void toString_Basic()
-    {
-        def samples = [
-                "0",
-                "1",
-                "1.0",
-                "2.0.1"
-        ]
-
-        samples.each {
-            VersionChain chain = new VersionChain(it)
-
-            assertEquals(it, chain.toString())
-        }
     }
 
     private boolean assert_comparesAsEqual(String textLeft, String textRight)
@@ -157,8 +177,12 @@ class VersionChainTest
         samples.each { sample ->
 
             VersionChain chain = new VersionChain(sample)
-
-            assertEquals("$sample", chain.length(), sample.size())
+	
+			int expectedSize = sample.size()
+	
+			while ((expectedSize > 1) && (sample[expectedSize-1] == 0)) { --expectedSize }
+	
+			assertEquals("<<${chain}>>.size()", expectedSize, chain.size())
         }
     }
 
@@ -175,7 +199,13 @@ class VersionChainTest
 
             VersionChain chain = new VersionChain(sample)
 
-            for(idx in (0..<sample.size())) {
+			int expectedSize = sample.size()
+			
+			while ((expectedSize > 1) && (sample[expectedSize-1] == 0)) { --expectedSize }
+			
+			assertEquals("<<${chain}>>.size()", expectedSize, chain.size())
+			
+            for(idx in (0 ..< expectedSize)) {
                 assertEquals("<<${chain}>>.at($idx)", chain.at(idx), sample.get(idx))
             }
         }

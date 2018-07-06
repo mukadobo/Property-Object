@@ -2,7 +2,7 @@ package com.mukadobo.version
 
 import org.jetbrains.annotations.NotNull
 
-class VersionChain implements Comparable<VersionChain>
+class VersionChain implements Comparable<VersionChain>, CharSequence
 {
     public static final VersionChain ZERO = new VersionChain([0])
     public static final VersionChain MAX  = new VersionChain([Integer.MAX_VALUE])
@@ -22,17 +22,21 @@ class VersionChain implements Comparable<VersionChain>
 
     VersionChain(Integer[] array)
     {
-        if (array.length == 0) throw new IllegalArgumentException("zero-length array")
+		int end = array.length
+		
+		if (end == 0) throw new IllegalArgumentException("zero-length array")
+		
+		while ((end > 1) && (array[end-1] == 0)) --end
 
-        chain = array.clone()
-
+        chain = Arrays.copyOfRange(array, 0, end)
+		
         text  = chain*.toString().join(".")
     }
 
-    int    length()    { chain.length }
+    int    size()      { chain.length }
     int    at(int i)   { chain[i] }
-    String toString()  { text }
-
+	String toString()  { text }
+	
     @Override
     int compareTo(@NotNull VersionChain that)
     {
@@ -60,4 +64,10 @@ class VersionChain implements Comparable<VersionChain>
 
         0
     }
+	
+	// implement CharSequence as "pass-thru" to text
+	
+	@Override  int          length()                         { text.length() }
+	@Override  char         charAt(int idx)                  { text.charAt(idx) }
+	@Override  CharSequence subSequence(int start, int end)  { text.subSequence(start, end) }
 }
