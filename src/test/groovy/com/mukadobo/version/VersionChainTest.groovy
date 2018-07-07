@@ -86,7 +86,7 @@ class VersionChainTestJunit
         new VersionChain(new Integer[0])
     }
 
-    private boolean assert_comparesAsEqual(String textLeft, String textRight)
+    private static void assert_comparesAsEqual(String textLeft, String textRight)
     {
         VersionChain chainLeft  = new VersionChain(textLeft)
         VersionChain chainRight = new VersionChain(textRight)
@@ -113,7 +113,7 @@ class VersionChainTestJunit
         }
     }
 
-    private boolean assert_comparesAsGreater(String textLeft, String textRight)
+    private static void assert_comparesAsGreater(String textLeft, String textRight)
     {
         VersionChain chainLeft  = new VersionChain(textLeft)
         VersionChain chainRight = new VersionChain(textRight)
@@ -139,7 +139,7 @@ class VersionChainTestJunit
         }
     }
 
-    private boolean assert_comparesAsLessor(String textLeft, String textRight)
+    private static void assert_comparesAsLessor(String textLeft, String textRight)
     {
         VersionChain chainLeft  = new VersionChain(textLeft)
         VersionChain chainRight = new VersionChain(textRight)

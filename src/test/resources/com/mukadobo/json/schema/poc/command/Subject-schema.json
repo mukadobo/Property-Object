@@ -1,27 +1,24 @@
 {
-	"$id": "jsonschema:com.mukadobo.json.schema.poc.command.Subject",
-	"$schema": "http://json-schema.org/draft-07/schema#",
-	"type": "object",
-	"required": [
-		"kind",
-		"version"
-	],
-	"properties": {
-		"kind": {
-			"type": "string"
-		},
-		"version": {
-			"type": "string"
-		},
+	"$id"      : "jsonschema:com.mukadobo.json.schema.poc.command.Subject",
+	"$schema"  : "http://json-schema.org/draft-07/schema#",
 
-		"selector": {
-			"type": "object",
-			"patternProperties": {
-				".": {
-					"type" : "string"
-				}
-			}
-		}
+	"type"     : "object",
+	"required" : [
+		"kind",
+		"version",
+		"name",
+		"species",
+		"selector",
+	],
+	"properties" : {
+		"kind"       : { "type": "string" },
+		"version"    : { "type": "string" },
+
+		"name"       : { "type": "string" },
+		"species"    : { "type": "string" },
+
+		"selector"   : { "type": "object" },
+		"qualifiers" : { "type": "object" },
 	},
-	"additionalProperties": false
+	"additionalProperties" : false,
 }

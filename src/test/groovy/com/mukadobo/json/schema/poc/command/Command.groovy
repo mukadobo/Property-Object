@@ -1,7 +1,6 @@
 package com.mukadobo.json.schema.poc.command
 
 import com.mukadobo.propertyobject.KindAndVersion
-import groovy.json.JsonOutput
 import groovy.transform.EqualsAndHashCode
 import org.json.JSONObject
 

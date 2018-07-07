@@ -8,7 +8,10 @@
 	"payload"   : {
 		"subject"   : {
 			"kind"    : "Subject",
-			"version" : "0",
+			"version" : "0.0.0",
+
+			"name"    : "com.mukadobo/usa.ma.boston/inventory",
+			"species" : "HttpRest",
 
 			"selector" : {
 				"scheme" : "https",

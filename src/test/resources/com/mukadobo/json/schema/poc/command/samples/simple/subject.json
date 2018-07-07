@@ -2,9 +2,16 @@
 	"kind"    : "Subject",
 	"version" : "0",
 
+	"name"    : "com.mukadobo/docker-registry/01",
+	"species" : "Http",
+
 	"selector" : {
-		"scheme" : "https",
-		"server" : "example.com",
-		"port"   : "80"
+		"server"  : "dr01.mukadobo.com",
+		"port"    : "5000",
+		"pathPfx" : "v2"
+	},
+
+	"qualifiers" : {
+		"tls" : true,
 	}
 }

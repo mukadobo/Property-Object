@@ -1,8 +1,5 @@
 package com.mukadobo.json.schema
 
-import org.apache.commons.io.IOUtils
-import org.everit.json.schema.ObjectSchema
-import org.everit.json.schema.Schema
 import spock.lang.Specification
 
 /**

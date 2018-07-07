@@ -2,15 +2,27 @@
   <dictionary name="daddy">
     <words>
       <w>btrfs</w>
+      <w>codehaus</w>
+      <w>deallocation</w>
       <w>designee</w>
       <w>dryrun</w>
       <w>everit</w>
       <w>fstab</w>
       <w>fstype</w>
+      <w>greenies</w>
+      <w>httpclient</w>
+      <w>httpcomponents</w>
+      <w>jboss</w>
       <w>jsonschema</w>
+      <w>nonconformance</w>
       <w>nosuid</w>
+      <w>openshift</w>
+      <w>pkgs</w>
       <w>probject</w>
       <w>propertyobject</w>
+      <w>restclient</w>
+      <w>snakeyaml</w>
+      <w>thru</w>
       <w>tmpfs</w>
       <w>yaml</w>
     </words>
