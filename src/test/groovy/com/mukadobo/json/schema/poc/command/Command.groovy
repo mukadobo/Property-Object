@@ -7,6 +7,8 @@ import org.json.JSONObject
 @EqualsAndHashCode
 class Command extends KindAndVersion.Base
 {
+	static enum Verbosity { HIGH, MEDIUM, LOW, }
+	
 	Boolean dryrun
 	String  verbosity
 	
@@ -16,8 +18,8 @@ class Command extends KindAndVersion.Base
 	{
 		super(jsonDom)
 		
-		dryrun    = jsonDom.dryrun
-		verbosity = jsonDom.verbosity
+		dryrun    = jsonDom.getBoolean("dryrun")
+		verbosity = jsonDom.getEnum(Verbosity.class, "verbosity")
 		
 		JSONObject payloadDom = jsonDom.getJSONObject("payload")
 		
@@ -27,7 +29,7 @@ class Command extends KindAndVersion.Base
 				case "subject"  : payload.put(it, new Subject  (payloadDom.getJSONObject(it))); break
 				case "predicate": payload.put(it, new Predicate(payloadDom.getJSONObject(it))); break
 				
-				default: throw new RuntimeException("unsupported payload key in jsonDom: '$it'")
+				default: throw new RuntimeException("unsupported payload key: '$it'")
 			}
 		}
 	}
