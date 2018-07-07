@@ -30,7 +30,12 @@ class VersionChain implements Comparable<VersionChain>, CharSequence
 
         chain = Arrays.copyOfRange(array, 0, end)
 		
-        text  = chain*.toString().join(".")
+		String explicitZeroes = ""
+		switch (end) {
+			case 1: explicitZeroes = ".0.0"; break
+			case 2: explicitZeroes = ".0"  ; break
+		}
+		text  = chain*.toString().join(".") + explicitZeroes
     }
 
     int    size()      { chain.length }
