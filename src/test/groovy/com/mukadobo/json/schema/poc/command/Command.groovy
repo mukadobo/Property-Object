@@ -7,8 +7,6 @@ import org.json.JSONObject
 @EqualsAndHashCode
 class Command extends KindAndVersion.Base
 {
-	static enum Verbosity { HIGH, MEDIUM, LOW, }
-	
 	Boolean dryrun
 	String  verbosity
 	
@@ -33,5 +31,6 @@ class Command extends KindAndVersion.Base
 			}
 		}
 	}
+	
 	
 }

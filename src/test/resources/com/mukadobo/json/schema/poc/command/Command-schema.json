@@ -20,9 +20,14 @@
 		},
 		"verbosity": {
 			"enum": [
-				"HIGH",
-				"MEDIUM",
-				"LOW"
+				"OFF",
+				"FATAL",
+				"ERROR",
+				"WARN",
+				"INFO",
+				"DEBUG",
+				"TRACE",
+				"ALL",
 			]
 		},
 		"payload": {

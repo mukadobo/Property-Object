@@ -2,7 +2,7 @@
 	"kind"      : "Command",
 	"version"   : "0.1.0",
 
-	"verbosity" : "HIGH",
+	"verbosity" : "INFO",
 	"dryrun"    : true,
 
 	"payload"   : {
