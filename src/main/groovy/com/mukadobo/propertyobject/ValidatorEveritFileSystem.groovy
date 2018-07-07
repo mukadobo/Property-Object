@@ -221,7 +221,7 @@ class ValidatorEveritFileSystem
 				.schemaJson(entrySchemaRaw)
 				.build()
 				.load()
-				.build()
+				.build() as Schema
 
 			ReferenceSchema.Builder entryRefBuilder = ReferenceSchema
 				.builder()
@@ -240,7 +240,7 @@ class ValidatorEveritFileSystem
 				.schemaJson(fstabSchemaRaw)
 				.build()
 
-			Schema fstabSchema = fstabLoader.load().build()
+			Schema fstabSchema = fstabLoader.load().build() as Schema
 
 			println "fstabSchema: $fstabSchema"
 			println ""

@@ -1,13 +1,11 @@
 package com.mukadobo.json.schema
 
 import org.apache.commons.io.IOUtils
-import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.Schema
 import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
 import org.json.JSONObject
 import org.json.JSONTokener
-
 
 class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap instead...
 {
@@ -49,7 +47,7 @@ class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap i
 			.draftV6Support()
 			.schemaJson(jsonDom)
 			.build()
-			.load().build()
+			.load().build() as Schema
 		
 		schema = loadedSchema
 	}

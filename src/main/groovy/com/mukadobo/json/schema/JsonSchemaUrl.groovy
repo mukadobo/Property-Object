@@ -20,10 +20,10 @@ class JsonSchemaUrl
 	 */
 	static
 	{
-		String jphpGiven = System.getProperty('java.protocol.handler.pkgs')
-		String jphpPlus  = (jphpGiven ? "$jphpGiven|" : "") + 'com.mukadobo.json.schema'
+		String valueGiven = System.getProperty('java.protocol.handler.pkgs')
+		String valuePlus  = (valueGiven ? "$valueGiven|" : "") + 'com.mukadobo.json.schema'
 		
-		System.setProperty('java.protocol.handler.pkgs', jphpPlus)
+		System.setProperty('java.protocol.handler.pkgs', valuePlus)
 	}
 	
 	/**

@@ -78,15 +78,17 @@ class Handler extends URLStreamHandler
 
 	/** The classloader to find resources from. */
 	private final ClassLoader classLoader
-
-	Handler() {
-		this.classLoader = getClass().getClassLoader();
+	
+	Handler()
+	{
+		this.classLoader = getClass().getClassLoader()
 	}
-
-	Handler(ClassLoader classLoader) {
-		this.classLoader = classLoader;
+	
+	Handler(ClassLoader classLoader)
+	{
+		this.classLoader = classLoader
 	}
-
+	
 	@Override
 	protected URLConnection openConnection(URL u) throws IOException
 	{
