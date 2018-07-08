@@ -25,20 +25,8 @@ class HttpRest extends EntityObject.Base
 		this.server  = jsonDom.optString("server", "localhost")
 		this.port    = jsonDom.optInt   ("port"  , defaultPort)
 		this.headers = jsonDom.has("headers") ? jsonDom.getJSONObject("headers").toMap() : []
-		
-//		this.server  = jsonDom.getString("server")
-//		this.port    = new VersionChain(jsonDom.getString("version"))
-//		this.name    = jsonDom.optString("name", null)
-//		this.uuid    = UUID.fromString(jsonDom.optString("uuid", '00000000-0000-0000-0000-000000000000'))
 	}
 
-	Command.Result perform(Predicate predicate)
-	{
-		String summary = "${this.getClass().getSimpleName()}.perform(): NYI"
-		
-		new Command.Result(Command.Result.Code.SUCCESS, summary, summary, null)
-	}
-	
 	static private JsonSchema myJsonSchema()
 	{
 		if (!schema)
@@ -59,6 +47,16 @@ class HttpRest extends EntityObject.Base
 		{
 			throw new RuntimeException("JSON input not valid", e)
 		}
+	}
+	
+	Command.Result perform(Predicate predicate)
+	{
+		String summary = "${this.getClass().getSimpleName()}.perform(): NYI"
+		
+		new Command.Result(Command.Result.Status.FAILURE,
+			   summary : summary,
+			   product : ["something" : "better than nothing", "fools" : "rush in"]
+		)
 	}
 	
 }

@@ -15,7 +15,7 @@ class Command extends EntityObject.Base
 	Boolean dryrun
 	String  verbosity
 	
-	Map<String, EntityObject.Base> payload = new LinkedHashMap<>()
+	Map<String, EntityObject> payload = new LinkedHashMap<>()
 	
 	Command(JSONObject jsonDom)
 	{
@@ -56,7 +56,6 @@ class Command extends EntityObject.Base
 		EntityObject subject   = mySubject()
 		EntityObject predicate = myPredicate()
 		
-		String subjectSpecies
 		Class  subjectClass
 		Method subjectPerform
 		Result performResult
@@ -67,31 +66,22 @@ class Command extends EntityObject.Base
 			subjectPerform = subjectClass.getMethod("perform", Predicate.class)
 			performResult  = subjectPerform.invoke(subject, predicate) as Result
 		}
-		catch (ClassNotFoundException e)
-		{
-			return new Result(
-				Result.Code.FAILURE,
-				"Subject can't perform action",
-				"Subject species class not found: ${subjectSpecies}",
-				e
-			)
-		}
 		catch (NoSuchMethodException e)
 		{
 			return new Result(
-				Result.Code.FAILURE,
-				"Subject can't perform action",
-				"Method not found for subject species: ${subjectSpecies}.perform(Predicate)",
-				e
+				Result.Status.FAILURE,
+				summary : "Subject can't perform action",
+				detaul  : "Method not found for subject: ${subjectClass}.perform(Predicate)",
+				cause   : e
 			)
 		}
 		catch(Throwable e)
 		{
 			return new Result(
-				Result.Code.FAILURE,
-				"Subject can't perform action",
-				"General error: ${e}",
-				e
+				Result.Status.FAILURE,
+				summary : "Subject can't perform action",
+				detaul  : "General error: ${e}",
+				cause   : e
 			)
 		}
 		
@@ -100,24 +90,30 @@ class Command extends EntityObject.Base
 	
 	static class Result
 	{
-		final Code      code
-		final String    summary
-		final String    detail
-		final Throwable cause
+		final Status status
+		final String summary
+		final String detail
 		
-		Result(Code code, String summary, String detail, Throwable cause)
+		final Optional<Throwable> cause
+		final Optional<Object>    product
+		
+		Result(Map args = [:], Status status)
 		{
-			this.code    = code
-			this.summary = summary
-			this.detail  = detail
-			this.cause   = cause
+			this.status  = status
+			this.summary = args.get("summary", this.status)
+			this.detail  = args.get("detail" , this.detail)
+			this.cause   = Optional.ofNullable(args.get("cause", (Throwable) null))
+			this.product = Optional.ofNullable(args.get("product"))
 		}
 		
-		static enum Code
+		static enum Status
 		{
 			SUCCESS,
 			FAILURE
 		}
+		
+		Throwable getNullableCause  () { cause   ? cause  .get() : null }
+		Throwable getNullableProduct() { product ? product.get() : null }
 		
 		String toString()
 		{

@@ -104,7 +104,7 @@ class CommandPOC extends Specification
 			logger.debug("content2 = ${content2}")
 	}
 	
-	def "Perform ~ #sampleName [GROUP]"() { expect: true }
+	def "Perform ~ #sampleName (UNROLL)"() { expect: true }
 	
 	@Unroll
 	def "Perform ~ #sampleName"()
@@ -129,7 +129,7 @@ class CommandPOC extends Specification
 		
 		then:
 		
-			result.code == Command.Result.Code.SUCCESS
+			result.status == Command.Result.Status.SUCCESS
 		
 		where:
 			

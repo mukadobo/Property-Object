@@ -7,10 +7,30 @@ import org.apache.commons.io.IOUtils
 import org.apache.log4j.Logger
 import org.json.JSONObject
 import org.json.JSONTokener
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
+/**
+ * More tests are a good idea...
+ *
+ * - JSON initializing text
+ *   - empty file
+ *   - malformed JSON
+ *   - not EntityObject-schema
+ *   - not Command-schema
+ *   - kind is not "consistent"
+ *   - version is not supported
+ *   - payload items:
+ *     - empty
+ *     - not EntityObjectSchema
+ *     - no constructor(JSONObject jsonDom)
+ *     - constructor fails
+ * - payload logic
+ * - perform logic
+ * - result
+ * - error / logging context
+ *
+ */
 class CommandTest extends Specification
 {
 	static private Logger  logger = Logger.getLogger(CommandTest.class)
@@ -165,23 +185,4 @@ class CommandTest extends Specification
 			fromText == fromStream
 	}
 	
-	/**
-	 * - When JSON initializing text is:
-	 *   - empty file
-	 *   - malformed JSON
-	 *   - not EntityObject-schema
-	 *   - not Command-schema
-	 *   - kind is not "consistent"
-	 *   - version is not supported
-	 *   - payload items:
-	 *     - empty
-	 *     - not EntityObjectSchema
-	 *     - no constructor(JSONObject jsonDom)
-	 *     - constructor fails
-	 */
-	@Ignore
-	def "...Tests to do..."()
-	{
-		//
-	}
 }
