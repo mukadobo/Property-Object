@@ -1,0 +1,25 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": [
+		"kind",
+		"version"
+	],
+	"properties": {
+		"kind": {
+			"type"    : "string",
+			"pattern" : "^\\s*[\\w]+(\\s*[.]\\s*[\\w]+)*\\s*$"
+		},
+		"version": {
+			"type"    : "string",
+			"pattern" : "^\\s*[\\d]+(\\s*[.]\\s*[\\d]+)*\\s*$"
+		},
+		"name": {
+			"type"    : [ "string", "null" ]
+		},
+		"uuid": {
+			"type"    : [ "string", "null" ],
+			"pattern" : "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+		}
+	}
+}
