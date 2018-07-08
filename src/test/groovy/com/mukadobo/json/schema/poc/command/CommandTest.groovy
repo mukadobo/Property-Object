@@ -4,6 +4,7 @@ import com.mukadobo.json.schema.JsonSchema
 import com.mukadobo.propertyobject.KindAndVersion.Base
 import groovy.json.JsonOutput
 import org.apache.commons.io.IOUtils
+import org.apache.log4j.Logger
 import org.json.JSONObject
 import org.json.JSONTokener
 import spock.lang.Specification
@@ -11,6 +12,8 @@ import spock.lang.Unroll
 
 class CommandTest extends Specification
 {
+	static private Logger  logger = Logger.getLogger(CommandTest.class)
+	
 	static private Map<String, String>     sampleText    = new LinkedHashMap<>()
 	static private Map<String, JSONObject> sampleJsonDom = new LinkedHashMap<>()
 	
@@ -116,6 +119,8 @@ class CommandTest extends Specification
 			String dupeText = JsonOutput.toJson(firstObj)
 			JSONObject dupeDom = new JSONObject(new JSONTokener(dupeText))
 		
+			logger.debug("dupeText:\n${JsonOutput.prettyPrint(dupeText)}")
+		
 		then:
 			
 			def schema = new JsonSchema(refClass)
@@ -138,4 +143,24 @@ class CommandTest extends Specification
 			Command.class   | getSampleText('simple/command.json')
 	}
 	
+	def "Command ~ constructors"()
+	{
+		when:
+			
+			Command fromText = new Command(getSampleText   ('simple/command.json'))
+			Command fromDom  = new Command(getSampleJsonDom('simple/command.json'))
+		
+		then:
+			
+			fromText == fromDom
+		
+		when:
+			
+			InputStream stream     = CommandTest.class.getResourceAsStream('samples/simple/command.json')
+			Command     fromStream = new Command(stream)
+		
+		then:
+			
+			fromText == fromStream
+	}
 }
