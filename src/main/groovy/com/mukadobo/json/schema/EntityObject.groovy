@@ -32,13 +32,7 @@ interface EntityObject
 		
 		protected Base(JSONObject jsonDom)
 		{
-			try {
-				myJsonSchema().validate(jsonDom)
-			}
-			catch (Exception e)
-			{
-				throw new RuntimeException("JSON input not valid", e)
-			}
+			validate(jsonDom)
 			
 			this.kind    = jsonDom.getString("kind")
 			this.version = new VersionChain(jsonDom.getString("version"))
@@ -59,6 +53,20 @@ interface EntityObject
 			}
 			
 			schema
+		}
+		
+		/**
+		 * Factored out from constructor so code analysis works (avoids erroneous "member maybe not initialized")
+		 */
+		static private validate(JSONObject jsonDom)
+		{
+			try {
+				myJsonSchema().validate(jsonDom)
+			}
+			catch (Exception e)
+			{
+				throw new RuntimeException("JSON input not valid", e)
+			}
 		}
 		
 		@Override
