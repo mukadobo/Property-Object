@@ -1,5 +1,4 @@
 {
-	"$id": "jsonschema:com.mukadobo.json.schema.poc.command.Command",
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
 	"required": [
@@ -8,13 +7,6 @@
 		"payload"
 	],
 	"properties": {
-		"kind": {
-			"type": "string"
-		},
-		"version": {
-			"type": "string"
-		},
-
 		"dryrun": {
 			"type": "boolean"
 		},
@@ -36,7 +28,7 @@
 
 			],
 			"properties" : {
-				"subject"   : { "$ref": "jsonschema:com.mukadobo.json.schema.poc.command.Subject"   },
+				"subject"   : { "$ref": "jsonschema:com.mukadobo.json.schema.EntityObject"   },
 				"predicate" : { "$ref": "jsonschema:com.mukadobo.json.schema.poc.command.Predicate" }
 			},
 			"additionalProperties": false

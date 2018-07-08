@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils
 import org.apache.log4j.Logger
 import org.json.JSONObject
 import org.json.JSONTokener
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -162,5 +163,25 @@ class CommandTest extends Specification
 		then:
 			
 			fromText == fromStream
+	}
+	
+	/**
+	 * - When JSON initializing text is:
+	 *   - empty file
+	 *   - malformed JSON
+	 *   - not EntityObject-schema
+	 *   - not Command-schema
+	 *   - kind is not "consistent"
+	 *   - version is not supported
+	 *   - payload items:
+	 *     - empty
+	 *     - not EntityObjectSchema
+	 *     - no constructor(JSONObject jsonDom)
+	 *     - constructor fails
+	 */
+	@Ignore
+	def "...Tests to do..."()
+	{
+		//
 	}
 }

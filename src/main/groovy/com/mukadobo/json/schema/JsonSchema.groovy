@@ -4,12 +4,16 @@ import org.apache.commons.io.IOUtils
 import org.everit.json.schema.Schema
 import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 
 class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap instead...
 {
+	static final JSONObject EMPTY_JSON_DOM_MAP   = new JSONObject(new JSONTokener("{}"))
+	static final JSONArray  EMPTY_JSON_DOM_ARRAY = new JSONArray (new JSONTokener("[]"))
+	
 	private final Schema schema
 	
 	private JsonSchema(Schema schema)

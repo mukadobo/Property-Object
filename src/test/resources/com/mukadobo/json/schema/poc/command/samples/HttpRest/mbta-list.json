@@ -20,7 +20,7 @@
 			},
 		},
 		"predicate" : {
-			"kind"    : "Predicate",
+			"kind"    : "com.mukadobo.json.schema.poc.command.Predicate",
 			"version" : "0.0.0",
 
 			"verb"    : "get",

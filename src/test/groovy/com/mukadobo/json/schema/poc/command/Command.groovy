@@ -1,6 +1,6 @@
 package com.mukadobo.json.schema.poc.command
 
-import com.mukadobo.propertyobject.KindAndVersion
+import com.mukadobo.json.schema.EntityObject
 import groovy.json.JsonOutput
 import groovy.transform.EqualsAndHashCode
 import org.apache.commons.io.IOUtils
@@ -10,12 +10,12 @@ import org.json.JSONTokener
 import java.lang.reflect.Method
 
 @EqualsAndHashCode
-class Command extends KindAndVersion.Base
+class Command extends EntityObject.Base
 {
 	Boolean dryrun
 	String  verbosity
 	
-	Map<String, KindAndVersion.Base> payload = new LinkedHashMap<>()
+	Map<String, EntityObject.Base> payload = new LinkedHashMap<>()
 	
 	Command(JSONObject jsonDom)
 	{
@@ -26,14 +26,11 @@ class Command extends KindAndVersion.Base
 		
 		JSONObject payloadDom = jsonDom.getJSONObject("payload")
 		
-		payloadDom.keySet().each {
-			switch (it)
-			{
-				case "subject"  : this.mySubject  (new Subject  (payloadDom.getJSONObject(it))); break
-				case "predicate": this.myPredicate(new Predicate(payloadDom.getJSONObject(it))); break
-				
-				default: throw new RuntimeException("unsupported payload key: '$it'")
-			}
+		payloadDom.keySet().each { key ->
+			
+			EntityObject item = EntityObject.Base.factory(payloadDom.getJSONObject(key))
+			
+			payload.put(key, item)
 		}
 	}
 	
@@ -48,7 +45,7 @@ class Command extends KindAndVersion.Base
 		this(IOUtils.toString(stream, "UTF-8"))
 	}
 	
-	private Subject   mySubject  () { payload.get("subject"  ) as Subject   }
+	private EntityObject   mySubject  () { payload.get("subject"  ) as EntityObject   }
 	private Predicate myPredicate() { payload.get("predicate") as Predicate }
 	
 	private void mySubject  (Subject   subject  ) { payload.put("subject"  , subject  ) }
@@ -56,21 +53,19 @@ class Command extends KindAndVersion.Base
 	
 	Result perform()
 	{
-		Subject   subject   = mySubject()
-		Predicate predicate = myPredicate()
+		EntityObject subject   = mySubject()
+		EntityObject predicate = myPredicate()
 		
-		String subjectSpecies = null
-		Class  subjectClass   = null
-		Method subjectPerform = null
-		Result performResult  = null
+		String subjectSpecies
+		Class  subjectClass
+		Method subjectPerform
+		Result performResult
 
 		try
 		{
-			subjectSpecies = subject.getSpecies()
-			subjectClass   = Class.forName(subjectSpecies)
+			subjectClass   = subject.getClass()
 			subjectPerform = subjectClass.getMethod("perform", Predicate.class)
 			performResult  = subjectPerform.invoke(subject, predicate) as Result
-			
 		}
 		catch (ClassNotFoundException e)
 		{
@@ -100,7 +95,7 @@ class Command extends KindAndVersion.Base
 			)
 		}
 		
-		new Result (Result.Code.SUCCESS, "SUMMARY", "DETAIL", null)
+		performResult
 	}
 	
 	static class Result

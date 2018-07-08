@@ -1,11 +1,11 @@
 package com.mukadobo.json.schema.poc.command
 
-import com.mukadobo.propertyobject.KindAndVersion
+import com.mukadobo.json.schema.EntityObject
 import groovy.transform.EqualsAndHashCode
 import org.json.JSONObject
 
 @EqualsAndHashCode
-class Predicate extends KindAndVersion.Base
+class Predicate extends EntityObject.Base
 {
 	String verb
 	

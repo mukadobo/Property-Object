@@ -55,10 +55,7 @@ interface EntityObject
 			schema
 		}
 		
-		/**
-		 * Factored out from constructor so code analysis works (avoids erroneous "member maybe not initialized")
-		 */
-		static private validate(JSONObject jsonDom)
+		static private void validate(JSONObject jsonDom)
 		{
 			try {
 				myJsonSchema().validate(jsonDom)
@@ -66,6 +63,34 @@ interface EntityObject
 			catch (Exception e)
 			{
 				throw new RuntimeException("JSON input not valid", e)
+			}
+		}
+		
+		static EntityObject factory(JSONObject jsonDom)
+		{
+			validate(jsonDom)
+			
+			String kind  = jsonDom.getString("kind")
+			
+			try
+			{
+				Class  kindClass = Class.forName(kind)
+				kindClass.newInstance(jsonDom) as EntityObject
+			}
+			catch (ClassNotFoundException e)
+			{
+				throw new RuntimeException("No such class for kind: $kind")
+			}
+			catch (GroovyRuntimeException e)
+			{
+				if (e.getMessage() ==~ /^Could not find matching constructor for:.*/)
+					throw new RuntimeException("kind class has no constructor: ${kind}(JSONObject)")
+				else
+					throw new RuntimeException("failed to instantiate kind: $kind", e)
+			}
+			catch (Throwable e)
+			{
+				throw new RuntimeException("failed to instantiate kind: $kind", e)
 			}
 		}
 		

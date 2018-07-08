@@ -106,7 +106,6 @@ class CommandPOC extends Specification
 	
 	def "Perform ~ #sampleName [GROUP]"() { expect: true }
 	
-	@Ignore
 	@Unroll
 	def "Perform ~ #sampleName"()
 	{
