@@ -1,5 +1,5 @@
 {
-	"kind"      : "Command",
+	"kind"      : "com.mukadobo.json.schema.poc.command.Command",
 	"version"   : "0.1.0",
 
 	"verbosity" : "INFO",
@@ -7,11 +7,10 @@
 
 	"payload"   : {
 		"subject"   : {
-			"kind"    : "Subject",
+			"kind"    : "com.mukadobo.json.schema.poc.command.Subject",
 			"version" : "0.0.0",
 
 			"name"    : "com.mukadobo/usa.ma.boston/inventory",
-			"species" : "HttpRest",
 
 			"selector" : {
 				"scheme" : "https",
@@ -20,7 +19,7 @@
 			}
 		},
 		"predicate" : {
-			"kind"    : "Predicate",
+			"kind"    : "com.mukadobo.json.schema.poc.command.Predicate",
 			"version" : "0",
 
 			"verb"    : "report"

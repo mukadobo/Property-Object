@@ -1,7 +1,7 @@
 package com.mukadobo.json.schema.poc.command
 
+import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.json.schema.JsonSchema
-import com.mukadobo.propertyobject.KindAndVersion.Base
 import groovy.json.JsonOutput
 import org.apache.commons.io.IOUtils
 import org.apache.log4j.Logger
@@ -50,7 +50,7 @@ class CommandTest extends Specification
 		sampleJsonDom.get(name)
 	}
 	
-	def "JSON validation ~ #pogoClass.getSimpleName() [UNROLL]"() { expect: true }
+	def "JSON validation ~ #pogoClass.getSimpleName() (UNROLL)"() { expect: true }
 	
 	@Unroll
 	def "JSON validation ~ #pogoClass.getSimpleName()"()
@@ -68,16 +68,16 @@ class CommandTest extends Specification
 			Command.class   | getSampleJsonDom("simple/command.json")
 	}
 	
-	def "POGO from JSON ~ Subject"()
-	{
-		when:
-			
-			Subject probject = new Subject(getSampleJsonDom("simple/subject.json"))
-		
-		then:
-			
-			probject.kind == "Subject"
-	}
+//	def "POGO from JSON ~ Subject"()
+//	{
+//		when:
+//
+//			Subject probject = new Subject(getSampleJsonDom("simple/subject.json"))
+//
+//		then:
+//
+//			probject.kind == "Subject"
+//	}
 	
 	def "POGO from JSON ~ Predicate"()
 	{
@@ -87,7 +87,7 @@ class CommandTest extends Specification
 		
 		then:
 			
-			probject.kind == "Predicate"
+			probject.kind == Predicate.class.getCanonicalName()
 	}
 	
 	def "POGO from JSON ~ Command"()
@@ -98,10 +98,10 @@ class CommandTest extends Specification
 		
 		then:
 			
-			probject.kind == "Command"
+			probject.kind == Command.class.getCanonicalName()
 	}
 	
-	def "JSON round-trip ~ #refClass.getSimpleName() [UNROLL]"() { expect: true }
+	def "JSON round-trip ~ #refClass.getSimpleName() (UNROLL)"() { expect: true }
 	
 	@Unroll
 	def "JSON round-trip ~ #refClass.getSimpleName()"()
@@ -109,11 +109,11 @@ class CommandTest extends Specification
 		when:
 			
 			JSONObject firstDom = new JSONObject(new JSONTokener(refText))
-			Base firstObj = refClass.newInstance(firstDom)
+			EntityObject.Base firstObj = refClass.newInstance(firstDom) as EntityObject.Base
 		
 		then:
 			
-			refClass.getSimpleName() == firstObj.getKind()
+			refClass.getCanonicalName() == firstObj.getKind()
 		
 		when:
 			
@@ -129,7 +129,7 @@ class CommandTest extends Specification
 		
 		when:
 			
-			Base dupeObj = refClass.newInstance(dupeDom)
+			EntityObject.Base dupeObj = refClass.newInstance(dupeDom) as EntityObject.Base
 		
 		then:
 			

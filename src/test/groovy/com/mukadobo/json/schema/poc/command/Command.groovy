@@ -45,11 +45,11 @@ class Command extends EntityObject.Base
 		this(IOUtils.toString(stream, "UTF-8"))
 	}
 	
-	private EntityObject   mySubject  () { payload.get("subject"  ) as EntityObject   }
-	private Predicate myPredicate() { payload.get("predicate") as Predicate }
+	private EntityObject mySubject  () { payload.get("subject"  ) as EntityObject }
+	private EntityObject myPredicate() { payload.get("predicate") as EntityObject }
 	
-	private void mySubject  (Subject   subject  ) { payload.put("subject"  , subject  ) }
-	private void myPredicate(Predicate predicate) { payload.put("predicate", predicate) }
+	private void mySubject  (EntityObject subject  ) { payload.put("subject"  , subject  ) }
+	private void myPredicate(EntityObject predicate) { payload.put("predicate", predicate) }
 	
 	Result perform()
 	{

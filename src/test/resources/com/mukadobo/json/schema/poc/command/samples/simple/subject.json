@@ -1,5 +1,5 @@
 {
-	"kind"    : "Subject",
+	"kind"    : "com.mukadobo.json.schema.poc.command.Subject",
 	"version" : "0",
 
 	"name"    : "com.mukadobo/docker-registry/01",

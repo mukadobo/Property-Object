@@ -4,19 +4,9 @@
 
 	"type"     : "object",
 	"required" : [
-		"kind",
-		"version",
-		"name",
-		"species",
 		"selector",
 	],
 	"properties" : {
-		"kind"       : { "type": "string" },
-		"version"    : { "type": "string" },
-
-		"name"       : { "type": "string" },
-		"species"    : { "type": "string" },
-
 		"selector"   : { "type": "object" },
 		"qualifiers" : { "type": "object" },
 	}
