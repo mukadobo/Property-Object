@@ -1,38 +1,29 @@
 package com.mukadobo.propertyobject
 
+import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.version.VersionChain
-import groovy.json.JsonOutput
 import org.json.JSONObject
 
-interface KindAndVersion
+interface KindAndVersion extends EntityObject
 {
 	String       getKind()
 	VersionChain getVersion()
 	
-	class Base implements KindAndVersion
+	class Base extends EntityObject.Base
 	{
-		private final String       kind
-		private final VersionChain version
-		
-		protected Base(String kind, VersionChain version)
+		protected Base(
+			String kind,
+			VersionChain version,
+			String name,
+			UUID uuid
+		)
 		{
-			this.kind    = kind
-			this.version = version
+			super(kind, version, name, uuid)
 		}
 		
 		protected Base(JSONObject jsonDom)
 		{
-			this.kind    = jsonDom.getString("kind")
-			this.version = new VersionChain(jsonDom.getString("version"))
-		}
-		
-		@Override String       getKind()    { kind }
-		@Override VersionChain getVersion() { version }
-		
-		@Override
-		String toString()
-		{
-			JsonOutput.toJson(this)
+			super(jsonDom)
 		}
 	}
 }

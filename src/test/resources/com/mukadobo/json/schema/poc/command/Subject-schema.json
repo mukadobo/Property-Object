@@ -19,6 +19,5 @@
 
 		"selector"   : { "type": "object" },
 		"qualifiers" : { "type": "object" },
-	},
-	"additionalProperties" : false,
+	}
 }
