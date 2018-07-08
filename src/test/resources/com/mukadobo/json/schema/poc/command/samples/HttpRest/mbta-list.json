@@ -1,0 +1,36 @@
+{
+	"kind"      : "Command",
+	"version"   : "0.0.0",
+
+	"verbosity" : "INFO",
+	"dryrun"    : true,
+
+	"payload"   : {
+		"subject"   : {
+			"kind"    : "com.mukadobo.json.schema.poc.command.HttpRest",
+			"version" : "0.0.0",
+
+			"name"    : "com.mukadobo/usa.ma.boston/inventory",
+			"tls"     : true,
+			"server"  : "api-v3.mbta.com",
+			"port"    : "80",
+			"headers" : {
+				"accept"    : "application/vnd.api+json",
+				"x-api-key" : "2f1ac323439541c194f027bad0e59f5c"
+			},
+		},
+		"predicate" : {
+			"kind"    : "Predicate",
+			"version" : "0.0.0",
+
+			"verb"    : "get",
+			"path"    : "stops/8553",
+			"params"  : [
+				{ "q1" : "v1"  },
+				{ "q2" : "v2a" },
+				{ "q3" : "v3"  },
+				{ "q2" : "v2b" },
+			],
+		},
+	},
+}

@@ -1,6 +1,5 @@
 package com.mukadobo.json.schema.poc.command
 
-import com.mukadobo.propertyobject.KindAndVersion.Base
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpEntity
 import org.apache.http.NameValuePair
@@ -14,7 +13,6 @@ import org.apache.http.impl.client.HttpClients
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.util.EntityUtils
 import org.apache.log4j.Logger
-import org.json.JSONObject
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -103,27 +101,37 @@ class CommandPOC extends Specification
 			logger.debug("content2 = ${content2}")
 	}
 	
-	def "Command ~ #sampleName [UNROLL]"() { expect: true }
+	def "Perform ~ #sampleName [GROUP]"() { expect: false }
 	
 	@Unroll
-	def "Command ~ #sampleName"()
+	def "Perform ~ #sampleName"()
 	{
 		// curl -X GET "https://api-v3.mbta.com/stops/8553?api_key=2f1ac323439541c194f027bad0e59f5c" -H "accept: application/vnd.api+json"
 		// curl -X GET "https://api-v3.mbta.com/stops/8553" -H "accept: application/vnd.api+json" -H "x-api-key: 2f1ac323439541c194f027bad0e59f5c"
 		
+		def path = "samples/${sampleName}.json"
+		
 		when:
 			
-			JSONObject commandDom  = CommandTest.getSampleJsonDom("${sampleName}.json")
-			Base       command     = refClass.newInstance(commandDom)
+			InputStream stream    = CommandTest.class.getResourceAsStream(path)
+			Command     command   = new Command(stream)
 		
 		then:
 			
-			refClass.getSimpleName() == command.getKind()
+			Command.class.getSimpleName() == command.getKind()
+		
+		when:
+		
+			Command.Result result = command.perform()
+		
+		then:
+		
+			result.code == Command.Result.Code.SUCCESS
 		
 		where:
 			
-			refClass        | sampleName
-			Command  .class | "HttpRest/mbta-list"
+			x | sampleName
+			0 | "HttpRest/mbta-list"
 	}
 	
 }
