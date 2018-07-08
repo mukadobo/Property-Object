@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils
 import org.everit.json.schema.Schema
 import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
+import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -37,7 +38,7 @@ class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap i
 	
 	JsonSchema(String jsonText)
 	{
-		this(new JSONObject(new JSONTokener(jsonText)))
+		this(jsonTextToDom(jsonText))
 	}
 	
 	JsonSchema(JSONObject jsonDom)
@@ -50,6 +51,18 @@ class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap i
 			.load().build() as Schema
 		
 		schema = loadedSchema
+	}
+	
+	static private JSONObject jsonTextToDom(String jsonText)
+	{
+		try
+		{
+			new JSONObject(new JSONTokener(jsonText))
+		}
+		catch (JSONException e)
+		{
+			throw new RuntimeException("Schema-Input is not even valid JSON text", e)
+		}
 	}
 	
 	NonconformanceException validate(Object subject, Boolean unifiedException = true, Integer msgLimit = 2000, Boolean rethrow = true)
