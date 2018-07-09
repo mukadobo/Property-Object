@@ -15,7 +15,6 @@ import org.apache.http.util.EntityUtils
 import org.apache.log4j.Logger
 import spock.lang.Ignore
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class CommandPOC extends Specification
 {
@@ -106,7 +105,6 @@ class CommandPOC extends Specification
 	
 	def "Perform ~ #sampleName (UNROLL)"() { expect: true }
 	
-	@Unroll
 	def "Perform ~ #sampleName"()
 	{
 		// curl -X GET "https://api-v3.mbta.com/stops/8553?api_key=2f1ac323439541c194f027bad0e59f5c" -H "accept: application/vnd.api+json"
@@ -130,6 +128,8 @@ class CommandPOC extends Specification
 		then:
 		
 			result.status == Command.Result.Status.SUCCESS
+		
+			logger.info("result: ${result}")
 		
 		where:
 			

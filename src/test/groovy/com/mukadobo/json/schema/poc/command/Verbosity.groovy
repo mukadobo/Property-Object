@@ -13,5 +13,5 @@ enum Verbosity {
 	INFO,
 	DEBUG,
 	TRACE,
-	ALL;
+	ALL,
 }

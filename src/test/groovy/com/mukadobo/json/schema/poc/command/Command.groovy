@@ -9,6 +9,11 @@ import org.json.JSONTokener
 
 import java.lang.reflect.Method
 
+/**
+ * TODO:
+ * - Result.getNullable**() is a hack (for easy JsonOutput). Do it right!
+ *
+ */
 @EqualsAndHashCode
 class Command extends EntityObject.Base
 {
@@ -56,33 +61,38 @@ class Command extends EntityObject.Base
 		EntityObject subject   = mySubject()
 		EntityObject predicate = myPredicate()
 		
-		Class  subjectClass
+		Class  subjectClass = subject.getClass()
 		Method subjectPerform
 		Result performResult
 
 		try
 		{
-			subjectClass   = subject.getClass()
 			subjectPerform = subjectClass.getMethod("perform", Predicate.class)
 			performResult  = subjectPerform.invoke(subject, predicate) as Result
 		}
 		catch (NoSuchMethodException e)
 		{
-			return new Result(
-				Result.Status.FAILURE,
+			// a bit convoluted, but quiets erroneous IDE warning
+			
+			Map args = [
 				summary : "Subject can't perform action",
-				detaul  : "Method not found for subject: ${subjectClass}.perform(Predicate)",
+				detail  : "Method not found for subject: ${subjectClass}.perform(Predicate)",
 				cause   : e
-			)
+			]
+			
+			return new Result(args, Result.Status.FAILURE)
 		}
 		catch(Throwable e)
 		{
-			return new Result(
-				Result.Status.FAILURE,
+			// a bit convoluted, but quiets erroneous IDE warning
+			
+			Map args = [
 				summary : "Subject can't perform action",
-				detaul  : "General error: ${e}",
+				detail  : "General error: ${e}",
 				cause   : e
-			)
+			]
+			
+			return new Result(args, Result.Status.FAILURE)
 		}
 		
 		performResult
@@ -112,8 +122,10 @@ class Command extends EntityObject.Base
 			FAILURE
 		}
 		
-		Throwable getNullableCause  () { cause   ? cause  .get() : null }
-		Throwable getNullableProduct() { product ? product.get() : null }
+		// These "getNullable**()" are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
+		
+		Throwable getNullableCause  () { cause  .isPresent() ? cause  .get() : null }
+		Object    getNullableProduct() { product.isPresent() ? product.get() : null }
 		
 		String toString()
 		{

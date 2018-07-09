@@ -13,7 +13,6 @@
 			"name"    : "com.mukadobo/usa.ma.boston/inventory",
 			"tls"     : true,
 			"server"  : "api-v3.mbta.com",
-			"port"    : "80",
 			"headers" : {
 				"accept"    : "application/vnd.api+json",
 				"x-api-key" : "2f1ac323439541c194f027bad0e59f5c"
