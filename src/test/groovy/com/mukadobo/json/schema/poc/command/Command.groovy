@@ -17,6 +17,16 @@ import java.lang.reflect.Method
 @EqualsAndHashCode
 class Command extends EntityObject.Base
 {
+	/**
+	 * Payload items that perform action are not required to implement this interface - they
+	 * merely need to have method with the signature. Using the interface, however, helps
+	 * keep performers "neat" (and allows IDE support... :)
+	 */
+	interface Performer
+	{
+		Command.Result perform(Map args)
+	}
+	
 	Boolean dryrun
 	String  verbosity
 	
@@ -58,29 +68,47 @@ class Command extends EntityObject.Base
 	
 	Result perform()
 	{
-		EntityObject subject   = mySubject()
-		EntityObject predicate = myPredicate()
+		Map<String, Method> performers = payload.collectEntries { k, v ->
+			try
+			{
+				[(k) : v.getClass().getMethod("perform", Map.class)]
+			}
+			catch (NoSuchMethodException ignored)
+			{
+				[:]
+			}
+		} as Map<String, Method>
 		
-		Class  subjectClass = subject.getClass()
-		Method subjectPerform
-		Result performResult
+		if (performers.isEmpty())
+		{
+			return Result.failure(
+				summary: "Command payload has nothing with #.perform(Map)",
+				detail : "No #.perform(Map) found for any payload items: ${payload.keySet()}",
+			)
+		}
+		
+		if (performers.size() > 1)
+		{
+			return Result.failure(
+				summary: "Command payload has multiple items with #.perform(Map)",
+				detail : "Found ${performers.size()} payload items with #.perform(Map): ${performers.keySet()}",
+				)
+		}
+		
+		Map<String, Object> performArgs = ([:] << payload).findAll {
+			! performers.get(it.key)
+		}
+		
+		Map.Entry<String, Method> performEntry = performers.entrySet().stream().findFirst().get()
+		
+		String       performKey    = performEntry.key
+		Method       performMethod = performEntry.value
+		EntityObject performer     = payload.get(performKey)
+		Result       performResult
 
 		try
 		{
-			subjectPerform = subjectClass.getMethod("perform", Predicate.class)
-			performResult  = subjectPerform.invoke(subject, predicate) as Result
-		}
-		catch (NoSuchMethodException e)
-		{
-			// a bit convoluted, but quiets erroneous IDE warning
-			
-			Map args = [
-				summary : "Subject can't perform action",
-				detail  : "Method not found for subject: ${subjectClass}.perform(Predicate)",
-				cause   : e
-			]
-			
-			return new Result(args, Result.Status.FAILURE)
+			performResult  = performMethod.invoke(performer, performArgs) as Result
 		}
 		catch(Throwable e)
 		{
@@ -122,10 +150,26 @@ class Command extends EntityObject.Base
 			FAILURE
 		}
 		
+		static Result failure(Map args = [:])
+		{
+			new Result(args, Result.Status.FAILURE)
+		}
+		
+		static Result success(Map args = [:])
+		{
+			new Result(args, Result.Status.SUCCESS)
+		}
+		
 		// These "getNullable**()" are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
 		
-		Throwable getNullableCause  () { cause  .isPresent() ? cause  .get() : null }
-		Object    getNullableProduct() { product.isPresent() ? product.get() : null }
+		Throwable getNullableCause  () {
+			cause  .isPresent() ?
+				cause  .get() :
+				null }
+		Object    getNullableProduct() {
+			product.isPresent() ?
+				product.get() :
+				null }
 		
 		String toString()
 		{

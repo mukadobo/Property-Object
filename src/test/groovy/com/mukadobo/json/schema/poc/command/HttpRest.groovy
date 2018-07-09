@@ -26,7 +26,7 @@ import org.json.JSONTokener
  *    - include response time
  *
  */
-class HttpRest extends EntityObject.Base
+class HttpRest extends EntityObject.Base implements Command.Performer
 {
 	static private Logger     logger = Logger.getLogger(HttpRest)
 	static private JsonSchema schema = null
@@ -72,7 +72,7 @@ class HttpRest extends EntityObject.Base
 		}
 	}
 	
-	Command.Result perform(Predicate predicate)
+	Command.Result perform(Map args)
 	{
 		// cribbed from: https://hc.apache.org/httpcomponents-client-ga/quickstart.html
 		
@@ -106,7 +106,7 @@ class HttpRest extends EntityObject.Base
 				entity1.getContent().withCloseable { content ->
 					String contentText = IOUtils.toString(content, "UTF-8")
 					
-					product = new JSONObject(new JSONTokener(contentText))
+					product = new JSONObject(new JSONTokener(contentText)).toMap()
 				}
 				
 				EntityUtils.consume(entity1)
