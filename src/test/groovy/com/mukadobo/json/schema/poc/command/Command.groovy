@@ -162,14 +162,8 @@ class Command extends EntityObject.Base
 		
 		// These "getNullable**()" are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
 		
-		Throwable getNullableCause  () {
-			cause  .isPresent() ?
-				cause  .get() :
-				null }
-		Object    getNullableProduct() {
-			product.isPresent() ?
-				product.get() :
-				null }
+		Throwable getNullableCause()   { cause  .isPresent() ? cause  .get() : null }
+		Object    getNullableProduct() { product.isPresent() ? product.get() : 	null }
 		
 		String toString()
 		{
