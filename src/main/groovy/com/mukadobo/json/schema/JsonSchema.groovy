@@ -9,7 +9,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 
-class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap instead...
+class JsonSchema // NOTE: extending ObjectSchema is a pain, so wrap instead...
 {
 	static final JSONObject EMPTY_JSON_DOM_MAP   = new JSONObject(new JSONTokener("{}"))
 	static final JSONArray  EMPTY_JSON_DOM_ARRAY = new JSONArray (new JSONTokener("[]"))
@@ -127,14 +127,6 @@ class JsonSchema // extends ObjectSchema // NOTE: extending is a pain, so wrap i
 	String                   getId()                           { schema.getId() }
 	String                   getSchemaLocation()               { schema.getSchemaLocation() }
 	String                   toString()                        { schema.toString() }
-	Integer                  getMaxProperties()                { schema.getMaxProperties() }
-	Integer                  getMinProperties()                { schema.getMinProperties() }
-	Map<String, Set<String>> getPropertyDependencies()         { schema.getPropertyDependencies() }
-	Map<String, Schema>      getPropertySchemas()              { schema.getPropertySchemas() }
-	List<String>             getRequiredProperties()           { schema.getRequiredProperties() }
-	Map<String, Schema>      getSchemaDependencies()           { schema.getSchemaDependencies() }
-	Schema                   getSchemaOfAdditionalProperties() { schema.getSchemaOfAdditionalProperties() }
-	Schema                   getPropertyNameSchema()           { schema.getPropertyNameSchema() }
 	
 	// @formatter:on
 }
