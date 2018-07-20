@@ -9,14 +9,23 @@ class Predicate extends EntityObject.Base
 {
 	final String verb
 	final String path
+	final List<Map<String, Object>> params
 	
 	Predicate(JSONObject jsonDom)
 	{
 		super(jsonDom)
 		
-		verb = jsonDom.getString("verb")
-		path = jsonDom.getString("path")
-		params = jsonDom.getJSONArray("params").toList()
+		verb = jsonDom.optString("verb")
+		path = jsonDom.optString("path")
+		
+		if (! jsonDom.has("params"))
+		{
+			params = Collections.EMPTY_LIST
+		}
+		else
+		{
+			params = jsonDom.optJSONArray("params").toList()
+		}
 	}
 }
 

@@ -66,7 +66,7 @@ class EntityObjectTest extends Specification
 			false  | "missing+kind"
 			true   | "missing+name"
 			true   | "missing+uuid"
-			false  | "missing+version"
+			true   | "missing+version"
 			true   | "zero"
 	}
 	

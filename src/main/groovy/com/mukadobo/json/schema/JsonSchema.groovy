@@ -1,6 +1,7 @@
 package com.mukadobo.json.schema
 
 import org.apache.commons.io.IOUtils
+import org.everit.json.schema.ObjectSchema
 import org.everit.json.schema.Schema
 import org.everit.json.schema.ValidationException
 import org.everit.json.schema.loader.SchemaLoader
@@ -127,6 +128,15 @@ class JsonSchema // NOTE: extending ObjectSchema is a pain, so wrap instead...
 	String                   getId()                           { schema.getId() }
 	String                   getSchemaLocation()               { schema.getSchemaLocation() }
 	String                   toString()                        { schema.toString() }
+	
+	Integer                  getMaxProperties()                { (schema as ObjectSchema).getMaxProperties() }
+	Integer                  getMinProperties()                { (schema as ObjectSchema).getMinProperties() }
+	Map<String, Set<String>> getPropertyDependencies()         { (schema as ObjectSchema).getPropertyDependencies() }
+	Map<String, Schema>      getPropertySchemas()              { (schema as ObjectSchema).getPropertySchemas() }
+	List<String>             getRequiredProperties()           { (schema as ObjectSchema).getRequiredProperties() }
+	Map<String, Schema>      getSchemaDependencies()           { (schema as ObjectSchema).getSchemaDependencies() }
+	Schema                   getSchemaOfAdditionalProperties() { (schema as ObjectSchema).getSchemaOfAdditionalProperties() }
+	Schema                   getPropertyNameSchema()           { (schema as ObjectSchema).getPropertyNameSchema() }
 	
 	// @formatter:on
 }
