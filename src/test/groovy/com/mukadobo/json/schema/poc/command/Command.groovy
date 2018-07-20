@@ -1,6 +1,7 @@
 package com.mukadobo.json.schema.poc.command
 
 import com.mukadobo.json.schema.EntityObject
+import com.mukadobo.json.schema.JsonTo
 import groovy.json.JsonOutput
 import groovy.transform.EqualsAndHashCode
 import org.apache.commons.io.IOUtils
@@ -8,7 +9,6 @@ import org.json.JSONObject
 import org.json.JSONTokener
 
 import java.lang.reflect.Method
-
 /**
  * TODO:
  * - Result.getNullable**() is a hack (for easy JsonOutput). Do it right!
@@ -43,7 +43,7 @@ class Command extends EntityObject.Base
 		
 		payloadDom.keySet().each { key ->
 			
-			EntityObject item = EntityObject.Base.factory(payloadDom.getJSONObject(key))
+			Object item = JsonTo.pogoFromDom(payloadDom.get(key))
 			
 			payload.put(key, item)
 		}
