@@ -35,7 +35,7 @@ interface EntityObject
 			validate(jsonDom)
 			
 			this.kind    = jsonDom.getString("kind")
-			this.version = new VersionChain(jsonDom.getString("version"))
+			this.version = new VersionChain(jsonDom.optString("version", "0"))
 			this.name    = jsonDom.optString("name", null)
 			this.uuid    = UUID.fromString(jsonDom.optString("uuid", '00000000-0000-0000-0000-000000000000'))
 		}
@@ -91,6 +91,27 @@ interface EntityObject
 			catch (Throwable e)
 			{
 				throw new RuntimeException("failed to instantiate kind: $kind", e)
+			}
+		}
+		
+		static Boolean canTransformFrom(Object candidate)
+		{
+			Object kind = candidate.opt("kind")
+			if (kind == null || !(kind instanceof String))
+			{
+				false
+			}
+			else
+			{
+				try
+				{
+					Class foundClass = Class.forName(kind)
+					foundClass != null
+				}
+				catch (ClassNotFoundException e)
+				{
+					false
+				}
 			}
 		}
 		
