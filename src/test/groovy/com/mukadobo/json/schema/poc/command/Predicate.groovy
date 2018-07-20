@@ -7,13 +7,16 @@ import org.json.JSONObject
 @EqualsAndHashCode
 class Predicate extends EntityObject.Base
 {
-	String verb
+	final String verb
+	final String path
 	
 	Predicate(JSONObject jsonDom)
 	{
 		super(jsonDom)
 		
-		verb = jsonDom.verb
+		verb = jsonDom.getString("verb")
+		path = jsonDom.getString("path")
+		params = jsonDom.getJSONArray("params").toList()
 	}
 }
 

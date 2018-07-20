@@ -31,5 +31,13 @@
 				{ "q2" : "v2b" },
 			],
 		},
+		"post" : {
+			"encoding" : "base64",
+			"data"     : "SGVsbG9pLCBIdHRwUmVzdCBwZXJmb3JtZXIh"
+		},
+		"notes" : [
+			"Nothing really special here.",
+			"Data decodes to 'Helloi, HttpRest performer!'"
+		]
 	},
 }
