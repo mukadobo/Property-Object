@@ -92,8 +92,8 @@ class HttpRest extends EntityObject.Base implements Command.Performer
 		HttpClients.createDefault().withCloseable { httpclient ->
 			
 			HttpUriRequest httpRequest = predicate.verb.newRequest(urlFull)
-			headers.entrySet().each { Map.Entry entry ->
-				httpRequest.setHeader(entry.getKey(), entry.getValue())
+			headers.entrySet().each { Map.Entry<String, Object> entry ->
+				httpRequest.setHeader(entry.getKey(), entry.getValue().toString())
 			}
 			
 			httpclient.execute(httpRequest).withCloseable { response1 ->
