@@ -41,6 +41,7 @@ dependencies {
     compile     noWhite('org.jboss                          : jboss-dmr                   : 1.3.0.Final')
     compile     noWhite("org.jetbrains.kotlin               : kotlin-stdlib-jdk8          : $kotlin_version")
 	compile     noWhite('org.yaml                           : snakeyaml                   : 1.16 ')
+	compile     noWhite('com.spotify                        : docker-client               : 8.11.7')
 
     testCompile noWhite('org.spockframework                 : spock-core                  : 1.1-groovy-2.4')
 }
