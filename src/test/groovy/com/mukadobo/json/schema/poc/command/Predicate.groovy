@@ -7,7 +7,7 @@ import org.json.JSONObject
 @EqualsAndHashCode
 class Predicate extends EntityObject.Base
 {
-	final String verb
+	final HttpVerb verb
 	final String path
 	final List<Map<String, Object>> params
 	
@@ -15,7 +15,7 @@ class Predicate extends EntityObject.Base
 	{
 		super(jsonDom)
 		
-		verb = jsonDom.optString("verb")
+		verb = HttpVerb.from(jsonDom.optString("verb"))
 		path = jsonDom.optString("path")
 		
 		if (! jsonDom.has("params"))

@@ -4,13 +4,12 @@ import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.json.schema.JsonSchema
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpEntity
-import org.apache.http.client.methods.HttpGet
+import org.apache.http.client.methods.HttpUriRequest
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
 import org.apache.log4j.Logger
 import org.json.JSONObject
 import org.json.JSONTokener
-
 /**
  *  TODO:
  *  - !! Actually pull elements from perform(...) arguments
@@ -74,27 +73,30 @@ class HttpRest extends EntityObject.Base implements Command.Performer
 	
 	Command.Result perform(Map args)
 	{
+		Predicate predicate = args.predicate
+		
 		// cribbed from: https://hc.apache.org/httpcomponents-client-ga/quickstart.html
 		
 		String scheme   = tls ? "https" : "http"
 		String urlBase  = "$scheme://$server:$port"
-		String urlPath  = "stops/8553"
+		String urlPath  = predicate.path
 		String urlBody  = "$urlBase/$urlPath"
 		String urlQuery = ""
 		String urlFull  = "$urlBody$urlQuery"
 		
-		String summary = "HTTP-GET: $urlFull"
+		String summary = "HTTP-${predicate.verb}: $urlFull"
 		Object product = null
 		
 		logger.info("urlFull=$urlFull")
 	
 		HttpClients.createDefault().withCloseable { httpclient ->
 			
-			HttpGet httpGet = new HttpGet(urlFull)
-			httpGet.setHeader("accept"   , "application/vnd.api+json")
-			httpGet.setHeader("x-api-key", "2f1ac323439541c194f027bad0e59f5c")
+			HttpUriRequest httpRequest = predicate.verb.newRequest(urlFull)
+			headers.entrySet().each { Map.Entry entry ->
+				httpRequest.setHeader(entry.getKey(), entry.getValue())
+			}
 			
-			httpclient.execute(httpGet).withCloseable { response1 ->
+			httpclient.execute(httpRequest).withCloseable { response1 ->
 				
 				logger.info(response1.getStatusLine())
 				
