@@ -11,7 +11,7 @@ import org.apache.log4j.Logger
 import org.json.JSONObject
 import org.json.JSONTokener
 /**
- *  TODO:
+ *  <PRE>TODO:
  *  - !! Actually pull elements from perform(...) arguments
  *  - !! Some kind of authentication secret coordination
  *  ---------------------------------------------------------------------------
@@ -24,6 +24,8 @@ import org.json.JSONTokener
  *    - should always include non-secret URL parts
  *    - include response time
  *
+ * </PRE>
+ * See <A HREF="https://hc.apache.org/index.html">https://hc.apache.org/index.html</A>
  */
 class HttpRest extends EntityObject.Base implements Command.Performer
 {
