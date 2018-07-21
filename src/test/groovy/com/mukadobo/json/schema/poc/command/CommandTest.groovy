@@ -82,10 +82,10 @@ class CommandTest extends Specification
 		
 		where:
 			
-			pogoClass       | jsonText
-			Subject.class   | getSampleJsonDom("simple/subject.json")
-			Predicate.class | getSampleJsonDom("simple/predicate.json")
-			Command.class   | getSampleJsonDom("simple/command.json")
+			pogoClass           | jsonText
+			Subject.class       | getSampleJsonDom("simple/subject.json")
+			HttpPredicate.class | getSampleJsonDom("simple/predicate.json")
+			Command.class       | getSampleJsonDom("simple/command.json")
 	}
 	
 //	def "POGO from JSON ~ Subject"()
@@ -103,11 +103,11 @@ class CommandTest extends Specification
 	{
 		when:
 			
-			Predicate probject = new Predicate(getSampleJsonDom("simple/predicate.json"))
+			HttpPredicate probject = new HttpPredicate(getSampleJsonDom("simple/predicate.json"))
 		
 		then:
 			
-			probject.kind == Predicate.class.getCanonicalName()
+			probject.kind == HttpPredicate.class.getCanonicalName()
 	}
 	
 	def "POGO from JSON ~ Command"()
@@ -158,10 +158,10 @@ class CommandTest extends Specification
 		
 		where:
 			
-			refClass        | refText
-			Predicate.class | getSampleText('simple/predicate.json')
-			Subject.class   | getSampleText('simple/subject.json')
-			Command.class   | getSampleText('simple/command.json')
+			refClass            | refText
+			HttpPredicate.class | getSampleText('simple/predicate.json')
+			Subject.class       | getSampleText('simple/subject.json')
+			Command.class       | getSampleText('simple/command.json')
 	}
 	
 	def "Command ~ constructors"()

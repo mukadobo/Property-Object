@@ -1,5 +1,5 @@
 {
-	"kind"    : "com.mukadobo.json.schema.poc.command.Predicate",
+	"kind"    : "com.mukadobo.json.schema.poc.command.HttpPredicate",
 	"version" : "0",
 
 	"verb"    : "get"

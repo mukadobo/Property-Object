@@ -29,7 +29,7 @@
 			],
 			"properties" : {
 				"subject"   : { "$ref": "jsonschema:com.mukadobo.json.schema.EntityObject"   },
-				"predicate" : { "$ref": "jsonschema:com.mukadobo.json.schema.poc.command.Predicate" }
+				"predicate" : { "$ref": "jsonschema:com.mukadobo.json.schema.poc.command.HttpPredicate" }
 			},
 			"additionalProperties": false
 		}

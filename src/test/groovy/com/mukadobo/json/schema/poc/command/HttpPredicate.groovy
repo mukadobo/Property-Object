@@ -5,13 +5,13 @@ import groovy.transform.EqualsAndHashCode
 import org.json.JSONObject
 
 @EqualsAndHashCode
-class Predicate extends EntityObject.Base
+class HttpPredicate extends EntityObject.Base
 {
 	final HttpVerb verb
 	final String path
 	final List<Map<String, Object>> params
 	
-	Predicate(JSONObject jsonDom)
+	HttpPredicate(JSONObject jsonDom)
 	{
 		super(jsonDom)
 		

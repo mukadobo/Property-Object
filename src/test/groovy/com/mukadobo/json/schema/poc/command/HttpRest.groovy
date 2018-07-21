@@ -73,7 +73,7 @@ class HttpRest extends EntityObject.Base implements Command.Performer
 	
 	Command.Result perform(Map args)
 	{
-		Predicate predicate = args.predicate
+		HttpPredicate predicate = args.predicate
 		
 		// cribbed from: https://hc.apache.org/httpcomponents-client-ga/quickstart.html
 		
