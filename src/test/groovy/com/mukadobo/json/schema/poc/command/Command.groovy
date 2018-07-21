@@ -82,16 +82,16 @@ class Command extends EntityObject.Base
 		if (performers.isEmpty())
 		{
 			return Result.failure(
-				summary: "Command payload has nothing with #.perform(Map)",
-				detail : "No #.perform(Map) found for any payload items: ${payload.keySet()}",
+				summary: "No payload item with #perform(Map)",
+				detail : "No #perform(Map) found for any available payload items: ${payload.keySet()}",
 			)
 		}
 		
 		if (performers.size() > 1)
 		{
 			return Result.failure(
-				summary: "Command payload has multiple items with #.perform(Map)",
-				detail : "Found ${performers.size()} payload items with #.perform(Map): ${performers.keySet()}",
+				summary: "Multiple payload items with #perform(Map)",
+				detail : "Found ${performers.size()} payload items with #perform(Map): ${performers.keySet()}",
 				)
 		}
 		
@@ -139,7 +139,7 @@ class Command extends EntityObject.Base
 		{
 			this.status  = status
 			this.summary = args.get("summary", this.status)
-			this.detail  = args.get("detail" , this.detail)
+			this.detail  = args.get("detail" , this.summary)
 			this.cause   = Optional.ofNullable(args.get("cause", (Throwable) null))
 			this.product = Optional.ofNullable(args.get("product"))
 		}
@@ -158,6 +158,11 @@ class Command extends EntityObject.Base
 		static Result success(Map args = [:])
 		{
 			new Result(args, Result.Status.SUCCESS)
+		}
+		
+		static Result nyi(String what)
+		{
+			new Result(Result.Status.SUCCESS, summary : "NYI: $what")
 		}
 		
 		// These "getNullable**()" are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
