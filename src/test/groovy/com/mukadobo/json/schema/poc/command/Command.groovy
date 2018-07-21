@@ -18,9 +18,9 @@ import java.lang.reflect.Method
 class Command extends EntityObject.Base
 {
 	/**
-	 * Payload items that perform action are not required to implement this interface - they
+	 * Payload items that perform an action are not required to implement this interface - they
 	 * merely need to have method with the signature. Using the interface, however, helps
-	 * keep performers "neat" (and allows IDE support... :)
+	 * keep performers "neat" (and allows IDE support... !-)
 	 */
 	interface Performer
 	{
@@ -115,7 +115,7 @@ class Command extends EntityObject.Base
 			// a bit convoluted, but quiets erroneous IDE warning
 			
 			Map args = [
-				summary : "Subject can't perform action",
+				summary : "Subject #perform() failure",
 				detail  : "General error: ${e}",
 				cause   : e
 			]
