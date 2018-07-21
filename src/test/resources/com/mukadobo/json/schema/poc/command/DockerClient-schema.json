@@ -1,0 +1,23 @@
+{
+	"$id": "jsonschema:com.mukadobo.json.schema.poc.command.Predicate",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": [
+		"kind",
+		"version",
+
+		"action"
+	],
+	"properties": {
+		"kind": {
+			"type": "string"
+		},
+		"version": {
+			"type": "string"
+		},
+
+		"action": {
+			"type": "string"
+		},
+	}
+}
