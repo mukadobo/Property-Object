@@ -49,4 +49,15 @@ class JsonTo
 		
 		list
 	}
+	
+	static JSONObject shallowCopy(Map<String, Object> replacements = [:], JSONObject jsonDom)
+	{
+		JSONObject copy = new JSONObject()
+		
+		jsonDom.keySet().each { k    -> copy.put(k, jsonDom.get(k)) }
+		replacements    .each { k, v -> copy.put(k, v             ) }
+		
+		copy
+		
+	}
 }
