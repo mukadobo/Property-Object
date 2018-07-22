@@ -3,7 +3,11 @@ package com.mukadobo.json.schema
 import com.mukadobo.version.VersionChain
 import groovy.json.JsonOutput
 import groovy.transform.EqualsAndHashCode
+import org.apache.log4j.Logger
 import org.json.JSONObject
+
+import java.lang.reflect.Constructor
+import java.lang.reflect.Method
 
 interface EntityObject
 {
@@ -15,6 +19,7 @@ interface EntityObject
 	@EqualsAndHashCode
 	class Base implements EntityObject
 	{
+		static private Logger     logger = Logger.getLogger(Base)
 		static private JsonSchema schema = null
 		
 		private final String       kind
@@ -71,26 +76,77 @@ interface EntityObject
 			validate(jsonDom)
 			
 			String kind  = jsonDom.getString("kind")
+			logger.info("kind=${kind}")
 			
+			Class  kindClass
 			try
 			{
-				Class  kindClass = Class.forName(kind)
-				kindClass.newInstance(jsonDom) as EntityObject
+				kindClass = Class.forName(kind)
 			}
 			catch (ClassNotFoundException e)
 			{
-				throw new RuntimeException("No such class for kind: $kind")
+				throw new RuntimeException("No such kind-class: $kind", e)
 			}
-			catch (GroovyRuntimeException e)
+			logger.info("kindClass=${kindClass}")
+			
+			Constructor constructor
+			try
 			{
-				if (e.getMessage() ==~ /^Could not find matching constructor for:.*/)
-					throw new RuntimeException("kind class has no constructor: ${kind}(JSONObject)")
-				else
-					throw new RuntimeException("failed to instantiate kind: $kind", e)
+				constructor = kindClass.getConstructor(JSONObject.class)
 			}
-			catch (Throwable e)
+			catch (NoSuchMethodException ignored)
 			{
-				throw new RuntimeException("failed to instantiate kind: $kind", e)
+				constructor = null
+			}
+			logger.info("constructor=${constructor}")
+			
+			Object instance = null
+			if (constructor)
+			{
+				try
+				{
+					instance = constructor.newInstance(jsonDom)
+				}
+				catch (GroovyRuntimeException e)
+				{
+					if (! e.getMessage() ==~ /^Could not find matching constructor for:.*/)
+						throw new RuntimeException("kind-class constructor failure: $constructor", e)
+				}
+				catch (Throwable e)
+				{
+					throw new RuntimeException("kind-class constructor failure: $constructor", e)
+				}
+			}
+			
+			if (instance != null)
+			{
+				instance as EntityObject
+			}
+			else
+			{
+				Method thisFactory = EntityObject.Base.class.getMethod("factory", JSONObject.class)
+				Method kindFactory
+				try
+				{
+					kindFactory = kindClass.getMethod("factory", JSONObject.class)
+				}
+				catch (NoSuchMethodException ignored)
+				{
+					kindFactory = null
+				}
+				logger.info("kindFactory=${kindFactory}")
+				
+				if (!kindFactory || kindFactory == thisFactory)
+					throw new RuntimeException("kind-class has no suitable constructor or factory: $kind")
+				
+				instance = kindFactory.invoke(null, jsonDom)
+				if (instance == null)
+					throw new RuntimeException("kind-factory returned null: $kindFactory")
+				
+				if (! kindClass.isInstance(instance))
+					throw new RuntimeException("kind-factory return type mismatch: $kindFactory")
+				
+				instance as EntityObject
 			}
 		}
 		
@@ -108,7 +164,7 @@ interface EntityObject
 					Class foundClass = Class.forName(kind)
 					foundClass != null
 				}
-				catch (ClassNotFoundException e)
+				catch (ClassNotFoundException ignored)
 				{
 					false
 				}
