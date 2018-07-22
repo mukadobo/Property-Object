@@ -9,6 +9,7 @@ import org.json.JSONObject
 import org.json.JSONTokener
 
 import java.lang.reflect.Method
+import java.util.stream.Stream
 /**
  * TODO:
  * - Result.getNullable**() is a hack (for easy JsonOutput). Do it right!
@@ -31,7 +32,7 @@ class Command extends EntityObject.Base
 	Boolean      dryrun
 	String       verbosity
 	
-	Map<String, EntityObject> payload = new LinkedHashMap<>()
+	Map<String, Object> payload = new LinkedHashMap<>()
 	
 	Command(JSONObject jsonDom)
 	{
@@ -94,18 +95,14 @@ class Command extends EntityObject.Base
 			return Result.failure(
 				summary: "Multiple payload items with #perform(Map)",
 				detail : "Found ${performers.size()} payload items with #perform(Map): ${performers.keySet()}",
-				)
-		}
-		
-		Map<String, Object> performArgs = ([:] << payload).findAll {
-			! performers.get(it.key)
+			)
 		}
 		
 		Map.Entry<String, Method> performEntry = performers.entrySet().stream().findFirst().get()
 		
 		String       performKey    = performEntry.key
 		Method       performMethod = performEntry.value
-		EntityObject performer     = payload.get(performKey)
+		EntityObject performer     = payload.get(performKey) as EntityObject
 		Result       performResult
 
 		try
@@ -130,20 +127,54 @@ class Command extends EntityObject.Base
 	
 	static class Result
 	{
-		final Status status
-		final String summary
-		final String detail
+		final Status                  status
+		final String                  summary
+		final String                  detail
+		final Optional<Object>        product
+		final Optional<Object>        cause
+		final List<String>            codePoint
 		
-		final Optional<Throwable> cause
-		final Optional<Object>    product
+		private static final String[] CODE_POINT_CLASS_PREFIX_SKIPS = [
+			'com.intellij.junit4.',
+			'com.intellij.rt.',
+			'java.lang.Thread.',
+			'java_lang_Thread$getStackTrace$.',
+			'java.lang.reflect.',
+			'org.codehaus.groovy.reflection.',
+			'org.codehaus.groovy.runtime.',
+			'org.junit.runner.JUnitCore.',
+			'org.spockframework.runtime.',
+			'org.spockframework.util.ReflectionUtil.',
+			'sun.reflect.',
+			'com.mukadobo.json.schema.poc.command.Command$Result'
+		]
 		
 		Result(Map args = [:], Status status)
 		{
-			this.status  = status
-			this.summary = args.get("summary", this.status)
-			this.detail  = args.get("detail" , this.summary)
-			this.cause   = Optional.ofNullable(args.get("cause", (Throwable) null))
-			this.product = Optional.ofNullable(args.get("product"))
+			StackTraceElement[]       steArray  = Thread.currentThread().getStackTrace()
+			Stream<StackTraceElement> steStream = Stream.of(steArray) as Stream<StackTraceElement>
+			List<StackTraceElement>   steList   = steStream
+				.skip(2)
+				.filter {
+					String steClassName = it.getClassName() + "."
+					
+					! Stream.of(CODE_POINT_CLASS_PREFIX_SKIPS).filter { steClassName.startsWith(it as String) }.findFirst().isPresent()
+				}
+				.limit(100)
+				.collect()
+			
+			List<String> steTexts = steList.stream()
+				.map {
+					"at ${it.getClassName()}.${it.getMethodName()}(${it.getFileName()}:${it.getLineNumber()})"
+				}
+				.collect()
+
+			this.status    = status
+			this.summary   = args.get("summary", this.status)
+			this.detail    = args.get("detail" , this.summary)
+			this.cause     = Optional.ofNullable(args.get("cause", null))
+			this.codePoint = steTexts
+			this.product   = Optional.ofNullable(args.get("product"))
 		}
 		
 		static enum Status
@@ -174,8 +205,8 @@ class Command extends EntityObject.Base
 		
 		// These getters are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
 		
-		Throwable getCause()   { cause  .isPresent() ? cause  .get() : null }
-		Object    getProduct() { product.isPresent() ? product.get() : null }
+		Object getCause()   { cause  .isPresent() ? cause  .get() : null }
+		Object getProduct() { product.isPresent() ? product.get() : null }
 		
 		String toString()
 		{
