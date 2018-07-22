@@ -82,7 +82,8 @@ class JsonSchema // NOTE: extending ObjectSchema is a pain, so wrap instead...
 		{
 			derived = new NonconformanceException(schema, caught, unifiedException, msgLimit)
 			
-			if (rethrow) throw derived
+			if (rethrow)
+				throw derived
 		}
 		
 		derived

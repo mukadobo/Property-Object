@@ -6,6 +6,9 @@
 	"dryrun"    : true,
 
 	"payload"   : {
+		"notes" : [
+			"SEE: https://www.mbta.com/developers",
+		],
 		"subject"   : {
 			"kind"    : "com.mukadobo.json.schema.poc.command.HttpRest",
 			"version" : "0.0.0",
@@ -35,9 +38,5 @@
 			"encoding" : "base64",
 			"data"     : "SGVsbG9pLCBIdHRwUmVzdCBwZXJmb3JtZXIh"
 		},
-		"notes" : [
-			"Nothing really special here.",
-			"Data decodes to 'Helloi, HttpRest performer!'"
-		]
 	},
 }
