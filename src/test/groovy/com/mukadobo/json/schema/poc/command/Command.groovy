@@ -36,8 +36,8 @@ class Command extends EntityObject.Base
 	{
 		super(jsonDom)
 		
-		dryrun    = jsonDom.getBoolean("dryrun")
-		verbosity = jsonDom.getEnum(Verbosity.class, "verbosity")
+		dryrun    = jsonDom.optBoolean("dryrun", false)
+		verbosity = jsonDom.optEnum(Verbosity.class, "verbosity", Verbosity.INFO)
 		
 		JSONObject payloadDom = jsonDom.getJSONObject("payload")
 		
@@ -108,7 +108,7 @@ class Command extends EntityObject.Base
 
 		try
 		{
-			performResult  = performMethod.invoke(performer, performArgs) as Result
+			performResult  = performMethod.invoke(performer, payload) as Result
 		}
 		catch(Throwable e)
 		{
@@ -150,6 +150,11 @@ class Command extends EntityObject.Base
 			FAILURE
 		}
 		
+		static Result failure(String summary)
+		{
+			new Result(Result.Status.FAILURE, summary: summary)
+		}
+		
 		static Result failure(Map args = [:])
 		{
 			new Result(args, Result.Status.FAILURE)
@@ -162,7 +167,7 @@ class Command extends EntityObject.Base
 		
 		static Result nyi(String what)
 		{
-			new Result(Result.Status.SUCCESS, summary : "NYI: $what")
+			new Result(Result.Status.FAILURE, summary : "NYI: $what")
 		}
 		
 		// These "getNullable**()" are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
