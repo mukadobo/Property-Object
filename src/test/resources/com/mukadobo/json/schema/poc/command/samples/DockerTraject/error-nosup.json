@@ -4,7 +4,7 @@
 
 	"payload"   : {
 		"docker"   : {
-			"kind"    : "com.mukadobo.json.schema.poc.command.DockerClient",
+			"kind"    : "com.mukadobo.json.schema.poc.command.DockerTraject",
 			"version" : "0.0.0",
 
 			"action"  : "$nosup",

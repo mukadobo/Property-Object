@@ -5,7 +5,7 @@
 	],
 	"payload"   : {
 		"subject"   : {
-			"kind"    : "com.mukadobo.json.schema.poc.command.HttpRest",
+			"kind"    : "com.mukadobo.json.schema.poc.command.http.HttpTraject",
 
 			"name"    : "com.mukadobo/usa.ma.boston/inventory",
 			"tls"     : true,
@@ -16,7 +16,7 @@
 			},
 		},
 		"predicate" : {
-			"kind"    : "com.mukadobo.json.schema.poc.command.HttpPredicate",
+			"kind"    : "com.mukadobo.json.schema.poc.command.http.HttpPredicate",
 
 			"verb"    : "get",
 			"path"    : "stops/8553",

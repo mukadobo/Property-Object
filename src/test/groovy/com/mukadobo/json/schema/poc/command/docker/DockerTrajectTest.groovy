@@ -7,9 +7,9 @@ import spock.lang.Specification
 import spock.lang.Ignore
 import spock.lang.Unroll
 
-class DockerClientTest extends Specification
+class DockerTrajectTest extends Specification
 {
-	static private Logger logger = Logger.getLogger(DockerClientTest.class)
+	static private Logger logger = Logger.getLogger(DockerTrajectTest.class)
 	
 	def "Errors ~ #sampleName (UNROLL)"() { expect: true }
 	@Ignore @Unroll
@@ -32,8 +32,8 @@ class DockerClientTest extends Specification
 		where:
 			
 			x | sampleName
-			0 | "DockerClient/error-nyi"
-			0 | "DockerClient/error-nosup"
+			0 | "DockerTraject/error-nyi"
+			0 | "DockerTraject/error-nosup"
 	}
 	
 	
@@ -61,9 +61,9 @@ class DockerClientTest extends Specification
 		where:
 			
 			x | sampleName
-			0 | "DockerClient/pull-busybox"
-//			0 | "DockerClient/pull-busybox-bbb"
-			0 | "DockerClient/images-vanilla"
+			0 | "DockerTraject/pull-busybox"
+//			0 | "DockerTraject/pull-busybox-bbb"
+			0 | "DockerTraject/images-vanilla"
 	}
 	
 }

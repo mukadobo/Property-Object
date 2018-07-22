@@ -28,17 +28,17 @@ import org.json.JSONTokener
  * </PRE>
  * See <A HREF="https://hc.apache.org/index.html">https://hc.apache.org/index.html</A>
  */
-class HttpRest extends EntityObject.Base implements Command.Performer
+class HttpTraject extends EntityObject.Base implements Command.Performer
 {
-	static private Logger     logger = Logger.getLogger(HttpRest)
+	static private Logger     logger = Logger.getLogger(HttpTraject)
 	static private JsonSchema schema = null
 	
 	final String  server
 	final Integer port
 	final Boolean tls
 	final Map<String,Object> headers
-
-	HttpRest(JSONObject jsonDom)
+	
+	HttpTraject(JSONObject jsonDom)
 	{
 		super(jsonDom)
 		

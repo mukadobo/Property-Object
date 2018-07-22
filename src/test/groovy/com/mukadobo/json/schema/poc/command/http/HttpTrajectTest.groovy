@@ -36,9 +36,9 @@ import spock.lang.Unroll
  *   -
  * <PRE>
  */
-class HttpRestTest extends Specification
+class HttpTrajectTest extends Specification
 {
-	static private Logger logger = Logger.getLogger(HttpRestTest.class)
+	static private Logger logger = Logger.getLogger(HttpTrajectTest.class)
 	
 	def "Perform ~ #sampleName (UNROLL)"() { expect: true }
 	@Unroll
@@ -71,7 +71,7 @@ class HttpRestTest extends Specification
 		where:
 			
 			x | sampleName
-			0 | "HttpRest/mbta-list"
+			0 | "HttpTraject/mbta-list"
 	}
 	
 }

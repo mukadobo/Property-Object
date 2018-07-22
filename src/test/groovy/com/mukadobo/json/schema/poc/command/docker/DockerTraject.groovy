@@ -11,15 +11,15 @@ import org.json.JSONObject
  *  ---------------------------------------------------------------------------
  *
  */
-class DockerClient extends EntityObject.Base implements Command.Performer
+class DockerTraject extends EntityObject.Base implements Command.Performer
 {
-	static private Logger     logger = Logger.getLogger(DockerClient)
+	static private Logger     logger = Logger.getLogger(DockerTraject)
 	static private JsonSchema schema = null
 	
 	final DockerVerb  verb
 	final DockerActor actor
 	
-	DockerClient(JSONObject jsonDom)
+	DockerTraject(JSONObject jsonDom)
 	{
 		super(jsonDom)
 		
@@ -56,7 +56,7 @@ class DockerClient extends EntityObject.Base implements Command.Performer
 		actor.perform(args)
 	}
 	
-	static DockerClient factory(JSONObject jsonDom)
+	static DockerTraject factory(JSONObject jsonDom)
 	{
 		null
 	}
