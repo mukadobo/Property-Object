@@ -1,8 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="daddy">
     <words>
+      <w>additivity</w>
       <w>btrfs</w>
+      <w>busybox</w>
       <w>codehaus</w>
+      <w>ctor</w>
       <w>deallocation</w>
       <w>designee</w>
       <w>dryrun</w>
@@ -17,15 +20,20 @@
       <w>mbta</w>
       <w>nonconformance</w>
       <w>nosuid</w>
+      <w>nosup</w>
       <w>openshift</w>
       <w>pkgs</w>
       <w>probject</w>
       <w>propertyobject</w>
+      <w>reorg</w>
       <w>restclient</w>
       <w>shaboodle</w>
       <w>snakeyaml</w>
+      <w>spockframework</w>
+      <w>spotify</w>
       <w>thru</w>
       <w>tmpfs</w>
+      <w>unpause</w>
       <w>yaml</w>
     </words>
   </dictionary>
