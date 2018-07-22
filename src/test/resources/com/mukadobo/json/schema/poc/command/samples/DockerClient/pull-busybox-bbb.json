@@ -11,7 +11,7 @@
 
 	"payload"   : {
 		"docker"   : {
-			"kind"    : "com.mukadobo.json.schema.poc.command.DockerClient",
+			"kind"    : "com.mukadobo.json.schema.poc.command.DockerPull",
 			"version" : "0.0.0",
 
 			"action"  : "pull",

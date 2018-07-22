@@ -15,7 +15,8 @@ class DockerClient extends EntityObject.Base implements Command.Performer
 	static private Logger     logger = Logger.getLogger(DockerClient)
 	static private JsonSchema schema = null
 	
-	final DockerAction  action
+	final DockerVerb  verb
+	final DockerActor actor
 	
 	DockerClient(JSONObject jsonDom)
 	{
@@ -23,9 +24,10 @@ class DockerClient extends EntityObject.Base implements Command.Performer
 		
 		validate(jsonDom)
 		
-		action = DockerAction.from(jsonDom.optString("verb"))
+		verb  = DockerVerb.from(jsonDom.optString("action"))
+		actor = DockerActor.Base.newActor(verb, jsonDom)
 	}
-
+	
 	static private JsonSchema myJsonSchema()
 	{
 		if (!schema)
@@ -50,7 +52,11 @@ class DockerClient extends EntityObject.Base implements Command.Performer
 	
 	Command.Result perform(Map args)
 	{
-		Command.Result.nyi("${this.getClass()}#perform")
+		actor.perform(args)
 	}
 	
+	static DockerClient factory(JSONObject jsonDom)
+	{
+		null
+	}
 }

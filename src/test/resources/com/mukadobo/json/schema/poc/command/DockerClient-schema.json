@@ -1,5 +1,4 @@
 {
-	"$id": "jsonschema:com.mukadobo.json.schema.poc.command.Predicate",
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
 	"required": [
@@ -18,6 +17,6 @@
 
 		"action": {
 			"type": "string"
-		},
+		}
 	}
 }
