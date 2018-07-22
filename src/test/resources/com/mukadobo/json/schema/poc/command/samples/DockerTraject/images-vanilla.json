@@ -5,7 +5,7 @@
 
 	"payload"   : {
 		"docker"   : {
-			"kind"    : "com.mukadobo.json.schema.poc.command.DockerTraject",
+			"kind"    : "com.mukadobo.json.schema.poc.command.docker.DockerTraject",
 
 			"action"  : "images",
 		},

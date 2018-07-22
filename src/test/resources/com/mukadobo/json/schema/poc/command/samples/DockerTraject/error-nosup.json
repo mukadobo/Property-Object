@@ -1,11 +1,7 @@
 {
-	"kind"      : "Command",
-	"version"   : "0.0.0",
-
 	"payload"   : {
 		"docker"   : {
-			"kind"    : "com.mukadobo.json.schema.poc.command.DockerTraject",
-			"version" : "0.0.0",
+			"kind"    : "com.mukadobo.json.schema.poc.command.docker.DockerTraject",
 
 			"action"  : "$nosup",
 		},

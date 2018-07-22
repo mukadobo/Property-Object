@@ -4,7 +4,6 @@ import com.mukadobo.json.schema.poc.command.Command
 import com.mukadobo.json.schema.poc.command.CommandTest
 import org.apache.log4j.Logger
 import spock.lang.Specification
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 class DockerTrajectTest extends Specification
@@ -12,7 +11,7 @@ class DockerTrajectTest extends Specification
 	static private Logger logger = Logger.getLogger(DockerTrajectTest.class)
 	
 	def "Errors ~ #sampleName (UNROLL)"() { expect: true }
-	@Ignore @Unroll
+	@Unroll
 	def "Errors ~ #sampleName"()
 	{
 		def path = "samples/${sampleName}.json"
@@ -20,11 +19,12 @@ class DockerTrajectTest extends Specification
 		when:
 			
 			InputStream    stream  = CommandTest.class.getResourceAsStream(path)
-			Command command = new Command(stream)
-			Command.Result result  = command.perform()
 		
 		then:
 			
+			Command        command = new Command(stream)
+			Command.Result result  = command.perform()
+		
 			result.status == Command.Result.Status.FAILURE
 			
 			logger.info("result: ${result}")
@@ -62,7 +62,7 @@ class DockerTrajectTest extends Specification
 			
 			x | sampleName
 			0 | "DockerTraject/pull-busybox"
-//			0 | "DockerTraject/pull-busybox-bbb"
+			0 | "DockerTraject/pull-busybox-bbb"
 			0 | "DockerTraject/images-vanilla"
 	}
 	
