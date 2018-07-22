@@ -32,6 +32,12 @@
 				"predicate" : { "$ref": "jsonschema:com.mukadobo.json.schema.poc.command.HttpPredicate" }
 			},
 			"additionalProperties": false
+		},
+		"notes": {
+			"type" : "array",
+			"items": {
+				"type": "string"
+			}
 		}
 	},
 }

@@ -27,8 +27,9 @@ class Command extends EntityObject.Base
 		Command.Result perform(Map args)
 	}
 	
-	Boolean dryrun
-	String  verbosity
+	List<String> notes
+	Boolean      dryrun
+	String       verbosity
 	
 	Map<String, EntityObject> payload = new LinkedHashMap<>()
 	
@@ -36,6 +37,7 @@ class Command extends EntityObject.Base
 	{
 		super(jsonDom)
 		
+		notes     = (jsonDom.has("notes") ? jsonDom.optJSONArray("notes").toList() : []) as List<String>
 		dryrun    = jsonDom.optBoolean("dryrun", false)
 		verbosity = jsonDom.optEnum(Verbosity.class, "verbosity", Verbosity.INFO)
 		
@@ -170,10 +172,10 @@ class Command extends EntityObject.Base
 			new Result(Result.Status.FAILURE, summary : "NYI: $what")
 		}
 		
-		// These "getNullable**()" are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
+		// These getters are so the JsonOutput works. Probably a better way, but tech-debt is a good thing!!!
 		
-		Throwable getNullableCause()   { cause  .isPresent() ? cause  .get() : null }
-		Object    getNullableProduct() { product.isPresent() ? product.get() : 	null }
+		Throwable getCause()   { cause  .isPresent() ? cause  .get() : null }
+		Object    getProduct() { product.isPresent() ? product.get() : null }
 		
 		String toString()
 		{
