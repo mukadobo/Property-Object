@@ -94,6 +94,7 @@ interface EntityObject
 		
 		static EntityObject factory(JSONObject jsonDom)
 		{
+			logger.trace("---------- factory start ----------")
 			validate(jsonDom)
 			
 			String kind  = jsonDom.getString("kind")
