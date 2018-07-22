@@ -42,6 +42,11 @@ class VersionChain implements Comparable<VersionChain>, CharSequence
     int    at(int i)   { chain[i] }
 	String toString()  { text }
 	
+	static VersionChain from(String text)
+	{
+		text ? new VersionChain(text) : null
+	}
+	
     @Override
     int compareTo(@NotNull VersionChain that)
     {

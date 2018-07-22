@@ -40,9 +40,9 @@ interface EntityObject
 			validate(jsonDom)
 			
 			this.kind    = jsonDom.getString("kind")
-			this.version = new VersionChain(jsonDom.optString("version", "0"))
+			this.version = VersionChain.from(jsonDom.optString("version"))
 			this.name    = jsonDom.optString("name", null)
-			this.uuid    = UUID.fromString(jsonDom.optString("uuid", '00000000-0000-0000-0000-000000000000'))
+			this.uuid    = jsonDom.optString("uuid") ? UUID.fromString(jsonDom.getString("uuid")) : null
 		}
 		
 		@Override String       getKind   () { kind    }

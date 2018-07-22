@@ -93,7 +93,7 @@ class JsonToTest extends Specification
 			
 			key       | refClass            | text
 			"pogo"    | Map.class           | '[p.n:1.414, p.s:P.S, p.m:[p.m.s1:P.M.S1, p.m.s2:P.M.S2]]'
-			"entity"  | EntityForTest.class | '{"kind":"com.mukadobo.json.schema.JsonToTest$EntityForTest","version":"0.0.0","thing":"THINGY","uuid":"00000000-0000-0000-0000-000000000000","name":null}'
+			"entity"  | EntityForTest.class | '{"kind":"com.mukadobo.json.schema.JsonToTest$EntityForTest","version":null,"thing":"THINGY","uuid":null,"name":null}'
 	}
 	
 	def "ListFromDomArray"()
