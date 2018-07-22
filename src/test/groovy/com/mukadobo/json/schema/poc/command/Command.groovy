@@ -35,7 +35,7 @@ class Command extends EntityObject.Base
 	
 	Command(JSONObject jsonDom)
 	{
-		super(jsonDom)
+		super(jsonDom, Command.class)
 		
 		notes     = (jsonDom.has("notes") ? jsonDom.optJSONArray("notes").toList() : []) as List<String>
 		dryrun    = jsonDom.optBoolean("dryrun", false)

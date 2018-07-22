@@ -1,17 +1,11 @@
 {
-	"kind"      : "Command",
-	"version"   : "0.0.0",
-
-	"verbosity" : "INFO",
-	"dryrun"    : true,
-
+	"notes" : [
+		"Real world GET: https://api-v3.mbta.com:443/stops/8553",
+		"SEE: https://www.mbta.com/developers",
+	],
 	"payload"   : {
-		"notes" : [
-			"SEE: https://www.mbta.com/developers",
-		],
 		"subject"   : {
 			"kind"    : "com.mukadobo.json.schema.poc.command.HttpRest",
-			"version" : "0.0.0",
 
 			"name"    : "com.mukadobo/usa.ma.boston/inventory",
 			"tls"     : true,
@@ -23,7 +17,6 @@
 		},
 		"predicate" : {
 			"kind"    : "com.mukadobo.json.schema.poc.command.HttpPredicate",
-			"version" : "0.0.0",
 
 			"verb"    : "get",
 			"path"    : "stops/8553",

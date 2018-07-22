@@ -22,10 +22,10 @@ interface EntityObject
 		static private Logger     logger = Logger.getLogger(Base)
 		static private JsonSchema schema = null
 		
-		private final String       kind
-		private final VersionChain version
-		private final String       name
-		private final UUID         uuid
+		private String       kind     = null
+		private VersionChain version  = null
+		private String       name     = null
+		private UUID         uuid     = null
 		
 		protected Base(String kind, VersionChain version, String name, UUID uuid)
 		{
@@ -37,6 +37,27 @@ interface EntityObject
 		
 		protected Base(JSONObject jsonDom)
 		{
+			validate(jsonDom)
+			
+			this.kind    = jsonDom.getString("kind")
+			this.version = VersionChain.from(jsonDom.optString("version"))
+			this.name    = jsonDom.optString("name", null)
+			this.uuid    = jsonDom.optString("uuid") ? UUID.fromString(jsonDom.getString("uuid")) : null
+		}
+		
+		protected Base(JSONObject jsonDom, Class kindClass)
+		{
+			String kind = jsonDom.opt("kind")
+			
+			if (kind)
+			{
+				if (kind != kindClass.getCanonicalName())
+					throw new RuntimeException("init-data kind mismatch: expected '${kindClass.getCanonicalName()}' but given as '${kind}'")
+			}
+			else
+			{
+				jsonDom.put("kind", kindClass.getCanonicalName())
+			}
 			validate(jsonDom)
 			
 			this.kind    = jsonDom.getString("kind")

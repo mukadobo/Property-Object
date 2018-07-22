@@ -54,7 +54,7 @@ class HttpRestTest extends Specification
 		
 		then:
 			
-			Command.class.getSimpleName() == command.getKind()
+			Command.class.getCanonicalName() == command.getKind()
 		
 		when:
 			
