@@ -1,4 +1,4 @@
-package com.mukadobo.json.schema.poc.command
+package com.mukadobo.json.schema.poc.command.http
 
 import com.mukadobo.json.schema.EntityObject
 import groovy.transform.EqualsAndHashCode

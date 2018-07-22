@@ -19,7 +19,7 @@
 			}
 		},
 		"predicate" : {
-			"kind"    : "com.mukadobo.json.schema.poc.command.HttpPredicate",
+			"kind"    : "com.mukadobo.json.schema.poc.command.http.HttpPredicate",
 			"version" : "0",
 
 			"verb"    : "get"

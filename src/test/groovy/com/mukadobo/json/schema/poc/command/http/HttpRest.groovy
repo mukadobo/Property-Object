@@ -1,7 +1,8 @@
-package com.mukadobo.json.schema.poc.command
+package com.mukadobo.json.schema.poc.command.http
 
 import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.json.schema.JsonSchema
+import com.mukadobo.json.schema.poc.command.Command
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpEntity
 import org.apache.http.client.methods.HttpUriRequest

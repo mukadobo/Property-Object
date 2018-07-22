@@ -1,7 +1,8 @@
-package com.mukadobo.json.schema.poc.command
+package com.mukadobo.json.schema.poc.command.docker
 
 import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.json.schema.JsonSchema
+import com.mukadobo.json.schema.poc.command.Command
 import org.apache.log4j.Logger
 import org.json.JSONObject
 

@@ -1,4 +1,4 @@
-package com.mukadobo.json.schema.poc.command
+package com.mukadobo.json.schema.poc.command.docker
 
 /**
  * An {@code enum} that represents all the docker "child" commands, each with a flag indicating

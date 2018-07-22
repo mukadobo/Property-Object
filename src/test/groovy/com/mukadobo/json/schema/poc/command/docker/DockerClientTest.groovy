@@ -1,5 +1,7 @@
-package com.mukadobo.json.schema.poc.command
+package com.mukadobo.json.schema.poc.command.docker
 
+import com.mukadobo.json.schema.poc.command.Command
+import com.mukadobo.json.schema.poc.command.CommandTest
 import org.apache.log4j.Logger
 import spock.lang.Specification
 import spock.lang.Ignore
@@ -18,7 +20,7 @@ class DockerClientTest extends Specification
 		when:
 			
 			InputStream    stream  = CommandTest.class.getResourceAsStream(path)
-			Command        command = new Command(stream)
+			Command command = new Command(stream)
 			Command.Result result  = command.perform()
 		
 		then:

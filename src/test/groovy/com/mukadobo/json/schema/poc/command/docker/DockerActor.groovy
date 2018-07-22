@@ -1,7 +1,8 @@
-package com.mukadobo.json.schema.poc.command
+package com.mukadobo.json.schema.poc.command.docker
 
 import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.json.schema.JsonTo
+import com.mukadobo.json.schema.poc.command.Command
 import org.json.JSONObject
 
 import java.lang.reflect.Constructor

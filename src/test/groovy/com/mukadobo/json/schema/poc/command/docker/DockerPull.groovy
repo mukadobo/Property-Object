@@ -1,7 +1,8 @@
-package com.mukadobo.json.schema.poc.command
+package com.mukadobo.json.schema.poc.command.docker
 
 import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.json.schema.JsonSchema
+import com.mukadobo.json.schema.poc.command.Command
 import org.apache.log4j.Logger
 import org.json.JSONObject
 
@@ -17,8 +18,8 @@ class DockerPull extends DockerActor.Base
 	/**
 	 * Default optional values follow Docker standards.
 	 * <BR><BR>
-	 * See <A HREF="https://docs.docker.com/engine/reference/commandline/pull/#description">
-	 *     https://docs.docker.com/engine/reference/commandline/pull/#description
+	 * See <A HREF="https://docs.docker.com/engine/reference/commandline/pull/#options">
+	 *     https://docs.docker.com/engine/reference/commandline/pull/#options
 	 *     </A>
 	 *
 	 * @param jsonDom
