@@ -1,0 +1,13 @@
+{
+	"notes" : [
+		"List images, no options (vanilla)",
+	],
+
+	"payload"   : {
+		"docker"   : {
+			"kind"    : "com.mukadobo.json.schema.poc.command.DockerClient",
+
+			"action"  : "images",
+		},
+	},
+}

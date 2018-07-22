@@ -1,10 +1,4 @@
 {
-	"kind"      : "Command",
-	"version"   : "0.0.0",
-
-	"verbosity" : "INFO",
-	"dryrun"    : true,
-
 	"notes" : [
 		"Pull docker.io/library/busybox",
 	],

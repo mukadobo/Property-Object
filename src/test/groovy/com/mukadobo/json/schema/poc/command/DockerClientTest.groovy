@@ -61,6 +61,7 @@ class DockerClientTest extends Specification
 			x | sampleName
 			0 | "DockerClient/pull-busybox"
 //			0 | "DockerClient/pull-busybox-bbb"
+			0 | "DockerClient/images-vanilla"
 	}
 	
 }
