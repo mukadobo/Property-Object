@@ -24,6 +24,10 @@ class JsonTo
 		}
 		else
 		{
+			String kind = jsonDomObject.optString("kind")
+			if (kind)
+				throw new RuntimeException("JSON-DOM object has 'kind' key, but it is not a recognized class name: ${kind}")
+			
 			Map<String, Object> map = new LinkedHashMap<>()
 			
 			for (String key : jsonDomObject.keySet())
