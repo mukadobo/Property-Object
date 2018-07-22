@@ -76,7 +76,7 @@ interface EntityObject
 			validate(jsonDom)
 			
 			String kind  = jsonDom.getString("kind")
-			logger.info("kind=${kind}")
+			logger.trace("kind=${kind}")
 			
 			Class  kindClass
 			try
@@ -87,7 +87,7 @@ interface EntityObject
 			{
 				throw new RuntimeException("No such kind-class: $kind", e)
 			}
-			logger.info("kindClass=${kindClass}")
+			logger.trace("kindClass=${kindClass}")
 			
 			Constructor constructor
 			try
@@ -98,7 +98,7 @@ interface EntityObject
 			{
 				constructor = null
 			}
-			logger.info("constructor=${constructor}")
+			logger.trace("constructor=${constructor}")
 			
 			Object instance = null
 			if (constructor)
@@ -134,7 +134,7 @@ interface EntityObject
 				{
 					kindFactory = null
 				}
-				logger.info("kindFactory=${kindFactory}")
+				logger.trace("kindFactory=${kindFactory}")
 				
 				if (!kindFactory || kindFactory == thisFactory)
 					throw new RuntimeException("kind-class has no suitable constructor or factory: $kind")
