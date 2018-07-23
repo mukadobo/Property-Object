@@ -1,0 +1,19 @@
+{
+	"notes" : [
+		"List images, options for maximum response",
+	],
+
+	"payload"   : {
+		"docker"   : {
+			"kind"    : "com.mukadobo.json.schema.poc.command.docker.DockerTraject",
+
+			"action"  : "images",
+
+			"--all"      : true,
+			"--dangling" : true,
+			"--quiet"    : false,
+			"--digests"  : true,
+			"--no-trunc" : true,
+		},
+	},
+}

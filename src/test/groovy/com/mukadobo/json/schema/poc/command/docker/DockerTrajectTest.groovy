@@ -64,6 +64,7 @@ class DockerTrajectTest extends Specification
 			0 | "DockerTraject/pull-busybox"
 			0 | "DockerTraject/pull-busybox-bbb"
 			0 | "DockerTraject/images-vanilla"
+			0 | "DockerTraject/images-maximal"
 	}
 	
 }

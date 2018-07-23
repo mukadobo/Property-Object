@@ -107,7 +107,13 @@ class Command extends EntityObject.Base
 
 		try
 		{
-			performResult  = performMethod.invoke(performer, payload) as Result
+			Map<String, Object> performerArgs = [:] << payload << [
+			    notes     : notes,
+				dryrun    : dryrun,
+				verbosity : verbosity,
+			]
+			
+			performResult  = performMethod.invoke(performer, performerArgs) as Result
 		}
 		catch(Throwable e)
 		{
@@ -142,7 +148,8 @@ class Command extends EntityObject.Base
 			'java.lang.reflect.',
 			'org.codehaus.groovy.reflection.',
 			'org.codehaus.groovy.runtime.',
-			'org.junit.runner.JUnitCore.',
+			'org.junit.runner.',
+			'org.junit.runners.',
 			'org.spockframework.runtime.',
 			'org.spockframework.util.ReflectionUtil.',
 			'sun.reflect.',
@@ -156,9 +163,16 @@ class Command extends EntityObject.Base
 			List<StackTraceElement>   steList   = steStream
 				.skip(2)
 				.filter {
-					String steClassName = it.getClassName() + "."
-					
-					! Stream.of(CODE_POINT_CLASS_PREFIX_SKIPS).filter { steClassName.startsWith(it as String) }.findFirst().isPresent()
+					if (it.getLineNumber() < 0)
+					{
+						false
+					}
+					else
+					{
+						String steClassName = it.getClassName() + "."
+						
+						! Stream.of(CODE_POINT_CLASS_PREFIX_SKIPS).filter { steClassName.startsWith(it as String) }.findFirst().isPresent()
+					}
 				}
 				.limit(100)
 				.collect()
@@ -191,6 +205,11 @@ class Command extends EntityObject.Base
 		static Result failure(Map args = [:])
 		{
 			new Result(args, Result.Status.FAILURE)
+		}
+		
+		static Result success(String summary)
+		{
+			new Result(Result.Status.SUCCESS, summary: summary)
 		}
 		
 		static Result success(Map args = [:])

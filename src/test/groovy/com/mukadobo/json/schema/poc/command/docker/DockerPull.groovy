@@ -61,6 +61,6 @@ class DockerPull extends DockerActor.Base
 	@Override
 	Command.Result perform(Map args)
 	{
-		return Command.Result.failure("WIP")
+		return Command.Result.success("WIP")
 	}
 }
