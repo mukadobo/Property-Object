@@ -1,6 +1,6 @@
 {
 	"notes" : [
-		"Pull docker.io/library/busybox",
+		"Pull docker.io/library/busybox:latest",
 	],
 
 	"payload"   : {

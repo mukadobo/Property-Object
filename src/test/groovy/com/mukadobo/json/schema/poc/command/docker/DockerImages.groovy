@@ -74,9 +74,9 @@ class DockerImages extends DockerActor.Base
 	{
 		Map<String,List<String>> logs = [ warnings : [] ]
 		
-		if (filter  ) logs.warnings.add(  "filter not supported (ignored): '$filter'")
-		if (format  ) logs.warnings.add(  "format not supported (ignored): '$format'")
-		if (dangling) logs.warnings.add("dangling not supported (ignored): '$dangling'")
+		if (filter  ) logs.warnings.add("option not supported (ignored): filter=${filter}")
+		if (format  ) logs.warnings.add("option not supported (ignored): format=${format}")
+		if (dangling) logs.warnings.add("option not supported (ignored): dangling=${dangling}")
 		
 		final List<DockerClient.ListImagesParam> params = [
 			DockerClient.ListImagesParam.allImages(this.all),

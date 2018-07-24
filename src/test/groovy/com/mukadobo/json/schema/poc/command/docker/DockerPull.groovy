@@ -3,6 +3,12 @@ package com.mukadobo.json.schema.poc.command.docker
 import com.mukadobo.json.schema.EntityObject
 import com.mukadobo.json.schema.JsonSchema
 import com.mukadobo.json.schema.poc.command.Command
+import com.spotify.docker.client.DefaultDockerClient
+import com.spotify.docker.client.DockerClient
+import com.spotify.docker.client.ProgressHandler
+import com.spotify.docker.client.exceptions.DockerException
+import com.spotify.docker.client.messages.ProgressMessage
+import com.spotify.docker.client.messages.RegistryAuth
 import org.apache.log4j.Logger
 import org.json.JSONObject
 
@@ -61,6 +67,45 @@ class DockerPull extends DockerActor.Base
 	@Override
 	Command.Result perform(Map args)
 	{
-		return Command.Result.failure("WIP")
+		Map<String,List<String>> logs = [ warnings : [] ]
+		
+		if (noTrust) logs.warnings.add("option not supported (ignored): no-trust=${noTrust}")
+		
+		String sourceWithTag = source
+		if (source.indexOf(":") >= 0)
+		{
+			if (allTags) logs.warnings += "all-tags=true ignored when source locator has a tag: $source"
+		}
+		else
+		{
+			if (!allTags)
+			{
+				sourceWithTag = "${source}:latest"
+				logs.warnings += "all-tags=false but source tag not given, using default tag: $sourceWithTag"
+			}
+		}
+		
+		final DockerClient  docker = new DefaultDockerClient("unix:///var/run/docker.sock")
+		
+		RegistryAuth    regAuth  = RegistryAuth.builder().build()
+		ProgressHandler progress = new ProgressHandler() {
+			
+			List<String> messageList = []
+			
+			@Override
+			void progress(ProgressMessage message) throws DockerException
+			{
+				String text = message.toString()
+				messageList += text
+			}
+		}
+		
+		docker.pull(sourceWithTag, regAuth, progress)
+		Map<String, Object> product = [
+			command  : args,
+			messages : progress.messageList,
+		]
+		
+		return Command.Result.success(summary: "Pull image(s)", product: product, logs: logs)
 	}
 }
