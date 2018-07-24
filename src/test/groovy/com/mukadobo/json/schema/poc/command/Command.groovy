@@ -136,6 +136,7 @@ class Command extends EntityObject.Base
 		final Status                  status
 		final String                  summary
 		final String                  detail
+		final Map<String, Object>     logs
 		final Optional<Object>        product
 		final Optional<Object>        cause
 		final List<String>            codePoint
@@ -186,9 +187,10 @@ class Command extends EntityObject.Base
 			this.status    = status
 			this.summary   = args.get("summary", this.status)
 			this.detail    = args.get("detail" , this.summary)
-			this.cause     = Optional.ofNullable(args.get("cause", null))
+			this.cause     = Optional.ofNullable(args.get("cause"))
 			this.codePoint = steTexts
 			this.product   = Optional.ofNullable(args.get("product"))
+			this.logs      = args.get("logs")
 		}
 		
 		static enum Status

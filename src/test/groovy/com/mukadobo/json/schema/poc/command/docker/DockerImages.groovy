@@ -72,10 +72,15 @@ class DockerImages extends DockerActor.Base
 	@Override
 	Command.Result perform(Map args)
 	{
+		Map<String,List<String>> logs = [ warnings : [] ]
+		
+		if (filter  ) logs.warnings.add(  "filter not supported (ignored): '$filter'")
+		if (format  ) logs.warnings.add(  "format not supported (ignored): '$format'")
+		if (dangling) logs.warnings.add("dangling not supported (ignored): '$dangling'")
+		
 		final List<DockerClient.ListImagesParam> params = [
 			DockerClient.ListImagesParam.allImages(this.all),
 			DockerClient.ListImagesParam.create("digests", this.digests ? "1" : "0"),
-			DockerClient.ListImagesParam.danglingImages(this.dangling),
 			
 //			DockerClient.ListImagesParam.filter(this.all),
 //			DockerClient.ListImagesParam.format(this.all),
@@ -97,6 +102,6 @@ class DockerImages extends DockerActor.Base
 			images  : imagesDom,
 		]
 		
-		return Command.Result.success(summary: "Full list of containers", product: product)
+		return Command.Result.success(summary: "Full list of containers", product: product, logs: logs)
 	}
 }
