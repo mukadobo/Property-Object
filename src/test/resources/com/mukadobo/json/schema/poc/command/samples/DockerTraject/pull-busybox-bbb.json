@@ -10,8 +10,8 @@
 			"action"  : "pull",
 			"source"  : "busybox",
 
-			"--all-tags"              : false,
-			"--disable-content-trust" : true,
+			"all-tags"              : false,
+			"disable-content-trust" : true,
 		},
 	},
 }

@@ -30,9 +30,9 @@ class DockerPull extends DockerActor.Base
 
 		validate(jsonDom)
 		
-		this.source  = jsonDom.optString("source")
-		this.allTags = jsonDom.optBoolean("--all-tags", false)
-		this.noTrust = jsonDom.optBoolean("--disable-content-trust", true)
+		this.source  = jsonDom.optString ("source")
+		this.allTags = jsonDom.optBoolean("all-tags", false)
+		this.noTrust = jsonDom.optBoolean("disable-content-trust", true)
 	}
 	
 	static private JsonSchema myJsonSchema()
@@ -61,6 +61,6 @@ class DockerPull extends DockerActor.Base
 	@Override
 	Command.Result perform(Map args)
 	{
-		return Command.Result.success("WIP")
+		return Command.Result.failure("WIP")
 	}
 }

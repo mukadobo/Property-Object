@@ -9,11 +9,11 @@
 
 			"action"  : "images",
 
-			"--all"      : true,
-			"--dangling" : true,
-			"--quiet"    : false,
-			"--digests"  : true,
-			"--no-trunc" : true,
+			"all"      : true,
+			"dangling" : true,
+			"quiet"    : false,
+			"digests"  : true,
+			"no-trunc" : true,
 		},
 	},
 }

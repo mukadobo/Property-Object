@@ -37,13 +37,13 @@ class DockerImages extends DockerActor.Base
 
 		validate(jsonDom)
 		
-		this.all      = jsonDom.optBoolean("--all"     , false)
-		this.digests  = jsonDom.optBoolean("--digests" , false)
-		this.filter   = jsonDom.optString ("--filter"  , null )
-		this.format   = jsonDom.optString ("--format"  , null )
-		this.noTrunc  = jsonDom.optBoolean("--no-trunc", false)
-		this.quiet    = jsonDom.optBoolean("--quiet"   , false)
-		this.dangling = jsonDom.optBoolean("--dangling", false)
+		this.all      = jsonDom.optBoolean("all"     , false)
+		this.digests  = jsonDom.optBoolean("digests" , false)
+		this.filter   = jsonDom.optString ("filter"  , null )
+		this.format   = jsonDom.optString ("format"  , null )
+		this.noTrunc  = jsonDom.optBoolean("no-trunc", false)
+		this.quiet    = jsonDom.optBoolean("quiet"   , false)
+		this.dangling = jsonDom.optBoolean("dangling", false)
 	}
 	
 	static private JsonSchema myJsonSchema()
