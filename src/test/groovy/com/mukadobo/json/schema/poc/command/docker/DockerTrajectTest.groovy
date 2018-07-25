@@ -61,10 +61,11 @@ class DockerTrajectTest extends Specification
 		where:
 			
 			x | sampleName
-			0 | "DockerTraject/pull-busybox"
+			0 | "DockerTraject/pull-reg1"
+//			0 | "DockerTraject/pull-busybox"
 //			0 | "DockerTraject/pull-busybox-bbb"
-			0 | "DockerTraject/images-vanilla"
-			0 | "DockerTraject/images-maximal"
+//			0 | "DockerTraject/images-vanilla"
+//			0 | "DockerTraject/images-maximal"
 	}
 	
 }

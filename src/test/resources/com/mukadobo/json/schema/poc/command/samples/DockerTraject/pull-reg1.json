@@ -1,0 +1,15 @@
+{
+	"notes" : [
+		"Pull from dockerreg1 (untrusted)",
+	],
+
+	"payload"   : {
+		"docker"   : {
+			"kind"    : "com.mukadobo.json.schema.poc.command.docker.DockerTraject",
+			"version" : "0.0.0",
+
+			"action"  : "pull",
+			"source"  : "dockerreg1.osc.utdlab.com:5000/edr-save/utd-slug/xr-fshow:ddd",
+		},
+	},
+}

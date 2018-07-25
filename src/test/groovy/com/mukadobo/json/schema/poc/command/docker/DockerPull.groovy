@@ -9,9 +9,22 @@ import com.spotify.docker.client.ProgressHandler
 import com.spotify.docker.client.exceptions.DockerException
 import com.spotify.docker.client.messages.ProgressMessage
 import com.spotify.docker.client.messages.RegistryAuth
+import com.spotify.docker.client.messages.RegistryAuthV2
 import org.apache.log4j.Logger
 import org.json.JSONObject
 
+/**
+ * <PRE>To-Do:
+ * - Better progress message handling (way too verbose)
+ *   - At least only one per "id"
+ *   - Group by "id" (??)
+ *   - Non-null ProgressMessage.stream or PM.error
+ *     - When / why
+ *     - how to respond / report
+ * ---------------------------------------------------------
+ * - Support for "--no-trust" option (maybe?...)
+ * </PRE>
+ */
 class DockerPull extends DockerActor.Base
 {
 	static private Logger     logger = Logger.getLogger(DockerPull)
@@ -87,7 +100,9 @@ class DockerPull extends DockerActor.Base
 		
 		final DockerClient  docker = new DefaultDockerClient("unix:///var/run/docker.sock")
 		
-		RegistryAuth    regAuth  = RegistryAuth.builder().build()
+//		RegistryAuth    regAuth  = RegistryAuth.builder().build()
+		RegistryAuth    regAuth  = new RegistryAuthV2( "x",  "y",  "dockerreg1.osc.utdlab.com:5000")
+		
 		ProgressHandler progress = new ProgressHandler() {
 			
 			List<String> messageList = []
