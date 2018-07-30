@@ -1,0 +1,19 @@
+{
+	"notes" : [
+		"ssh - uname",
+	],
+
+	"payload"   : {
+		"subject"   : {
+			"kind"    : "com.mukadobo.json.schema.poc.command.docker.SshTraject",
+
+			"host"  : "debbox",
+			"port"  : 22,
+		},
+		"credential" : {
+			"user" : "zippy",
+			"pswd" : "pinhead",
+		},
+		"exec" : "uname -a",
+	},
+}
